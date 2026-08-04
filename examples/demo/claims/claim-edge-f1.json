@@ -1,0 +1,12 @@
+{
+  "confidence": "reported",
+  "evidence_locator": "Results §4.2, Table 2 (synthetic)",
+  "experiment_ids": [
+    "edgeformer-main"
+  ],
+  "id": "claim-edge-f1",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "edgeformer-2025",
+  "statement": "EdgeFormer reports higher macro F1 than the compact convolutional baseline.",
+  "type": "empirical"
+}

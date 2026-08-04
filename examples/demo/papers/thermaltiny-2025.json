@@ -1,0 +1,19 @@
+{
+  "abstract": "",
+  "authors": [
+    "Arun Silva",
+    "Mae Lewis"
+  ],
+  "doi": "",
+  "id": "thermaltiny-2025",
+  "notes": "Synthetic demonstration record; not a real publication.",
+  "tags": [
+    "tinyml",
+    "calibration",
+    "thermal"
+  ],
+  "title": "ThermalTiny: Calibrated TinyML under Dynamic Thermal Budgets",
+  "url": "",
+  "venue": "Synthetic Embedded Intelligence Symposium",
+  "year": 2025
+}

@@ -1,0 +1,19 @@
+{
+  "abstract": "",
+  "authors": [
+    "Priya Nair",
+    "Evan Stone"
+  ],
+  "doi": "",
+  "id": "voltguard-2024",
+  "notes": "Synthetic demonstration record; not a real publication.",
+  "tags": [
+    "power-electronics",
+    "fault-detection",
+    "uncertainty"
+  ],
+  "title": "VoltGuard: Uncertainty-Aware Fault Detection in Converter Telemetry",
+  "url": "",
+  "venue": "Synthetic Power Electronics Journal",
+  "year": 2024
+}

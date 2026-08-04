@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/reproweave/schemas/experiment.schema.json",
+  "title": "ReproWeave experiment",
+  "type": "object",
+  "required": ["id", "paper_id", "name", "protocol_summary"],
+  "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "paper_id": {"$ref": "#/$defs/id"},
+    "name": {"type": "string", "minLength": 1},
+    "protocol_summary": {"type": "string", "minLength": 1},
+    "resource_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "metric_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "baseline_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+  }
+}

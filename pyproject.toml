@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reproweave"
+version = "0.1.0"
+description = "Local-first evidence maps and replication plans for engineering and AI papers"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Shurong Cao" }]
+keywords = ["reproducibility", "literature-review", "research", "evidence-map", "electrical-engineering"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://caoshurong.github.io/reproweave/"
+Repository = "https://github.com/CAOShurong/reproweave"
+Issues = "https://github.com/CAOShurong/reproweave/issues"
+
+[project.scripts]
+reproweave = "reproweave.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"

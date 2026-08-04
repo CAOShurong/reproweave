@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for train edgeformer across five seeds.",
+  "blocker": "External data or hardware access is unresolved.",
+  "depends_on": [
+    "acquire-rf-data"
+  ],
+  "estimate_hours": 18,
+  "id": "train-edgeformer",
+  "paper_ids": [
+    "edgeformer-2025"
+  ],
+  "priority": "high",
+  "state": "blocked",
+  "title": "Train EdgeFormer across five seeds"
+}

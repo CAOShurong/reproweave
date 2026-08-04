@@ -1,0 +1,10 @@
+{
+  "availability": "unavailable",
+  "id": "mmwave-traces",
+  "kind": "dataset",
+  "license": "",
+  "name": "Urban mmWave channel traces",
+  "notes": "Paper states that partner restrictions prevent distribution.",
+  "url": "",
+  "version": ""
+}

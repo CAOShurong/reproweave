@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for verify code and data reuse conditions.",
+  "blocker": "",
+  "depends_on": [
+    "freeze-sources"
+  ],
+  "estimate_hours": 2,
+  "id": "verify-licenses",
+  "paper_ids": [
+    "edgeformer-2025"
+  ],
+  "priority": "critical",
+  "state": "done",
+  "title": "Verify code and data reuse conditions"
+}

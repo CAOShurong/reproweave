@@ -1,0 +1,12 @@
+{
+  "confidence": "reported",
+  "evidence_locator": "Results §5, Table 1 (synthetic)",
+  "experiment_ids": [
+    "sparsebeam-city"
+  ],
+  "id": "claim-beam-recall",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "sparsebeam-2024",
+  "statement": "Structured priors reportedly improve top-3 beam recall in dense layouts.",
+  "type": "empirical"
+}

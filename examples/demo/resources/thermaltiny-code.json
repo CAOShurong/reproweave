@@ -1,0 +1,10 @@
+{
+  "availability": "available",
+  "id": "thermaltiny-code",
+  "kind": "code",
+  "license": "MIT",
+  "name": "ThermalTiny inference firmware",
+  "notes": "Training pipeline is not included.",
+  "url": "https://example.invalid/thermaltiny",
+  "version": "tag v1.1 (synthetic)"
+}

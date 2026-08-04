@@ -1,0 +1,12 @@
+{
+  "baseline_ids": [],
+  "id": "sparsebeam-city",
+  "metric_ids": [],
+  "name": "Urban beam-selection evaluation",
+  "paper_id": "sparsebeam-2024",
+  "protocol_summary": "Evaluate top-k beam recall over three synthetic urban layouts.",
+  "resource_ids": [
+    "sparsebeam-code",
+    "mmwave-traces"
+  ]
+}

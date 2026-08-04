@@ -1,0 +1,12 @@
+{
+  "confidence": "corroborated",
+  "evidence_locator": "Table 3 and artifact results.csv (synthetic)",
+  "experiment_ids": [
+    "channelcraft-main"
+  ],
+  "id": "claim-channel-robust",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "channelcraft-2023",
+  "statement": "Estimator rankings change across procedural channel families.",
+  "type": "empirical"
+}

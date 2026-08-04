@@ -1,0 +1,12 @@
+{
+  "confidence": "corroborated",
+  "evidence_locator": "Limitations §7 (synthetic)",
+  "experiment_ids": [
+    "thermal-drift"
+  ],
+  "id": "claim-thermal-limit",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "thermaltiny-2025",
+  "statement": "The calibration benefit degrades outside the board's characterized range.",
+  "type": "limitation"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/reproweave/schemas/resource.schema.json",
+  "title": "ReproWeave resource",
+  "type": "object",
+  "required": ["id", "name", "kind"],
+  "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "name": {"type": "string", "minLength": 1},
+    "kind": {"enum": ["code", "dataset", "environment", "model", "hardware", "protocol", "result", "other"]},
+    "availability": {"enum": ["available", "partial", "unavailable", "unknown"]},
+    "url": {"type": "string"},
+    "version": {"type": "string"},
+    "license": {"type": "string"},
+    "checksum": {"type": "string"},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+  }
+}

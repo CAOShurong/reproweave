@@ -1,0 +1,12 @@
+{
+  "confidence": "uncertain",
+  "evidence_locator": "Abstract and §5.4 (synthetic)",
+  "experiment_ids": [
+    "sparsebeam-city"
+  ],
+  "id": "claim-beam-overhead",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "sparsebeam-2024",
+  "statement": "The method claims lower pilot overhead at the stated recall target.",
+  "type": "empirical"
+}

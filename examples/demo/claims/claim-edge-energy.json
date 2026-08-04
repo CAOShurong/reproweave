@@ -1,0 +1,13 @@
+{
+  "confidence": "uncertain",
+  "evidence_locator": "Results §4.3, Figure 5 (synthetic)",
+  "experiment_ids": [
+    "edgeformer-main",
+    "edgeformer-ablation"
+  ],
+  "id": "claim-edge-energy",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "edgeformer-2025",
+  "statement": "Event gating reportedly lowers median inference energy on the target board.",
+  "type": "empirical"
+}

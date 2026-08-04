@@ -1,0 +1,11 @@
+include CHANGELOG.md
+include CITATION.cff
+include CODE_OF_CONDUCT.md
+include CONTRIBUTING.md
+include SECURITY.md
+recursive-include docs *.md *.svg
+recursive-include schemas *.json
+recursive-include site *.html *.css
+recursive-include examples *.json *.html *.csv *.md
+recursive-include tests *.py
+recursive-include .github *.yml

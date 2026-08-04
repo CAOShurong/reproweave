@@ -1,0 +1,12 @@
+{
+  "confidence": "corroborated",
+  "evidence_locator": "Appendix C and result bundle (synthetic)",
+  "experiment_ids": [
+    "channelcraft-main"
+  ],
+  "id": "claim-channel-seeds",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "channelcraft-2023",
+  "statement": "Ten released seeds reproduce the reported aggregate within tolerance.",
+  "type": "empirical"
+}

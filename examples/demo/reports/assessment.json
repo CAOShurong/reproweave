@@ -1,0 +1,137 @@
+{
+  "papers": [
+    {
+      "answered_dimensions": 8,
+      "applicable_weight": 8.25,
+      "assessment_id": "assess-channelcraft",
+      "gaps": [],
+      "interpretation": "reconstructability coverage, not scientific quality",
+      "paper_id": "channelcraft-2023",
+      "rubric_coverage": 100.0,
+      "score": 100.0,
+      "title": "ChannelCraft: A Procedural Benchmark for Robust Channel Estimation"
+    },
+    {
+      "answered_dimensions": 8,
+      "applicable_weight": 8.25,
+      "assessment_id": "assess-edgeformer",
+      "gaps": [],
+      "interpretation": "reconstructability coverage, not scientific quality",
+      "paper_id": "edgeformer-2025",
+      "rubric_coverage": 100.0,
+      "score": 75.8,
+      "title": "EdgeFormer: Event-Driven Transformers for On-Device RF Classification"
+    },
+    {
+      "answered_dimensions": 8,
+      "applicable_weight": 8.25,
+      "assessment_id": "assess-thermaltiny",
+      "gaps": [],
+      "interpretation": "reconstructability coverage, not scientific quality",
+      "paper_id": "thermaltiny-2025",
+      "rubric_coverage": 100.0,
+      "score": 68.2,
+      "title": "ThermalTiny: Calibrated TinyML under Dynamic Thermal Budgets"
+    },
+    {
+      "answered_dimensions": 8,
+      "applicable_weight": 8.25,
+      "assessment_id": "assess-sparsebeam",
+      "gaps": [
+        "data",
+        "environment",
+        "compute"
+      ],
+      "interpretation": "reconstructability coverage, not scientific quality",
+      "paper_id": "sparsebeam-2024",
+      "rubric_coverage": 100.0,
+      "score": 37.9,
+      "title": "SparseBeam: Low-Overhead Beam Selection with Structured Priors"
+    },
+    {
+      "answered_dimensions": 8,
+      "applicable_weight": 8.25,
+      "assessment_id": "assess-voltguard",
+      "gaps": [
+        "data",
+        "code",
+        "environment",
+        "compute"
+      ],
+      "interpretation": "reconstructability coverage, not scientific quality",
+      "paper_id": "voltguard-2024",
+      "rubric_coverage": 100.0,
+      "score": 36.4,
+      "title": "VoltGuard: Uncertainty-Aware Fault Detection in Converter Telemetry"
+    }
+  ],
+  "rubric": {
+    "baselines": {
+      "label": "Baseline traceability",
+      "question": "Can the comparison baselines and their settings be identified?",
+      "weight": 0.75
+    },
+    "code": {
+      "label": "Code availability",
+      "question": "Is runnable code linked, versioned, and sufficiently licensed?",
+      "weight": 1.0
+    },
+    "compute": {
+      "label": "Compute disclosure",
+      "question": "Are training or experimental compute requirements bounded?",
+      "weight": 0.75
+    },
+    "data": {
+      "label": "Data availability",
+      "question": "Are the exact inputs available or independently reconstructable?",
+      "weight": 1.25
+    },
+    "environment": {
+      "label": "Environment capture",
+      "question": "Are software, dependencies, hardware, and random seeds recorded?",
+      "weight": 1.0
+    },
+    "method": {
+      "label": "Method specificity",
+      "question": "Can an independent reader reconstruct the method from cited evidence?",
+      "weight": 1.25
+    },
+    "metrics": {
+      "label": "Metric definition",
+      "question": "Are metrics, aggregation, and uncertainty fully specified?",
+      "weight": 1.0
+    },
+    "results": {
+      "label": "Result traceability",
+      "question": "Can each headline result be linked to a configuration and artifact?",
+      "weight": 1.25
+    }
+  },
+  "summary": {
+    "assessed_count": 5,
+    "common_gaps": [
+      {
+        "count": 2,
+        "dimension": "data"
+      },
+      {
+        "count": 2,
+        "dimension": "environment"
+      },
+      {
+        "count": 2,
+        "dimension": "compute"
+      },
+      {
+        "count": 1,
+        "dimension": "code"
+      }
+    ],
+    "maximum_score": 100.0,
+    "mean_score": 63.7,
+    "minimum_score": 36.4,
+    "paper_count": 5,
+    "unassessed_paper_ids": []
+  },
+  "warning": "Scores measure documented reconstructability. They do not judge correctness, importance, novelty, statistical validity, or research integrity."
+}

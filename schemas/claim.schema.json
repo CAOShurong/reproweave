@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/reproweave/schemas/claim.schema.json",
+  "title": "ReproWeave claim",
+  "type": "object",
+  "required": ["id", "paper_id", "statement", "evidence_locator"],
+  "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "paper_id": {"$ref": "#/$defs/id"},
+    "statement": {"type": "string", "minLength": 1},
+    "evidence_locator": {"type": "string", "minLength": 1},
+    "experiment_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "type": {"enum": ["empirical", "method", "theory", "survey", "limitation"]},
+    "confidence": {"enum": ["reported", "corroborated", "contested", "uncertain"]},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+  }
+}

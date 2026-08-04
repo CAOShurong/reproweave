@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for rebuild channelcraft environment.",
+  "blocker": "",
+  "depends_on": [
+    "verify-licenses"
+  ],
+  "estimate_hours": 4,
+  "id": "rebuild-channel-env",
+  "paper_ids": [
+    "channelcraft-2023"
+  ],
+  "priority": "high",
+  "state": "done",
+  "title": "Rebuild ChannelCraft environment"
+}

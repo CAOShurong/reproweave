@@ -1,0 +1,6 @@
+paper_id,title,year,method,data,code,environment,metrics,baselines,compute,results
+channelcraft-2023,ChannelCraft: A Procedural Benchmark for Robust Channel Estimation,2023,yes,yes,yes,yes,yes,yes,yes,yes
+edgeformer-2025,EdgeFormer: Event-Driven Transformers for On-Device RF Classification,2025,yes,partial,yes,yes,yes,partial,partial,partial
+sparsebeam-2024,SparseBeam: Low-Overhead Beam Selection with Structured Priors,2024,partial,no,partial,unknown,yes,partial,unknown,partial
+thermaltiny-2025,ThermalTiny: Calibrated TinyML under Dynamic Thermal Budgets,2025,yes,partial,partial,partial,yes,yes,partial,partial
+voltguard-2024,VoltGuard: Uncertainty-Aware Fault Detection in Converter Telemetry,2024,partial,unknown,no,unknown,yes,yes,no,partial

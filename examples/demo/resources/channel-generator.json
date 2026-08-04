@@ -1,0 +1,11 @@
+{
+  "availability": "available",
+  "checksum": "sha256:synthetic-demo-value",
+  "id": "channel-generator",
+  "kind": "code",
+  "license": "BSD-3-Clause",
+  "name": "Procedural channel generator",
+  "notes": "Generator, configs, and checksums are recorded.",
+  "url": "https://example.invalid/channelcraft",
+  "version": "commit a30bf19 (synthetic)"
+}

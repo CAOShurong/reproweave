@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-01-15T08:00:00Z",
+  "description": "A completely synthetic evidence map demonstrating the ReproWeave workflow. No paper, author, URL, score, or result should be treated as real.",
+  "exclusion_criteria": [
+    "Editorials without empirical claims"
+  ],
+  "format_version": "1",
+  "inclusion_criteria": [
+    "Reports an EE or edge-AI empirical result",
+    "Provides enough detail to identify at least one experiment"
+  ],
+  "owner": "Synthetic demonstration",
+  "research_question": "Which reported gains in edge intelligence can be independently reconstructed with available code, data, hardware, and result provenance?",
+  "tags": [
+    "synthetic-demo",
+    "edge-ai",
+    "electrical-engineering"
+  ],
+  "title": "Edge Intelligence Reproducibility Map"
+}

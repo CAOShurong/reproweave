@@ -1,0 +1,10 @@
+{
+  "availability": "available",
+  "id": "edgeformer-code",
+  "kind": "code",
+  "license": "Apache-2.0",
+  "name": "EdgeFormer training repository",
+  "notes": "Synthetic URL; demonstrates version capture.",
+  "url": "https://example.invalid/edgeformer",
+  "version": "commit 4f91a2e (synthetic)"
+}

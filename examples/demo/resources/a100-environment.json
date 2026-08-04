@@ -1,0 +1,10 @@
+{
+  "availability": "available",
+  "id": "a100-environment",
+  "kind": "environment",
+  "license": "",
+  "name": "CUDA training environment",
+  "notes": "Pinned container and seeds.",
+  "url": "",
+  "version": "container digest synthetic:91c0"
+}

@@ -1,0 +1,10 @@
+{
+  "availability": "partial",
+  "id": "sparsebeam-code",
+  "kind": "code",
+  "license": "",
+  "name": "SparseBeam reference scripts",
+  "notes": "Evaluation is present; training is omitted.",
+  "url": "https://example.invalid/sparsebeam",
+  "version": "release 0.2 (synthetic)"
+}

@@ -1,0 +1,49 @@
+{
+  "assessed_at": "2026-01-15T08:00:00Z",
+  "id": "assess-sparsebeam",
+  "notes": "Demonstration ratings, not an evaluation of a real paper.",
+  "paper_id": "sparsebeam-2024",
+  "ratings": {
+    "baselines": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "code": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "compute": {
+      "evidence": "No availability statement was found in the synthetic record.",
+      "next_action": "Contact the authors or search supplements.",
+      "rating": "unknown"
+    },
+    "data": {
+      "evidence": "The synthetic paper explicitly withholds or omits this item.",
+      "next_action": "Request or independently recreate it.",
+      "rating": "no"
+    },
+    "environment": {
+      "evidence": "No availability statement was found in the synthetic record.",
+      "next_action": "Contact the authors or search supplements.",
+      "rating": "unknown"
+    },
+    "method": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "metrics": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "results": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    }
+  },
+  "reviewer": "Synthetic demo reviewer"
+}

@@ -1,0 +1,13 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for freeze paper and supplement versions.",
+  "blocker": "",
+  "depends_on": [],
+  "estimate_hours": 1.5,
+  "id": "freeze-sources",
+  "paper_ids": [
+    "edgeformer-2025"
+  ],
+  "priority": "critical",
+  "state": "done",
+  "title": "Freeze paper and supplement versions"
+}

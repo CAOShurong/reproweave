@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for resolve rf spectra raw-capture access.",
+  "blocker": "External data or hardware access is unresolved.",
+  "depends_on": [
+    "verify-licenses"
+  ],
+  "estimate_hours": 3,
+  "id": "acquire-rf-data",
+  "paper_ids": [
+    "edgeformer-2025"
+  ],
+  "priority": "critical",
+  "state": "blocked",
+  "title": "Resolve RF Spectra raw-capture access"
+}

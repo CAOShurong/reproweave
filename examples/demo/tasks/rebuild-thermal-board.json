@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for reconstruct thermaltiny evaluation board.",
+  "blocker": "",
+  "depends_on": [
+    "verify-licenses"
+  ],
+  "estimate_hours": 12,
+  "id": "rebuild-thermal-board",
+  "paper_ids": [
+    "thermaltiny-2025"
+  ],
+  "priority": "high",
+  "state": "ready",
+  "title": "Reconstruct ThermalTiny evaluation board"
+}

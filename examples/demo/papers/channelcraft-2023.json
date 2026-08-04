@@ -1,0 +1,19 @@
+{
+  "abstract": "",
+  "authors": [
+    "J. Ahmed",
+    "Sofia Kim"
+  ],
+  "doi": "",
+  "id": "channelcraft-2023",
+  "notes": "Synthetic demonstration record; not a real publication.",
+  "tags": [
+    "channel-estimation",
+    "benchmark",
+    "simulation"
+  ],
+  "title": "ChannelCraft: A Procedural Benchmark for Robust Channel Estimation",
+  "url": "",
+  "venue": "Synthetic Signal Processing Letters",
+  "year": 2023
+}

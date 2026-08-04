@@ -1,0 +1,561 @@
+{
+  "edges": [
+    {
+      "source": "acquire-rf-data",
+      "target": "edgeformer-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "acquire-rf-data",
+      "target": "train-edgeformer",
+      "type": "unblocks"
+    },
+    {
+      "source": "channelcraft-2023",
+      "target": "channelcraft-main",
+      "type": "contains"
+    },
+    {
+      "source": "channelcraft-2023",
+      "target": "claim-channel-robust",
+      "type": "reports"
+    },
+    {
+      "source": "channelcraft-2023",
+      "target": "claim-channel-seeds",
+      "type": "reports"
+    },
+    {
+      "source": "channelcraft-main",
+      "target": "channel-generator",
+      "type": "uses"
+    },
+    {
+      "source": "channelcraft-main",
+      "target": "channelcraft-results",
+      "type": "uses"
+    },
+    {
+      "source": "claim-beam-overhead",
+      "target": "sparsebeam-city",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-beam-recall",
+      "target": "sparsebeam-city",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-channel-robust",
+      "target": "channelcraft-main",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-channel-seeds",
+      "target": "channelcraft-main",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-edge-energy",
+      "target": "edgeformer-ablation",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-edge-energy",
+      "target": "edgeformer-main",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-edge-f1",
+      "target": "edgeformer-main",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-thermal-ece",
+      "target": "thermal-drift",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-thermal-limit",
+      "target": "thermal-drift",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-volt-auroc",
+      "target": "voltguard-id",
+      "type": "supported-by"
+    },
+    {
+      "source": "claim-volt-shift",
+      "target": "voltguard-shift",
+      "type": "supported-by"
+    },
+    {
+      "source": "edgeformer-2025",
+      "target": "claim-edge-energy",
+      "type": "reports"
+    },
+    {
+      "source": "edgeformer-2025",
+      "target": "claim-edge-f1",
+      "type": "reports"
+    },
+    {
+      "source": "edgeformer-2025",
+      "target": "edgeformer-ablation",
+      "type": "contains"
+    },
+    {
+      "source": "edgeformer-2025",
+      "target": "edgeformer-main",
+      "type": "contains"
+    },
+    {
+      "source": "edgeformer-ablation",
+      "target": "edgeformer-code",
+      "type": "uses"
+    },
+    {
+      "source": "edgeformer-ablation",
+      "target": "rf-spectra-v2",
+      "type": "uses"
+    },
+    {
+      "source": "edgeformer-main",
+      "target": "a100-environment",
+      "type": "uses"
+    },
+    {
+      "source": "edgeformer-main",
+      "target": "edgeformer-code",
+      "type": "uses"
+    },
+    {
+      "source": "edgeformer-main",
+      "target": "rf-spectra-v2",
+      "type": "uses"
+    },
+    {
+      "source": "freeze-sources",
+      "target": "edgeformer-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "freeze-sources",
+      "target": "request-volt-data",
+      "type": "unblocks"
+    },
+    {
+      "source": "freeze-sources",
+      "target": "verify-licenses",
+      "type": "unblocks"
+    },
+    {
+      "source": "implement-sparsebeam",
+      "target": "sparsebeam-2024",
+      "type": "replicates"
+    },
+    {
+      "source": "profile-edge-energy",
+      "target": "edgeformer-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "rebuild-channel-env",
+      "target": "channelcraft-2023",
+      "type": "replicates"
+    },
+    {
+      "source": "rebuild-channel-env",
+      "target": "rerun-channel",
+      "type": "unblocks"
+    },
+    {
+      "source": "rebuild-thermal-board",
+      "target": "run-thermal-sweep",
+      "type": "unblocks"
+    },
+    {
+      "source": "rebuild-thermal-board",
+      "target": "thermaltiny-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "replace-mmwave-traces",
+      "target": "implement-sparsebeam",
+      "type": "unblocks"
+    },
+    {
+      "source": "replace-mmwave-traces",
+      "target": "sparsebeam-2024",
+      "type": "replicates"
+    },
+    {
+      "source": "request-volt-data",
+      "target": "voltguard-2024",
+      "type": "replicates"
+    },
+    {
+      "source": "rerun-channel",
+      "target": "channelcraft-2023",
+      "type": "replicates"
+    },
+    {
+      "source": "run-thermal-sweep",
+      "target": "thermaltiny-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "sparsebeam-2024",
+      "target": "claim-beam-overhead",
+      "type": "reports"
+    },
+    {
+      "source": "sparsebeam-2024",
+      "target": "claim-beam-recall",
+      "type": "reports"
+    },
+    {
+      "source": "sparsebeam-2024",
+      "target": "sparsebeam-city",
+      "type": "contains"
+    },
+    {
+      "source": "sparsebeam-city",
+      "target": "mmwave-traces",
+      "type": "uses"
+    },
+    {
+      "source": "sparsebeam-city",
+      "target": "sparsebeam-code",
+      "type": "uses"
+    },
+    {
+      "source": "thermal-drift",
+      "target": "thermal-board",
+      "type": "uses"
+    },
+    {
+      "source": "thermal-drift",
+      "target": "thermaltiny-code",
+      "type": "uses"
+    },
+    {
+      "source": "thermaltiny-2025",
+      "target": "claim-thermal-ece",
+      "type": "reports"
+    },
+    {
+      "source": "thermaltiny-2025",
+      "target": "claim-thermal-limit",
+      "type": "reports"
+    },
+    {
+      "source": "thermaltiny-2025",
+      "target": "thermal-drift",
+      "type": "contains"
+    },
+    {
+      "source": "train-edgeformer",
+      "target": "edgeformer-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "train-edgeformer",
+      "target": "profile-edge-energy",
+      "type": "unblocks"
+    },
+    {
+      "source": "verify-licenses",
+      "target": "acquire-rf-data",
+      "type": "unblocks"
+    },
+    {
+      "source": "verify-licenses",
+      "target": "edgeformer-2025",
+      "type": "replicates"
+    },
+    {
+      "source": "verify-licenses",
+      "target": "rebuild-channel-env",
+      "type": "unblocks"
+    },
+    {
+      "source": "verify-licenses",
+      "target": "rebuild-thermal-board",
+      "type": "unblocks"
+    },
+    {
+      "source": "verify-licenses",
+      "target": "replace-mmwave-traces",
+      "type": "unblocks"
+    },
+    {
+      "source": "voltguard-2024",
+      "target": "claim-volt-auroc",
+      "type": "reports"
+    },
+    {
+      "source": "voltguard-2024",
+      "target": "claim-volt-shift",
+      "type": "reports"
+    },
+    {
+      "source": "voltguard-2024",
+      "target": "voltguard-id",
+      "type": "contains"
+    },
+    {
+      "source": "voltguard-2024",
+      "target": "voltguard-shift",
+      "type": "contains"
+    },
+    {
+      "source": "voltguard-id",
+      "target": "converter-telemetry",
+      "type": "uses"
+    },
+    {
+      "source": "voltguard-id",
+      "target": "voltguard-model",
+      "type": "uses"
+    },
+    {
+      "source": "voltguard-shift",
+      "target": "converter-telemetry",
+      "type": "uses"
+    },
+    {
+      "source": "voltguard-shift",
+      "target": "voltguard-model",
+      "type": "uses"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "claim-beam-overhead",
+      "kind": "claim",
+      "label": "The method claims lower pilot overhead at the stated recall target."
+    },
+    {
+      "id": "claim-beam-recall",
+      "kind": "claim",
+      "label": "Structured priors reportedly improve top-3 beam recall in dense layouts."
+    },
+    {
+      "id": "claim-channel-robust",
+      "kind": "claim",
+      "label": "Estimator rankings change across procedural channel families."
+    },
+    {
+      "id": "claim-channel-seeds",
+      "kind": "claim",
+      "label": "Ten released seeds reproduce the reported aggregate within tolerance."
+    },
+    {
+      "id": "claim-edge-energy",
+      "kind": "claim",
+      "label": "Event gating reportedly lowers median inference energy on the target board."
+    },
+    {
+      "id": "claim-edge-f1",
+      "kind": "claim",
+      "label": "EdgeFormer reports higher macro F1 than the compact convolutional baseline."
+    },
+    {
+      "id": "claim-thermal-ece",
+      "kind": "claim",
+      "label": "Temperature-aware recalibration reportedly reduces expected calibration error."
+    },
+    {
+      "id": "claim-thermal-limit",
+      "kind": "claim",
+      "label": "The calibration benefit degrades outside the board's characterized range."
+    },
+    {
+      "id": "claim-volt-auroc",
+      "kind": "claim",
+      "label": "VoltGuard reports higher in-distribution AUROC than a deterministic network."
+    },
+    {
+      "id": "claim-volt-shift",
+      "kind": "claim",
+      "label": "Selective prediction reportedly preserves precision under load shift."
+    },
+    {
+      "id": "channelcraft-main",
+      "kind": "experiment",
+      "label": "Procedural channel benchmark"
+    },
+    {
+      "id": "edgeformer-ablation",
+      "kind": "experiment",
+      "label": "Event encoder ablation"
+    },
+    {
+      "id": "edgeformer-main",
+      "kind": "experiment",
+      "label": "Main on-device RF benchmark"
+    },
+    {
+      "id": "sparsebeam-city",
+      "kind": "experiment",
+      "label": "Urban beam-selection evaluation"
+    },
+    {
+      "id": "thermal-drift",
+      "kind": "experiment",
+      "label": "Temperature drift calibration"
+    },
+    {
+      "id": "voltguard-id",
+      "kind": "experiment",
+      "label": "In-distribution fault classification"
+    },
+    {
+      "id": "voltguard-shift",
+      "kind": "experiment",
+      "label": "Load-shift robustness"
+    },
+    {
+      "id": "channelcraft-2023",
+      "kind": "paper",
+      "label": "ChannelCraft: A Procedural Benchmark for Robust Channel Estimation"
+    },
+    {
+      "id": "edgeformer-2025",
+      "kind": "paper",
+      "label": "EdgeFormer: Event-Driven Transformers for On-Device RF Classification"
+    },
+    {
+      "id": "sparsebeam-2024",
+      "kind": "paper",
+      "label": "SparseBeam: Low-Overhead Beam Selection with Structured Priors"
+    },
+    {
+      "id": "thermaltiny-2025",
+      "kind": "paper",
+      "label": "ThermalTiny: Calibrated TinyML under Dynamic Thermal Budgets"
+    },
+    {
+      "id": "voltguard-2024",
+      "kind": "paper",
+      "label": "VoltGuard: Uncertainty-Aware Fault Detection in Converter Telemetry"
+    },
+    {
+      "id": "a100-environment",
+      "kind": "resource",
+      "label": "CUDA training environment"
+    },
+    {
+      "id": "channel-generator",
+      "kind": "resource",
+      "label": "Procedural channel generator"
+    },
+    {
+      "id": "channelcraft-results",
+      "kind": "resource",
+      "label": "ChannelCraft result bundle"
+    },
+    {
+      "id": "converter-telemetry",
+      "kind": "resource",
+      "label": "Converter telemetry traces"
+    },
+    {
+      "id": "edgeformer-code",
+      "kind": "resource",
+      "label": "EdgeFormer training repository"
+    },
+    {
+      "id": "mmwave-traces",
+      "kind": "resource",
+      "label": "Urban mmWave channel traces"
+    },
+    {
+      "id": "rf-spectra-v2",
+      "kind": "resource",
+      "label": "RF Spectra v2 dataset"
+    },
+    {
+      "id": "sparsebeam-code",
+      "kind": "resource",
+      "label": "SparseBeam reference scripts"
+    },
+    {
+      "id": "thermal-board",
+      "kind": "resource",
+      "label": "Custom thermal-control evaluation board"
+    },
+    {
+      "id": "thermaltiny-code",
+      "kind": "resource",
+      "label": "ThermalTiny inference firmware"
+    },
+    {
+      "id": "voltguard-model",
+      "kind": "resource",
+      "label": "VoltGuard checkpoint"
+    },
+    {
+      "id": "acquire-rf-data",
+      "kind": "task",
+      "label": "Resolve RF Spectra raw-capture access"
+    },
+    {
+      "id": "freeze-sources",
+      "kind": "task",
+      "label": "Freeze paper and supplement versions"
+    },
+    {
+      "id": "implement-sparsebeam",
+      "kind": "task",
+      "label": "Reconstruct missing SparseBeam training path"
+    },
+    {
+      "id": "profile-edge-energy",
+      "kind": "task",
+      "label": "Profile EdgeFormer board energy"
+    },
+    {
+      "id": "rebuild-channel-env",
+      "kind": "task",
+      "label": "Rebuild ChannelCraft environment"
+    },
+    {
+      "id": "rebuild-thermal-board",
+      "kind": "task",
+      "label": "Reconstruct ThermalTiny evaluation board"
+    },
+    {
+      "id": "replace-mmwave-traces",
+      "kind": "task",
+      "label": "Design an open trace substitute for SparseBeam"
+    },
+    {
+      "id": "request-volt-data",
+      "kind": "task",
+      "label": "Resolve VoltGuard telemetry availability"
+    },
+    {
+      "id": "rerun-channel",
+      "kind": "task",
+      "label": "Rerun ChannelCraft released seeds"
+    },
+    {
+      "id": "run-thermal-sweep",
+      "kind": "task",
+      "label": "Run the thermal calibration sweep"
+    },
+    {
+      "id": "train-edgeformer",
+      "kind": "task",
+      "label": "Train EdgeFormer across five seeds"
+    },
+    {
+      "id": "verify-licenses",
+      "kind": "task",
+      "label": "Verify code and data reuse conditions"
+    }
+  ]
+}

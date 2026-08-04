@@ -1,0 +1,12 @@
+{
+  "confidence": "reported",
+  "evidence_locator": "Results §4.1, Table 2 (synthetic)",
+  "experiment_ids": [
+    "voltguard-id"
+  ],
+  "id": "claim-volt-auroc",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "voltguard-2024",
+  "statement": "VoltGuard reports higher in-distribution AUROC than a deterministic network.",
+  "type": "empirical"
+}

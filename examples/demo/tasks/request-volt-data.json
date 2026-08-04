@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for resolve voltguard telemetry availability.",
+  "blocker": "External data or hardware access is unresolved.",
+  "depends_on": [
+    "freeze-sources"
+  ],
+  "estimate_hours": 2,
+  "id": "request-volt-data",
+  "paper_ids": [
+    "voltguard-2024"
+  ],
+  "priority": "critical",
+  "state": "blocked",
+  "title": "Resolve VoltGuard telemetry availability"
+}

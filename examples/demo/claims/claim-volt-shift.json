@@ -1,0 +1,12 @@
+{
+  "confidence": "uncertain",
+  "evidence_locator": "Results §4.4, Figure 7 (synthetic)",
+  "experiment_ids": [
+    "voltguard-shift"
+  ],
+  "id": "claim-volt-shift",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "voltguard-2024",
+  "statement": "Selective prediction reportedly preserves precision under load shift.",
+  "type": "empirical"
+}

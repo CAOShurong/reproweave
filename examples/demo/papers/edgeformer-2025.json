@@ -1,0 +1,19 @@
+{
+  "abstract": "",
+  "authors": [
+    "Mira Chen",
+    "Daniel Ortiz"
+  ],
+  "doi": "",
+  "id": "edgeformer-2025",
+  "notes": "Synthetic demonstration record; not a real publication.",
+  "tags": [
+    "edge-ai",
+    "rf",
+    "transformers"
+  ],
+  "title": "EdgeFormer: Event-Driven Transformers for On-Device RF Classification",
+  "url": "",
+  "venue": "Synthetic EE/AI Systems Workshop",
+  "year": 2025
+}

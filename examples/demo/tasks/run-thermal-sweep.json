@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for run the thermal calibration sweep.",
+  "blocker": "",
+  "depends_on": [
+    "rebuild-thermal-board"
+  ],
+  "estimate_hours": 8,
+  "id": "run-thermal-sweep",
+  "paper_ids": [
+    "thermaltiny-2025"
+  ],
+  "priority": "medium",
+  "state": "ready",
+  "title": "Run the thermal calibration sweep"
+}

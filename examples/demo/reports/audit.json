@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "artifact schemas",
+    "cross references",
+    "task dependency cycles",
+    "included-paper assessment coverage"
+  ],
+  "counts": {
+    "artifacts": 55,
+    "assessment": 5,
+    "claim": 10,
+    "errors": 0,
+    "experiment": 7,
+    "paper": 5,
+    "resource": 11,
+    "screening": 5,
+    "task": 12,
+    "warnings": 0
+  },
+  "issues": [],
+  "root": "C:\\Users\\35021\\Documents\\Codex\\2026-08-04\\github-edge-chatgpt-github-claude-star\\work\\reproweave\\examples\\demo",
+  "status": "pass"
+}

@@ -1,0 +1,14 @@
+{
+  "baseline_ids": [],
+  "id": "edgeformer-main",
+  "metric_ids": [],
+  "name": "Main on-device RF benchmark",
+  "notes": "Test split hash is not disclosed.",
+  "paper_id": "edgeformer-2025",
+  "protocol_summary": "Train five seeds and measure macro F1, latency, and energy.",
+  "resource_ids": [
+    "edgeformer-code",
+    "rf-spectra-v2",
+    "a100-environment"
+  ]
+}

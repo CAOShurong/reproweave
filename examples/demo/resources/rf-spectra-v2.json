@@ -1,0 +1,10 @@
+{
+  "availability": "partial",
+  "id": "rf-spectra-v2",
+  "kind": "dataset",
+  "license": "research-only",
+  "name": "RF Spectra v2 dataset",
+  "notes": "Labels are available; raw captures are not.",
+  "url": "",
+  "version": "2.0"
+}

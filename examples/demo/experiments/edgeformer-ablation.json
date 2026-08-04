@@ -1,0 +1,12 @@
+{
+  "baseline_ids": [],
+  "id": "edgeformer-ablation",
+  "metric_ids": [],
+  "name": "Event encoder ablation",
+  "paper_id": "edgeformer-2025",
+  "protocol_summary": "Replace event encoder while holding parameter count constant.",
+  "resource_ids": [
+    "edgeformer-code",
+    "rf-spectra-v2"
+  ]
+}

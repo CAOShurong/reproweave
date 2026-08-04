@@ -1,0 +1,49 @@
+{
+  "assessed_at": "2026-01-15T08:00:00Z",
+  "id": "assess-channelcraft",
+  "notes": "Demonstration ratings, not an evaluation of a real paper.",
+  "paper_id": "channelcraft-2023",
+  "ratings": {
+    "baselines": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "code": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "compute": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "data": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "environment": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "method": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "metrics": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "results": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    }
+  },
+  "reviewer": "Synthetic demo reviewer"
+}

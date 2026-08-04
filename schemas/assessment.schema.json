@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/reproweave/schemas/assessment.schema.json",
+  "title": "ReproWeave reconstructability assessment",
+  "type": "object",
+  "required": ["id", "paper_id", "ratings"],
+  "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "paper_id": {"$ref": "#/$defs/id"},
+    "reviewer": {"type": "string"},
+    "assessed_at": {"type": "string"},
+    "ratings": {
+      "type": "object",
+      "propertyNames": {"enum": ["method", "data", "code", "environment", "metrics", "baselines", "compute", "results"]},
+      "additionalProperties": {"$ref": "#/$defs/rating"}
+    },
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+    "rating": {
+      "type": "object",
+      "required": ["rating", "evidence"],
+      "properties": {
+        "rating": {"enum": ["yes", "partial", "no", "unknown", "na"]},
+        "evidence": {"type": "string", "minLength": 1},
+        "next_action": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "baseline_ids": [],
+  "id": "thermal-drift",
+  "metric_ids": [],
+  "name": "Temperature drift calibration",
+  "paper_id": "thermaltiny-2025",
+  "protocol_summary": "Sweep board temperature from 20 to 80 C and recalibrate confidence.",
+  "resource_ids": [
+    "thermal-board",
+    "thermaltiny-code"
+  ]
+}

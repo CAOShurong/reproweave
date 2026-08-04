@@ -1,0 +1,12 @@
+{
+  "baseline_ids": [],
+  "id": "channelcraft-main",
+  "metric_ids": [],
+  "name": "Procedural channel benchmark",
+  "paper_id": "channelcraft-2023",
+  "protocol_summary": "Generate 20 channel families across 10 seeds and compare six estimators.",
+  "resource_ids": [
+    "channel-generator",
+    "channelcraft-results"
+  ]
+}

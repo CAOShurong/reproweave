@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/reproweave/schemas/task.schema.json",
+  "title": "ReproWeave replication task",
+  "type": "object",
+  "required": ["id", "title"],
+  "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "title": {"type": "string", "minLength": 1},
+    "depends_on": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "paper_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+    "state": {"enum": ["blocked", "ready", "in_progress", "done"]},
+    "priority": {"enum": ["critical", "high", "medium", "low"]},
+    "estimate_hours": {"type": "number", "minimum": 0},
+    "acceptance": {"type": "string"},
+    "blocker": {"type": "string"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+  }
+}

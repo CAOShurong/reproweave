@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for design an open trace substitute for sparsebeam.",
+  "blocker": "",
+  "depends_on": [
+    "verify-licenses"
+  ],
+  "estimate_hours": 10,
+  "id": "replace-mmwave-traces",
+  "paper_ids": [
+    "sparsebeam-2024"
+  ],
+  "priority": "high",
+  "state": "ready",
+  "title": "Design an open trace substitute for SparseBeam"
+}

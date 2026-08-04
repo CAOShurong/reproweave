@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible ReproWeave defect
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach confidential review notes, restricted datasets, or copyrighted PDFs.
+  - type: input
+    id: version
+    attributes:
+      label: ReproWeave version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows, Linux, macOS, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Include commands and sanitized input.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true
+

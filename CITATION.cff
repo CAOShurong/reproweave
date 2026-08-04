@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If ReproWeave supports your research workflow, please cite the software release."
+title: "ReproWeave"
+type: software
+version: 0.1.0
+date-released: 2026-08-04
+authors:
+  - family-names: Cao
+    given-names: Shurong
+repository-code: "https://github.com/CAOShurong/reproweave"
+url: "https://caoshurong.github.io/reproweave/"
+license: MIT
+keywords:
+  - reproducibility
+  - evidence map
+  - literature review
+  - electrical engineering
+  - artificial intelligence
+

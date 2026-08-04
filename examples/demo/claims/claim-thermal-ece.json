@@ -1,0 +1,12 @@
+{
+  "confidence": "reported",
+  "evidence_locator": "Figure 6 and Appendix B (synthetic)",
+  "experiment_ids": [
+    "thermal-drift"
+  ],
+  "id": "claim-thermal-ece",
+  "notes": "Synthetic demonstration claim.",
+  "paper_id": "thermaltiny-2025",
+  "statement": "Temperature-aware recalibration reportedly reduces expected calibration error.",
+  "type": "empirical"
+}

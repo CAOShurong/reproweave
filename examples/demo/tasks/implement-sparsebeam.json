@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for reconstruct missing sparsebeam training path.",
+  "blocker": "",
+  "depends_on": [
+    "replace-mmwave-traces"
+  ],
+  "estimate_hours": 14,
+  "id": "implement-sparsebeam",
+  "paper_ids": [
+    "sparsebeam-2024"
+  ],
+  "priority": "medium",
+  "state": "ready",
+  "title": "Reconstruct missing SparseBeam training path"
+}

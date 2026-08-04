@@ -1,0 +1,49 @@
+{
+  "assessed_at": "2026-01-15T08:00:00Z",
+  "id": "assess-thermaltiny",
+  "notes": "Demonstration ratings, not an evaluation of a real paper.",
+  "paper_id": "thermaltiny-2025",
+  "ratings": {
+    "baselines": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "code": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "compute": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "data": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "environment": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    },
+    "method": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "metrics": {
+      "evidence": "Explicitly documented in the synthetic paper and artifacts.",
+      "next_action": "No action.",
+      "rating": "yes"
+    },
+    "results": {
+      "evidence": "Some information is present, but one reconstruction choice remains.",
+      "next_action": "Record the missing choice.",
+      "rating": "partial"
+    }
+  },
+  "reviewer": "Synthetic demo reviewer"
+}

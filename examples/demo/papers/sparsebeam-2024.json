@@ -1,0 +1,20 @@
+{
+  "abstract": "",
+  "authors": [
+    "Leila Raman",
+    "Noah Park",
+    "Iris Wu"
+  ],
+  "doi": "",
+  "id": "sparsebeam-2024",
+  "notes": "Synthetic demonstration record; not a real publication.",
+  "tags": [
+    "wireless",
+    "beamforming",
+    "sparsity"
+  ],
+  "title": "SparseBeam: Low-Overhead Beam Selection with Structured Priors",
+  "url": "",
+  "venue": "Synthetic Wireless Systems Conference",
+  "year": 2024
+}

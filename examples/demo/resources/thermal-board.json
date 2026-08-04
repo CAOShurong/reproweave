@@ -1,0 +1,10 @@
+{
+  "availability": "partial",
+  "id": "thermal-board",
+  "kind": "hardware",
+  "license": "",
+  "name": "Custom thermal-control evaluation board",
+  "notes": "Schematic shown; BOM and firmware are incomplete.",
+  "url": "",
+  "version": "rev C"
+}

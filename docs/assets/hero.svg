@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">ReproWeave</title>
+  <desc id="desc">A paper is woven through claims, evidence, experiments, resources, and a replication plan.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#122a32"/>
+      <stop offset="1" stop-color="#173d43"/>
+    </linearGradient>
+    <linearGradient id="thread" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#61ddc5"/>
+      <stop offset="1" stop-color="#d8a153"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#07191e" flood-opacity=".45"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="460" rx="24" fill="url(#bg)"/>
+  <g opacity=".12" stroke="#c9eee7">
+    <path d="M0 75h1200M0 150h1200M0 225h1200M0 300h1200M0 375h1200"/>
+    <path d="M100 0v460M250 0v460M400 0v460M550 0v460M700 0v460M850 0v460M1000 0v460M1150 0v460"/>
+  </g>
+  <text x="70" y="93" fill="#65ddc6" font-family="system-ui,sans-serif" font-weight="800" font-size="14" letter-spacing="4">LOCAL-FIRST RESEARCH EVIDENCE</text>
+  <text x="68" y="166" fill="#f8f4e9" font-family="Georgia,serif" font-weight="700" font-size="72">ReproWeave</text>
+  <text x="72" y="211" fill="#b9d3d0" font-family="system-ui,sans-serif" font-size="21">From saved papers to reviewable replication decisions.</text>
+  <g transform="translate(72 275)">
+    <rect width="153" height="55" rx="10" fill="#fffaf0" filter="url(#shadow)"/>
+    <text x="76.5" y="34" text-anchor="middle" fill="#17313a" font-family="system-ui,sans-serif" font-weight="800" font-size="15">PAPER</text>
+    <path d="M153 27.5h55" stroke="url(#thread)" stroke-width="5"/>
+    <circle cx="208" cy="27.5" r="7" fill="#63dcc5"/>
+    <rect x="218" width="153" height="55" rx="10" fill="#fffaf0" filter="url(#shadow)"/>
+    <text x="294.5" y="34" text-anchor="middle" fill="#17313a" font-family="system-ui,sans-serif" font-weight="800" font-size="15">CLAIM</text>
+    <path d="M371 27.5h55" stroke="url(#thread)" stroke-width="5"/>
+    <circle cx="426" cy="27.5" r="7" fill="#7dd3af"/>
+    <rect x="436" width="153" height="55" rx="10" fill="#fffaf0" filter="url(#shadow)"/>
+    <text x="512.5" y="34" text-anchor="middle" fill="#17313a" font-family="system-ui,sans-serif" font-weight="800" font-size="15">EXPERIMENT</text>
+    <path d="M589 27.5h55" stroke="url(#thread)" stroke-width="5"/>
+    <circle cx="644" cy="27.5" r="7" fill="#aaa76e"/>
+    <rect x="654" width="153" height="55" rx="10" fill="#fffaf0" filter="url(#shadow)"/>
+    <text x="730.5" y="34" text-anchor="middle" fill="#17313a" font-family="system-ui,sans-serif" font-weight="800" font-size="15">RESOURCE</text>
+    <path d="M807 27.5h55" stroke="url(#thread)" stroke-width="5"/>
+    <circle cx="862" cy="27.5" r="7" fill="#d49d54"/>
+    <rect x="872" width="184" height="55" rx="10" fill="#dba255" filter="url(#shadow)"/>
+    <text x="964" y="34" text-anchor="middle" fill="#172b31" font-family="system-ui,sans-serif" font-weight="900" font-size="15">REPLICATION PLAN</text>
+  </g>
+  <g transform="translate(72 375)" font-family="system-ui,sans-serif" font-size="12" fill="#b9d3d0">
+    <rect width="117" height="32" rx="16" fill="#244d52"/><text x="58.5" y="21" text-anchor="middle">NO API</text>
+    <rect x="128" width="169" height="32" rx="16" fill="#244d52"/><text x="212.5" y="21" text-anchor="middle">ZERO DEPENDENCIES</text>
+    <rect x="308" width="142" height="32" rx="16" fill="#244d52"/><text x="379" y="21" text-anchor="middle">AUDITABLE JSON</text>
+    <rect x="461" width="169" height="32" rx="16" fill="#244d52"/><text x="545.5" y="21" text-anchor="middle">PORTABLE REPORTS</text>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for rerun channelcraft released seeds.",
+  "blocker": "",
+  "depends_on": [
+    "rebuild-channel-env"
+  ],
+  "estimate_hours": 6,
+  "id": "rerun-channel",
+  "paper_ids": [
+    "channelcraft-2023"
+  ],
+  "priority": "high",
+  "state": "done",
+  "title": "Rerun ChannelCraft released seeds"
+}

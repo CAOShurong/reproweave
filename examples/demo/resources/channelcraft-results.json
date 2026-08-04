@@ -1,0 +1,10 @@
+{
+  "availability": "available",
+  "id": "channelcraft-results",
+  "kind": "result",
+  "license": "CC-BY-4.0",
+  "name": "ChannelCraft result bundle",
+  "notes": "Per-seed CSV outputs.",
+  "url": "",
+  "version": "artifact set 1"
+}

@@ -1,0 +1,15 @@
+{
+  "acceptance": "Documented outputs satisfy the acceptance check for profile edgeformer board energy.",
+  "blocker": "External data or hardware access is unresolved.",
+  "depends_on": [
+    "train-edgeformer"
+  ],
+  "estimate_hours": 7,
+  "id": "profile-edge-energy",
+  "paper_ids": [
+    "edgeformer-2025"
+  ],
+  "priority": "high",
+  "state": "blocked",
+  "title": "Profile EdgeFormer board energy"
+}

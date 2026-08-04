@@ -1,0 +1,12 @@
+{
+  "baseline_ids": [],
+  "id": "voltguard-shift",
+  "metric_ids": [],
+  "name": "Load-shift robustness",
+  "paper_id": "voltguard-2024",
+  "protocol_summary": "Shift load profiles and evaluate selective prediction coverage.",
+  "resource_ids": [
+    "converter-telemetry",
+    "voltguard-model"
+  ]
+}

@@ -1,0 +1,27 @@
+name: Methodology proposal
+description: Propose a rubric, schema, or interpretation change
+title: "[Methodology]: "
+labels: ["methodology"]
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Research workflow
+      description: What concrete decision cannot be represented today?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting evidence
+      description: Link standards, studies, repositories, or anonymized examples.
+    validations:
+      required: true
+  - type: textarea
+    id: trust
+    attributes:
+      label: Trust-boundary impact
+      description: Explain new network, execution, privacy, or interpretation risks.
+    validations:
+      required: true
+

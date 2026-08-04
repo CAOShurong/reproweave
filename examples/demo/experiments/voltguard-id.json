@@ -1,0 +1,12 @@
+{
+  "baseline_ids": [],
+  "id": "voltguard-id",
+  "metric_ids": [],
+  "name": "In-distribution fault classification",
+  "paper_id": "voltguard-2024",
+  "protocol_summary": "Evaluate AUROC and calibration error on the documented operating range.",
+  "resource_ids": [
+    "converter-telemetry",
+    "voltguard-model"
+  ]
+}
