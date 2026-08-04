@@ -77,6 +77,7 @@ class AuditSealReportTests(unittest.TestCase):
             destination = build_report(workspace, Path(directory) / "report.html")
             text = destination.read_text(encoding="utf-8")
             self.assertIn("not scientific quality", text)
+            self.assertIn("Replication candidate triage", text)
 
     def test_report_escapes_title(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -99,6 +100,15 @@ class AuditSealReportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             workspace = create_demo(Path(directory) / "demo")
             self.assertEqual(audit_workspace(workspace)["status"], "pass")
+
+    def test_demo_seal_is_byte_stable_across_directories(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            first = create_demo(Path(directory) / "first")
+            second = create_demo(Path(directory) / "second")
+            self.assertEqual(
+                (first.root / "reproweave-seal.json").read_bytes(),
+                (second.root / "reproweave-seal.json").read_bytes(),
+            )
 
     def test_demo_refuses_nonempty_directory(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

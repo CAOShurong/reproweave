@@ -35,11 +35,16 @@ def build_seal(workspace: Workspace) -> dict[str, Any]:
     }
 
 
-def write_seal(workspace: Workspace, path: str | Path | None = None) -> Path:
+def write_seal(
+    workspace: Workspace,
+    path: str | Path | None = None,
+    *,
+    created_at: str | None = None,
+) -> Path:
     """Write a seal with an informational creation timestamp."""
     destination = Path(path) if path else workspace.root / "reproweave-seal.json"
     seal = build_seal(workspace)
-    seal["created_at"] = utc_now()
+    seal["created_at"] = created_at or utc_now()
     write_json(destination, seal)
     return destination
 

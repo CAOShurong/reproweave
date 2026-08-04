@@ -6,9 +6,15 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from .audit import audit_workspace
+from .exports import matrix_csv, plan_markdown, triage_markdown
+from .graph import build_evidence_graph
 from .report import build_report
+from .scoring import assess_workspace
 from .seal import write_seal
 from .store import write_json
+from .triage import build_replication_triage
+from .util import pretty_json
 from .workspace import Workspace
 
 DEMO_TIMESTAMP = "2026-01-15T08:00:00Z"
@@ -652,6 +658,23 @@ def create_demo(root: str | Path, *, force: bool = False) -> Workspace:
             for paper in _build_papers()
         ],
     )
+    reports = workspace.root / "reports"
+    (reports / "evidence-matrix.csv").write_text(
+        matrix_csv(workspace), encoding="utf-8", newline="\n"
+    )
+    (reports / "replication-plan.md").write_text(
+        plan_markdown(workspace), encoding="utf-8", newline="\n"
+    )
+    (reports / "replication-triage.md").write_text(
+        triage_markdown(workspace), encoding="utf-8", newline="\n"
+    )
+    for name, value in (
+        ("assessment.json", assess_workspace(workspace)),
+        ("audit.json", audit_workspace(workspace)),
+        ("evidence-graph.json", build_evidence_graph(workspace)),
+        ("replication-triage.json", build_replication_triage(workspace)),
+    ):
+        (reports / name).write_text(pretty_json(value), encoding="utf-8", newline="\n")
     build_report(workspace, workspace.root / "reports" / "evidence-report.html")
-    write_seal(workspace)
+    write_seal(workspace, created_at=DEMO_TIMESTAMP)
     return workspace

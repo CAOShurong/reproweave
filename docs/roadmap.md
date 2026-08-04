@@ -16,6 +16,7 @@ The roadmap prioritizes trustworthy interchange over automation volume.
 - Signed seal manifests and software-supply-chain attestations.
 - Domain profiles for RF, embedded AI, power electronics, and computer vision.
 - Multi-reviewer conflict views that preserve the underlying evidence notes.
+- Scenario comparison tables for several named lab-resource profiles.
 
 ## Explicit non-goals
 
@@ -28,4 +29,3 @@ The roadmap prioritizes trustworthy interchange over automation volume.
 
 Proposals should explain the user workflow, the new trust boundary, and how the result stays
 reviewable without a network connection.
-

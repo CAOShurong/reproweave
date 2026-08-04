@@ -6,7 +6,13 @@ from pathlib import Path
 
 from common import full_ratings, make_workspace
 
-from reproweave.exports import assessment_markdown, matrix_csv, plan_markdown
+from reproweave.exports import (
+    assessment_markdown,
+    matrix_csv,
+    plan_markdown,
+    triage_csv,
+    triage_markdown,
+)
 
 
 class ExportTests(unittest.TestCase):
@@ -37,6 +43,12 @@ class ExportTests(unittest.TestCase):
             {"title": "Paper"},
         )
         self.assertIn("not scientific quality", card)
+
+    def test_triage_exports(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = make_workspace(Path(directory) / "w")
+            self.assertTrue(triage_csv(workspace).startswith("rank,paper_id,title,status"))
+            self.assertIn("# Replication candidate triage", triage_markdown(workspace))
 
 
 if __name__ == "__main__":

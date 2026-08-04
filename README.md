@@ -3,19 +3,16 @@
 
   # ReproWeave
 
-  **Turn papers into auditable evidence maps and executable replication plans — locally, without an API.**
+  **Decide what can be rebuilt before committing the lab.**
 
-  [![CI](https://github.com/CAOShurong/reproweave/actions/workflows/ci.yml/badge.svg)](https://github.com/CAOShurong/reproweave/actions/workflows/ci.yml)
-  [![Pages](https://github.com/CAOShurong/reproweave/actions/workflows/pages.yml/badge.svg)](https://caoshurong.github.io/reproweave/)
-  [![Python](https://img.shields.io/badge/Python-3.11%2B-17313a)](https://www.python.org/)
-  [![Dependencies](https://img.shields.io/badge/runtime_dependencies-0-126e68)](#why-local-first)
-  [![License: MIT](https://img.shields.io/badge/license-MIT-d18124)](LICENSE)
+  Local-first · Python 3.11+ · zero runtime dependencies · MIT
 </div>
 
 ReproWeave is a file-native research tool for engineers and AI researchers. It connects each
 paper to the claims you care about, the exact figure or appendix that supports them, the
 experiments and resources they depend on, a transparent reconstructability assessment, and a
-dependency-aware plan for testing the work yourself.
+dependency-aware plan for testing the work yourself. Its rule-based triage joins those records
+into a practical queue: run now, prepare, collect evidence first, or finish the plan.
 
 It deliberately does **not** scrape PDFs, call a language model, assign a hidden “paper quality”
 score, or require a cloud account. You supply the evidence; ReproWeave keeps the reasoning
@@ -26,6 +23,7 @@ reviewable.
 - [Project website](https://caoshurong.github.io/reproweave/)
 - [Interactive synthetic evidence report](https://caoshurong.github.io/reproweave/demo/evidence-report.html)
 - [Synthetic evidence matrix](examples/demo/reports/evidence-matrix.csv)
+- [Synthetic replication triage](examples/demo/reports/replication-triage.md)
 - [Synthetic replication plan](examples/demo/reports/replication-plan.md)
 
 Every record in the demonstration is fictional. It exists to show the workflow without
@@ -42,6 +40,8 @@ paper → claim → evidence locator → experiment → code/data/hardware
                                                ↓
                                   transparent assessment
                                                ↓
+                                  rule-based candidate triage
+                                               ↓
                                   dependency-aware task plan
                                                ↓
                                   audit + evidence seal + report
@@ -52,14 +52,21 @@ benchmark, handing work to a collaborator, or explaining why an experiment is bl
 
 ## Quick start
 
-ReproWeave needs Python 3.11 or newer and has no runtime dependencies.
+ReproWeave needs Python 3.11 or newer and has no runtime dependencies. Install the versioned
+`v0.2.0` wheel directly from the public GitHub Release:
 
 ```bash
-python -m pip install reproweave
+python -m pip install https://github.com/CAOShurong/reproweave/releases/download/v0.2.0/reproweave-0.2.0-py3-none-any.whl
 reproweave demo my-review
 reproweave audit --workspace my-review
+reproweave triage --workspace my-review --format markdown --output my-review/reports/triage.md
 reproweave report --workspace my-review
 ```
+
+ReproWeave is not currently published on PyPI, so this README does not claim an unversioned PyPI
+install path. You can also install the immutable source tag with
+`python -m pip install "git+https://github.com/CAOShurong/reproweave.git@v0.2.0"`.
+Release assets include a wheel, source archive, and SHA-256 checksums.
 
 For development directly from the repository:
 
@@ -111,17 +118,29 @@ Each claim requires an `evidence_locator` such as `Figure 4`, `Appendix B.2`, or
 `repository/results.csv`. A rating requires a written evidence note. Missing facts remain
 `unknown`; they are never filled by inference.
 
-### 4. Inspect gaps and plan execution
+### 4. Triage candidates before committing resources
 
 ```bash
 reproweave assess --workspace reviews/edge-ai
 reproweave matrix --workspace reviews/edge-ai --format csv --output matrix.csv
 reproweave backlog --workspace reviews/edge-ai
+reproweave triage --workspace reviews/edge-ai --format markdown --output triage.md
 reproweave plan --workspace reviews/edge-ai --format markdown --output plan.md
 ```
 
-Task dependencies become execution waves. Tasks in one wave can run in parallel; later waves
-wait for their declared prerequisites. Effort values remain human estimates.
+Triage combines the recorded assessment, experiment resources, task states, dependencies, and
+remaining effort. Hard blockers are evaluated before effort; there is no hidden composite score.
+Test a resource-access scenario without editing the workspace:
+
+```bash
+reproweave triage --workspace reviews/edge-ai \
+  --resource rf-spectra-v2=available \
+  --format markdown --output triage-with-data.md
+```
+
+The override changes only the generated scenario. Task dependencies then become execution waves.
+Tasks in one wave can run in parallel; later waves wait for declared prerequisites. Availability
+and effort remain reviewer-supplied inputs.
 
 ### 5. Audit and seal the review
 
@@ -182,6 +201,7 @@ the same conservative vocabulary without adding a JSON Schema dependency.
 | `assess` | Calculate rubric coverage and common gaps |
 | `matrix` | Export a paper-by-dimension matrix |
 | `backlog` | Rank unresolved evidence work |
+| `triage` | Build a rule-based candidate queue and test resource-access scenarios |
 | `graph` | Export the typed evidence graph |
 | `plan` | Build dependency waves and effort summaries |
 | `audit` | Check artifacts, references, cycles, and coverage |
@@ -214,6 +234,19 @@ the sensitivity of quoted material remain your responsibility. See [SECURITY.md]
 These boundaries are features: the tool makes a narrow, inspectable record instead of hiding
 uncertainty behind automation.
 
+## Where it fits
+
+Reference managers organize literature, systematic-review platforms support search and screening,
+and experiment trackers record runs. ReproWeave starts after a candidate set has been chosen. It
+preserves the claim-to-artifact chain and turns missing evidence and resources into an inspectable
+execution decision.
+
+That positioning is intentionally narrower than “a complete systematic-review platform.” The
+project does not claim that evidence maps, reproducibility checklists, or replication planners are
+new ideas. Its contribution is a dependency-free, file-native bridge between them, including
+what-if resource triage and content-addressed verification. See the
+[competitive landscape](docs/competitive-landscape.md) for tested boundaries and alternatives.
+
 ## Documentation
 
 - [Methodology and score interpretation](docs/methodology.md)
@@ -229,9 +262,10 @@ uncertainty behind automation.
 
 ```bash
 python -m unittest discover -s tests -v
-ruff check src tests
-ruff format --check src tests
-python -m compileall -q src tests
+ruff check src tests scripts
+ruff format --check src tests scripts
+python -m compileall -q src tests scripts
+python scripts/check_repository.py
 python -m build
 ```
 
@@ -250,4 +284,3 @@ ReproWeave is released under the [MIT License](LICENSE). Cite the versioned soft
 [CITATION.cff](CITATION.cff).
 
 Created and maintained by **Shurong Cao**.
-

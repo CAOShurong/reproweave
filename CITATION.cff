@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If ReproWeave supports your research workflow, please cite the software release."
 title: "ReproWeave"
 type: software
-version: 0.1.0
-date-released: 2026-08-04
+version: 0.2.0
+date-released: 2026-08-05
 authors:
   - family-names: Cao
     given-names: Shurong
@@ -16,4 +16,3 @@ keywords:
   - literature review
   - electrical engineering
   - artificial intelligence
-

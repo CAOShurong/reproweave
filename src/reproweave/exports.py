@@ -9,6 +9,7 @@ from typing import Any
 from .constants import ASSESSMENT_DIMENSIONS
 from .planning import build_replication_plan
 from .scoring import evidence_matrix
+from .triage import build_replication_triage
 from .workspace import Workspace
 
 
@@ -90,6 +91,89 @@ def assessment_markdown(assessment: dict[str, Any], paper: dict[str, Any]) -> st
         [
             "> ReproWeave assesses documented reconstructability, not scientific quality, "
             "correctness, novelty, or integrity.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def triage_csv(
+    workspace: Workspace,
+    resource_overrides: dict[str, str] | None = None,
+) -> str:
+    """Export the replication-candidate queue as a compact CSV."""
+    triage = build_replication_triage(workspace, resource_overrides)
+    fieldnames = [
+        "rank",
+        "paper_id",
+        "title",
+        "status",
+        "reconstructability_score",
+        "remaining_effort_hours",
+        "unresolved_resources",
+        "blocked_tasks",
+        "next_action",
+    ]
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
+    writer.writeheader()
+    for rank, candidate in enumerate(triage["candidates"], start=1):
+        writer.writerow(
+            {
+                "rank": rank,
+                "paper_id": candidate["paper_id"],
+                "title": candidate["title"],
+                "status": candidate["status"],
+                "reconstructability_score": candidate["reconstructability_score"],
+                "remaining_effort_hours": candidate["remaining_effort_hours"],
+                "unresolved_resources": ";".join(candidate["unresolved_resource_ids"]),
+                "blocked_tasks": ";".join(candidate["blocked_task_ids"]),
+                "next_action": candidate["next_action"],
+            }
+        )
+    return output.getvalue()
+
+
+def triage_markdown(
+    workspace: Workspace,
+    resource_overrides: dict[str, str] | None = None,
+) -> str:
+    """Render a meeting-ready replication-candidate decision brief."""
+    triage = build_replication_triage(workspace, resource_overrides)
+    manifest = workspace.manifest()
+    lines = [
+        f"# Replication candidate triage: {manifest['title']}",
+        "",
+        f"**Research question:** {manifest['research_question']}",
+        "",
+        "| Rank | Candidate | Decision | Coverage | Remaining effort | Next action |",
+        "| ---: | --- | --- | ---: | ---: | --- |",
+    ]
+    for rank, candidate in enumerate(triage["candidates"], start=1):
+        score = candidate["reconstructability_score"]
+        coverage = f"{score:.1f}" if score is not None else "not assessed"
+        lines.append(
+            f"| {rank} | {candidate['title']} (`{candidate['paper_id']}`) | "
+            f"{candidate['status'].replace('_', ' ')} | {coverage} | "
+            f"{candidate['remaining_effort_hours']:g} h | {candidate['next_action']} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Scenario",
+            "",
+            (
+                "No resource overrides."
+                if not triage["scenario"]["resource_overrides"]
+                else ", ".join(
+                    f"`{key}={value}`"
+                    for key, value in triage["scenario"]["resource_overrides"].items()
+                )
+            ),
+            "",
+            "## Interpretation boundary",
+            "",
+            triage["interpretation"],
             "",
         ]
     )

@@ -3,140 +3,168 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="ReproWeave turns engineering and AI papers into auditable evidence maps and executable replication plans, locally and without an API.">
+  <meta name="description" content="ReproWeave turns selected engineering and AI papers into auditable replication decisions, locally and without an API.">
   <meta property="og:title" content="ReproWeave">
-  <meta property="og:description" content="From saved papers to reviewable replication decisions.">
+  <meta property="og:description" content="Decide what can be rebuilt before committing the lab.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://caoshurong.github.io/reproweave/">
-  <title>ReproWeave · Auditable paper-to-replication workflows</title>
+  <title>ReproWeave · Evidence-to-execution for replication work</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="nav">
-    <a class="logo" href="#"><span>REPRO</span>WEAVE</a>
-    <nav>
-      <a href="#workflow">Workflow</a>
-      <a href="#boundary">Boundaries</a>
-      <a href="demo/evidence-report.html">Live report</a>
-      <a class="nav-cta" href="https://github.com/CAOShurong/reproweave">GitHub ↗</a>
+    <a class="wordmark" href="#"><span>REPRO</span>WEAVE</a>
+    <nav aria-label="Primary navigation">
+      <a href="#method">Method</a>
+      <a href="#triage">Triage</a>
+      <a href="#boundary">Scope</a>
+      <a href="demo/evidence-report.html">Demonstration</a>
+      <a class="source" href="https://github.com/CAOShurong/reproweave">Source ↗</a>
     </nav>
   </header>
+
   <main>
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Local-first research evidence</p>
-        <h1>Know what a paper takes to rebuild.</h1>
-        <p class="lede">Connect claims to exact evidence, experiments, code, data, hardware, and a
-        dependency-aware replication plan. No API, account, database, or runtime dependency.</p>
+        <p class="label">Research software · local-first · v0.2.0</p>
+        <h1>Decide what can be rebuilt before committing the lab.</h1>
+        <p class="lede">ReproWeave connects a paper's claims to exact evidence, experiments,
+        required resources, and dependency-aware work. It turns that record into an explicit
+        replication queue—without an API, account, database, or hidden score.</p>
         <div class="actions">
-          <a class="button primary" href="demo/evidence-report.html">Explore the synthetic report</a>
-          <a class="button secondary" href="https://github.com/CAOShurong/reproweave#quick-start">Install locally</a>
-        </div>
-        <div class="facts">
-          <span><b>7</b> durable artifact types</span>
-          <span><b>8</b> explicit evidence dimensions</span>
-          <span><b>0</b> runtime dependencies</span>
+          <a class="button primary" href="demo/evidence-report.html">Inspect the synthetic report</a>
+          <a class="button secondary" href="https://github.com/CAOShurong/reproweave#quick-start">Installation and source</a>
         </div>
       </div>
-      <div class="weave-card" aria-label="Evidence graph illustration">
-        <div class="card-top"><span>EDGE AI REVIEW</span><i>STRUCTURALLY VERIFIED</i></div>
-        <div class="score-row"><strong>63.7</strong><span>mean documented<br>reconstructability</span></div>
-        <div class="thread">
-          <div><b>P</b><span>Paper</span></div><em></em>
-          <div><b>C</b><span>Claim</span></div><em></em>
-          <div><b>E</b><span>Experiment</span></div>
+      <aside class="abstract" aria-label="Replication triage graphical abstract">
+        <div class="abstract-head"><span>DECISION TABLE · SYNTHETIC DATA</span><b>STRUCTURAL AUDIT: PASS</b></div>
+        <div class="column-labels"><span>Candidate</span><span>Evidence</span><span>Resources</span><span>Decision</span></div>
+        <div class="candidate ready"><strong>ChannelCraft</strong><span>100.0</span><span>available</span><b>complete</b></div>
+        <div class="candidate prepare"><strong>ThermalTiny</strong><span>68.2</span><span>partial</span><b>evidence first</b></div>
+        <div class="candidate blocked"><strong>EdgeFormer</strong><span>75.8</span><span>partial</span><b>evidence first</b></div>
+        <div class="abstract-note">
+          <span>Rule order</span>
+          <p>hard blocker → runnable task → remaining effort</p>
         </div>
-        <div class="mini-grid">
-          <span class="yes">METHOD</span><span class="partial">DATA</span>
-          <span class="yes">CODE</span><span class="unknown">COMPUTE</span>
-          <span class="yes">METRICS</span><span class="partial">RESULTS</span>
-        </div>
-        <div class="seal">sha256:f81c893a…34bbbfe6</div>
-      </div>
+      </aside>
     </section>
 
-    <section class="problem">
-      <p class="eyebrow">The missing middle</p>
-      <h2>Your citation library stores papers. Your experiment tracker stores runs. What connects them?</h2>
-      <div class="problem-grid">
-        <article><span>01</span><h3>Anchor claims</h3><p>Record a bounded statement and the exact
-        page, figure, appendix, or repository path that supports it.</p></article>
-        <article><span>02</span><h3>Expose dependencies</h3><p>Link the experiment to code, data,
-        environments, models, hardware, protocols, and output artifacts.</p></article>
-        <article><span>03</span><h3>Plan the rebuild</h3><p>Convert missing evidence into tasks,
-        dependencies, blockers, estimates, and observable acceptance conditions.</p></article>
-      </div>
+    <section class="facts" aria-label="Project facts">
+      <div><strong>8</strong><span>evidence dimensions</span></div>
+      <div><strong>7</strong><span>durable artifact types</span></div>
+      <div><strong>0</strong><span>runtime dependencies</span></div>
+      <div><strong>1</strong><span>portable HTML report</span></div>
     </section>
 
-    <section id="workflow" class="workflow">
-      <div>
-        <p class="eyebrow">One inspectable chain</p>
-        <h2>From research question to sealed review.</h2>
-        <p>ReproWeave stores ordinary JSON and generates portable HTML, CSV, Markdown, and graph
-        exports. Git can review every source decision.</p>
-        <a class="text-link" href="https://github.com/CAOShurong/reproweave/blob/main/docs/workflow.md">Read the complete workflow →</a>
+    <section id="method" class="method">
+      <div class="section-intro">
+        <p class="label">Methods</p>
+        <h2>A traceable chain from statement to execution.</h2>
+        <p>Every transition is stored as plain JSON. Another researcher can review the evidence
+        locator, resource status, task dependency, and decision rule rather than trusting a
+        generated summary.</p>
       </div>
-      <ol>
-        <li><span>1</span><b>Frame</b><small>Question and criteria</small></li>
-        <li><span>2</span><b>Screen</b><small>Reasons, not guesses</small></li>
-        <li><span>3</span><b>Anchor</b><small>Claims and locators</small></li>
-        <li><span>4</span><b>Inventory</b><small>Versions and access</small></li>
-        <li><span>5</span><b>Assess</b><small>Evidence per rating</small></li>
-        <li><span>6</span><b>Plan</b><small>Tasks and blockers</small></li>
-        <li><span>7</span><b>Publish</b><small>Audit, seal, report</small></li>
+      <ol class="protocol">
+        <li><span>01</span><div><h3>Bound</h3><p>Record the question, criteria, paper identity, and screening reason.</p></div></li>
+        <li><span>02</span><div><h3>Anchor</h3><p>Join bounded claims to figures, tables, appendices, experiments, and resources.</p></div></li>
+        <li><span>03</span><div><h3>Assess</h3><p>Evaluate eight reconstructability dimensions while preserving unknown values.</p></div></li>
+        <li><span>04</span><div><h3>Triage</h3><p>Combine hard blockers, task readiness, and effort; test resource-access scenarios.</p></div></li>
+        <li><span>05</span><div><h3>Verify</h3><p>Audit references and cycles, then seal the exact source snapshot with SHA-256.</p></div></li>
       </ol>
     </section>
 
-    <section class="report-preview">
-      <div class="preview-head">
-        <div><p class="eyebrow">A report that travels</p><h2>One file. Every decision.</h2></div>
-        <a class="button secondary" href="demo/evidence-report.html">Open interactive report</a>
+    <section id="triage" class="triage">
+      <div class="section-intro">
+        <p class="label">What v0.2.0 adds</p>
+        <h2>Candidate triage without false precision.</h2>
       </div>
-      <div class="preview-window">
-        <div class="window-bar"><i></i><i></i><i></i><span>evidence-report.html</span></div>
+      <div class="triage-grid">
+        <article>
+          <span>A</span>
+          <h3>Evidence-aware</h3>
+          <p>“No,” “unknown,” and missing documentation remain hard gaps. Partial evidence stays
+          visible instead of being converted into a confident verdict.</p>
+        </article>
+        <article>
+          <span>B</span>
+          <h3>Resource-aware</h3>
+          <p>Experiments contribute their code, data, model, environment, and hardware
+          requirements. A what-if override changes only the generated scenario.</p>
+        </article>
+        <article>
+          <span>C</span>
+          <h3>Execution-aware</h3>
+          <p>Task states, prerequisites, and remaining human-entered hours determine whether work
+          can start. The output explains the next action in plain language.</p>
+        </article>
+      </div>
+      <pre><code>reproweave triage --workspace review \
+  --resource rf-spectra-v2=available \
+  --format markdown --output triage.md</code></pre>
+    </section>
+
+    <section class="report">
+      <div class="report-head">
+        <div>
+          <p class="label">Portable evidence report</p>
+          <h2>One file; every recorded decision.</h2>
+        </div>
+        <a class="button secondary" href="demo/evidence-report.html">Open the full report</a>
+      </div>
+      <div class="report-frame">
         <iframe src="demo/evidence-report.html" title="ReproWeave synthetic evidence report" loading="lazy"></iframe>
       </div>
-      <p class="synthetic">The demonstration is entirely synthetic. No paper, author, URL, score,
-      or experimental result represents a real publication.</p>
+      <p class="note">The demonstration is entirely synthetic. No title, author, URL, score, or
+      result represents a real publication.</p>
     </section>
 
     <section id="boundary" class="boundary">
-      <p class="eyebrow">Honest boundaries</p>
-      <h2>A structural audit is not scientific truth.</h2>
+      <div class="section-intro">
+        <p class="label">Interpretation boundary</p>
+        <h2>Structure can be verified. Scientific truth cannot be automated here.</h2>
+      </div>
       <div class="boundary-grid">
-        <div class="does">
-          <h3>ReproWeave does</h3>
+        <div>
+          <h3>ReproWeave records</h3>
           <ul>
-            <li>Preserve exact evidence locators</li>
-            <li>Keep “unknown” distinct from “no”</li>
-            <li>Validate references and task cycles</li>
-            <li>Hash the complete source snapshot</li>
+            <li>Exact claim and evidence locators</li>
+            <li>Versions, checksums, access, and resource gaps</li>
+            <li>Task dependencies, estimates, and acceptance conditions</li>
+            <li>A content-addressed source snapshot</li>
           </ul>
         </div>
-        <div class="does-not">
-          <h3>It does not</h3>
+        <div>
+          <h3>ReproWeave does not establish</h3>
           <ul>
-            <li>Judge correctness, novelty, or integrity</li>
-            <li>Run untrusted paper repositories</li>
-            <li>Infer missing evidence with an LLM</li>
-            <li>Claim formal systematic-review compliance</li>
+            <li>Correctness, novelty, importance, or integrity</li>
+            <li>Formal systematic-review compliance</li>
+            <li>Safety of third-party research code</li>
+            <li>Whether a reported claim is scientifically true</li>
           </ul>
         </div>
       </div>
     </section>
 
     <section class="install">
-      <div><p class="eyebrow">Python 3.11+</p><h2>Start with the fictional workspace.</h2></div>
-      <pre><code>python -m pip install reproweave
+      <div>
+        <p class="label">Python 3.11+</p>
+        <h2>Install the versioned public wheel.</h2>
+        <p>The project is not currently on PyPI. The release also contains a source archive and
+        SHA-256 checksums.</p>
+      </div>
+      <pre><code>python -m pip install \
+https://github.com/CAOShurong/reproweave/releases/download/v0.2.0/reproweave-0.2.0-py3-none-any.whl
+
 reproweave demo my-review
 reproweave audit --workspace my-review
 reproweave report --workspace my-review</code></pre>
     </section>
   </main>
+
   <footer>
-    <div class="logo"><span>REPRO</span>WEAVE</div>
-    <p>Created by Shurong Cao · MIT licensed · Local-first by design</p>
-    <div><a href="https://github.com/CAOShurong/reproweave">Source</a><a href="https://github.com/CAOShurong/reproweave/blob/main/docs/methodology.md">Methodology</a><a href="https://github.com/CAOShurong/reproweave/issues">Issues</a></div>
+    <div class="wordmark"><span>REPRO</span>WEAVE</div>
+    <p>Shurong Cao · MIT · Local-first research software</p>
+    <div><a href="https://github.com/CAOShurong/reproweave">Repository</a><a href="https://github.com/CAOShurong/reproweave/blob/main/docs/methodology.md">Methodology</a><a href="https://github.com/CAOShurong/reproweave/issues">Issues</a></div>
   </footer>
 </body>
 </html>

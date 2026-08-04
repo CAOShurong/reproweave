@@ -1,0 +1,340 @@
+{
+  "candidates": [
+    {
+      "blocked_task_ids": [],
+      "evidence_gaps": [],
+      "next_action": "Archive the reproduced outputs and record claim-level outcomes.",
+      "paper_id": "channelcraft-2023",
+      "reconstructability_score": 100.0,
+      "remaining_effort_hours": 0,
+      "remaining_task_count": 0,
+      "required_resources": [
+        {
+          "effective_availability": "available",
+          "id": "channel-generator",
+          "kind": "code",
+          "name": "Procedural channel generator",
+          "overridden": false,
+          "recorded_availability": "available"
+        },
+        {
+          "effective_availability": "available",
+          "id": "channelcraft-results",
+          "kind": "result",
+          "name": "ChannelCraft result bundle",
+          "overridden": false,
+          "recorded_availability": "available"
+        }
+      ],
+      "rubric_coverage": 100.0,
+      "status": "complete",
+      "task_count": 2,
+      "title": "ChannelCraft: A Procedural Benchmark for Robust Channel Estimation",
+      "unresolved_resource_ids": [],
+      "year": 2023
+    },
+    {
+      "blocked_task_ids": [
+        "run-thermal-sweep"
+      ],
+      "evidence_gaps": [
+        {
+          "dimension": "data",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "code",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "environment",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "compute",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "results",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        }
+      ],
+      "next_action": "Resolve Custom thermal-control evaluation board (partial).",
+      "paper_id": "thermaltiny-2025",
+      "reconstructability_score": 68.2,
+      "remaining_effort_hours": 20,
+      "remaining_task_count": 2,
+      "required_resources": [
+        {
+          "effective_availability": "partial",
+          "id": "thermal-board",
+          "kind": "hardware",
+          "name": "Custom thermal-control evaluation board",
+          "overridden": false,
+          "recorded_availability": "partial"
+        },
+        {
+          "effective_availability": "available",
+          "id": "thermaltiny-code",
+          "kind": "code",
+          "name": "ThermalTiny inference firmware",
+          "overridden": false,
+          "recorded_availability": "available"
+        }
+      ],
+      "rubric_coverage": 100.0,
+      "status": "evidence_first",
+      "task_count": 2,
+      "title": "ThermalTiny: Calibrated TinyML under Dynamic Thermal Budgets",
+      "unresolved_resource_ids": [
+        "thermal-board"
+      ],
+      "year": 2025
+    },
+    {
+      "blocked_task_ids": [
+        "acquire-rf-data",
+        "profile-edge-energy",
+        "train-edgeformer"
+      ],
+      "evidence_gaps": [
+        {
+          "dimension": "data",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "baselines",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "compute",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "results",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        }
+      ],
+      "next_action": "Resolve RF Spectra v2 dataset (partial).",
+      "paper_id": "edgeformer-2025",
+      "reconstructability_score": 75.8,
+      "remaining_effort_hours": 28,
+      "remaining_task_count": 3,
+      "required_resources": [
+        {
+          "effective_availability": "available",
+          "id": "a100-environment",
+          "kind": "environment",
+          "name": "CUDA training environment",
+          "overridden": false,
+          "recorded_availability": "available"
+        },
+        {
+          "effective_availability": "available",
+          "id": "edgeformer-code",
+          "kind": "code",
+          "name": "EdgeFormer training repository",
+          "overridden": false,
+          "recorded_availability": "available"
+        },
+        {
+          "effective_availability": "partial",
+          "id": "rf-spectra-v2",
+          "kind": "dataset",
+          "name": "RF Spectra v2 dataset",
+          "overridden": false,
+          "recorded_availability": "partial"
+        }
+      ],
+      "rubric_coverage": 100.0,
+      "status": "evidence_first",
+      "task_count": 5,
+      "title": "EdgeFormer: Event-Driven Transformers for On-Device RF Classification",
+      "unresolved_resource_ids": [
+        "rf-spectra-v2"
+      ],
+      "year": 2025
+    },
+    {
+      "blocked_task_ids": [
+        "request-volt-data"
+      ],
+      "evidence_gaps": [
+        {
+          "dimension": "method",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "data",
+          "next_action": "Contact the authors or search supplements.",
+          "rating": "unknown"
+        },
+        {
+          "dimension": "code",
+          "next_action": "Request or independently recreate it.",
+          "rating": "no"
+        },
+        {
+          "dimension": "environment",
+          "next_action": "Contact the authors or search supplements.",
+          "rating": "unknown"
+        },
+        {
+          "dimension": "compute",
+          "next_action": "Request or independently recreate it.",
+          "rating": "no"
+        },
+        {
+          "dimension": "results",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        }
+      ],
+      "next_action": "Resolve Converter telemetry traces (unknown).",
+      "paper_id": "voltguard-2024",
+      "reconstructability_score": 36.4,
+      "remaining_effort_hours": 2,
+      "remaining_task_count": 1,
+      "required_resources": [
+        {
+          "effective_availability": "unknown",
+          "id": "converter-telemetry",
+          "kind": "dataset",
+          "name": "Converter telemetry traces",
+          "overridden": false,
+          "recorded_availability": "unknown"
+        },
+        {
+          "effective_availability": "unavailable",
+          "id": "voltguard-model",
+          "kind": "model",
+          "name": "VoltGuard checkpoint",
+          "overridden": false,
+          "recorded_availability": "unavailable"
+        }
+      ],
+      "rubric_coverage": 100.0,
+      "status": "evidence_first",
+      "task_count": 1,
+      "title": "VoltGuard: Uncertainty-Aware Fault Detection in Converter Telemetry",
+      "unresolved_resource_ids": [
+        "converter-telemetry",
+        "voltguard-model"
+      ],
+      "year": 2024
+    },
+    {
+      "blocked_task_ids": [
+        "implement-sparsebeam"
+      ],
+      "evidence_gaps": [
+        {
+          "dimension": "method",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "data",
+          "next_action": "Request or independently recreate it.",
+          "rating": "no"
+        },
+        {
+          "dimension": "code",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "environment",
+          "next_action": "Contact the authors or search supplements.",
+          "rating": "unknown"
+        },
+        {
+          "dimension": "baselines",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        },
+        {
+          "dimension": "compute",
+          "next_action": "Contact the authors or search supplements.",
+          "rating": "unknown"
+        },
+        {
+          "dimension": "results",
+          "next_action": "Record the missing choice.",
+          "rating": "partial"
+        }
+      ],
+      "next_action": "Resolve Urban mmWave channel traces (unavailable).",
+      "paper_id": "sparsebeam-2024",
+      "reconstructability_score": 37.9,
+      "remaining_effort_hours": 24,
+      "remaining_task_count": 2,
+      "required_resources": [
+        {
+          "effective_availability": "unavailable",
+          "id": "mmwave-traces",
+          "kind": "dataset",
+          "name": "Urban mmWave channel traces",
+          "overridden": false,
+          "recorded_availability": "unavailable"
+        },
+        {
+          "effective_availability": "partial",
+          "id": "sparsebeam-code",
+          "kind": "code",
+          "name": "SparseBeam reference scripts",
+          "overridden": false,
+          "recorded_availability": "partial"
+        }
+      ],
+      "rubric_coverage": 100.0,
+      "status": "evidence_first",
+      "task_count": 2,
+      "title": "SparseBeam: Low-Overhead Beam Selection with Structured Priors",
+      "unresolved_resource_ids": [
+        "mmwave-traces",
+        "sparsebeam-code"
+      ],
+      "year": 2024
+    }
+  ],
+  "decision_rules": {
+    "complete": "All linked tasks are done and no hard evidence or resource gap remains.",
+    "evidence_first": "A resource, task dependency, or no/unknown/missing evidence item blocks execution.",
+    "needs_planning": "The paper lacks either an assessment card or a linked task plan.",
+    "prepare": "No hard blocker remains, but partial evidence or task state still needs preparation.",
+    "run_now": "A linked task is ready and no hard evidence, resource, or dependency blocker remains."
+  },
+  "interpretation": "This is a rule-based execution queue, not a scientific-quality or novelty ranking. Scores and hour estimates remain human-entered evidence and planning inputs.",
+  "scenario": {
+    "override_count": 0,
+    "resource_overrides": {}
+  },
+  "summary": {
+    "evidence_first_ids": [
+      "thermaltiny-2025",
+      "edgeformer-2025",
+      "voltguard-2024",
+      "sparsebeam-2024"
+    ],
+    "paper_count": 5,
+    "run_now_ids": [],
+    "status_counts": {
+      "complete": 1,
+      "evidence_first": 4,
+      "needs_planning": 0,
+      "prepare": 0,
+      "run_now": 0
+    }
+  }
+}

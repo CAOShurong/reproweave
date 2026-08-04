@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: Build distributions
+        run: |
+          python -m pip install --upgrade build twine
+          python -m build
+          python -m twine check dist/*
+      - name: Verify wheel in a clean environment
+        run: |
+          python -m venv clean-install
+          clean-install/bin/python -m pip install dist/*.whl
+          clean-install/bin/reproweave --version
+          clean-install/bin/reproweave demo release-demo
+          clean-install/bin/reproweave audit --workspace release-demo
+          clean-install/bin/reproweave triage --workspace release-demo --format markdown --output release-triage.md
+          clean-install/bin/reproweave verify --workspace release-demo
+          clean-install/bin/reproweave report --workspace release-demo --output reports/release-report.html
+      - name: Write checksums
+        run: |
+          cd dist
+          sha256sum *.whl *.tar.gz > SHA256SUMS
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" dist/* \
+            --verify-tag \
+            --generate-notes \
+            --title "ReproWeave ${GITHUB_REF_NAME}"

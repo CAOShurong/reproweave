@@ -12,6 +12,7 @@ from .graph import build_evidence_graph
 from .planning import build_replication_plan, readiness_backlog
 from .scoring import assess_workspace, evidence_matrix
 from .seal import build_seal
+from .triage import build_replication_triage
 from .util import html_escape
 from .workspace import Workspace
 
@@ -93,6 +94,28 @@ def _gap_bars(summary: dict[str, Any]) -> str:
     )
 
 
+def _triage_rows(triage: dict[str, Any]) -> str:
+    rows = []
+    for rank, candidate in enumerate(triage["candidates"], start=1):
+        score = candidate["reconstructability_score"]
+        score_text = f"{score:.1f}" if score is not None else "—"
+        resources = ", ".join(candidate["unresolved_resource_ids"]) or "—"
+        rows.append(
+            "<tr>"
+            f"<td>{rank}</td>"
+            f"<td><strong>{html_escape(candidate['title'])}</strong>"
+            f"<br><code>{html_escape(candidate['paper_id'])}</code></td>"
+            f'<td><span class="decision {html_escape(candidate["status"])}">'
+            f"{html_escape(candidate['status'].replace('_', ' '))}</span></td>"
+            f"<td>{score_text}</td>"
+            f"<td>{candidate['remaining_effort_hours']:g}h</td>"
+            f"<td>{html_escape(resources)}</td>"
+            f"<td>{html_escape(candidate['next_action'])}</td>"
+            "</tr>"
+        )
+    return "\n".join(rows)
+
+
 def build_report(workspace: Workspace, output: str | Path) -> Path:
     """Generate one portable HTML file with embedded data, styles, and interactions."""
     workspace.require()
@@ -105,6 +128,7 @@ def build_report(workspace: Workspace, output: str | Path) -> Path:
     audit = audit_workspace(workspace)
     graph = build_evidence_graph(workspace)
     backlog = readiness_backlog(workspace)
+    triage = build_replication_triage(workspace)
     seal = build_seal(workspace)
     summary = assessment["summary"]
     audit_class = "verified" if audit["status"] == "pass" else "failed"
@@ -113,59 +137,64 @@ def build_report(workspace: Workspace, output: str | Path) -> Path:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="generator" content="ReproWeave 0.1.0">
+<meta name="generator" content="ReproWeave 0.2.0">
 <title>{html_escape(manifest["title"])} · ReproWeave evidence report</title>
 <style>
-:root{{--ink:#101719;--muted:#607074;--paper:#f4f1e8;--panel:#fffdf7;--teal:#126e68;
---teal2:#23a696;--amber:#d18124;--red:#a4473d;--line:#d9d4c7;--navy:#17313a}}
+:root{{--ink:#202a32;--muted:#68747b;--paper:#f4f1e9;--panel:#fffef9;--burgundy:#873e4a;
+--sage:#667968;--gold:#a9813d;--blue:#60798a;--line:#cec8ba;--navy:#243744}}
 *{{box-sizing:border-box}} html{{scroll-behavior:smooth}} body{{margin:0;background:var(--paper);
-color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}
-a{{color:inherit}} code{{font:12px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--teal)}}
-.top{{background:var(--navy);color:#eef9f6;padding:18px max(24px,calc((100vw - 1240px)/2));
-display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}}
-.brand{{font-weight:800;letter-spacing:.04em}} .brand b{{color:#6ce0cb}} nav a{{margin-left:22px;
-font-size:13px;text-decoration:none;color:#c8dcda}} main{{max-width:1240px;margin:auto;padding:54px 24px 80px}}
-.hero{{display:grid;grid-template-columns:1.45fr .85fr;gap:38px;align-items:end;margin-bottom:34px}}
-.kicker,.eyebrow{{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--teal)}}
-h1{{font:800 clamp(42px,7vw,82px)/.98 Georgia,serif;letter-spacing:-.045em;margin:12px 0 20px;max-width:880px}}
-.question{{font-size:19px;max-width:760px;color:#445356}} .seal{{border:1px solid #35535a;background:#203e46;
-padding:22px;border-radius:16px;color:#dceceb;box-shadow:0 15px 34px #102b3340}}
-.seal .status{{display:inline-block;background:#62d8c2;color:#102d32;font-weight:900;padding:5px 9px;
-border-radius:6px;font-size:11px;letter-spacing:.1em}} .seal code{{display:block;color:#9ddad0;margin-top:13px;
-overflow-wrap:anywhere}} .stats{{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:24px 0 52px}}
-.stat{{background:var(--panel);border:1px solid var(--line);padding:20px;border-radius:14px}}
-.stat strong{{font:700 31px/1 Georgia,serif;display:block}} .stat span{{font-size:12px;color:var(--muted)}}
-section{{margin-top:58px}} .section-head{{display:flex;justify-content:space-between;align-items:end;
-border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:19px}} h2{{font:700 30px/1.1 Georgia,serif;margin:0}}
-.section-head p{{margin:0;max-width:600px;color:var(--muted);font-size:13px;text-align:right}}
-.grid2{{display:grid;grid-template-columns:1fr 1fr;gap:18px}} .panel{{background:var(--panel);border:1px solid var(--line);
-border-radius:14px;padding:22px;overflow:hidden}} .panel h3{{margin:0 0 14px;font-size:15px}}
-.score{{font:700 68px/1 Georgia,serif;color:var(--teal)}} .score small{{font:14px system-ui;color:var(--muted)}}
+color:var(--ink);font:15px/1.58 ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}}
+a{{color:inherit}} code{{font:12px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;color:#566c79}}
+.top{{background:#f4f1e9e8;border-bottom:1px solid var(--navy);padding:14px max(24px,calc((100vw - 1240px)/2));
+display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}}
+.brand{{font:700 15px Georgia,serif;letter-spacing:.12em}} .brand b{{color:var(--burgundy)}} nav a{{margin-left:22px;
+font-size:12px;text-decoration:none;color:#4f5f68}} main{{max-width:1240px;margin:auto;padding:58px 24px 84px}}
+.hero{{display:grid;grid-template-columns:1.45fr .85fr;gap:48px;align-items:end;margin-bottom:38px;
+border-top:4px solid var(--navy);padding-top:38px}}
+.kicker,.eyebrow{{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--burgundy)}}
+h1{{font:700 clamp(40px,6vw,72px)/1.02 Georgia,serif;letter-spacing:-.025em;margin:12px 0 20px;max-width:880px}}
+.question{{font-size:18px;max-width:760px;color:#4f5c63}} .seal{{border:1px solid var(--line);border-top:4px solid var(--sage);
+background:var(--panel);padding:21px;color:#435158}}
+.seal .status{{display:inline-block;color:#405b49;font-weight:900;border-bottom:2px solid #77917a;padding:2px 0;
+font-size:10px;letter-spacing:.12em}} .seal code{{display:block;margin-top:13px;overflow-wrap:anywhere}}
+.stats{{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);margin:24px 0 56px;background:var(--panel)}}
+.stat{{padding:20px;border-right:1px solid var(--line)}} .stat:last-child{{border-right:0}}
+.stat strong{{font:700 30px/1 Georgia,serif;display:block;color:var(--navy)}} .stat span{{font-size:11px;color:var(--muted)}}
+section{{margin-top:62px}} .section-head{{display:flex;justify-content:space-between;align-items:end;
+border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:18px}} h2{{font:700 29px/1.15 Georgia,serif;margin:0}}
+.section-head p{{margin:0;max-width:620px;color:var(--muted);font-size:12px;text-align:right}}
+.grid2{{display:grid;grid-template-columns:1fr 1fr;gap:16px}} .panel{{background:var(--panel);border:1px solid var(--line);
+padding:22px;overflow:hidden}} .panel h3{{margin:0 0 14px;font:700 15px Georgia,serif}}
+.score{{font:700 62px/1 Georgia,serif;color:var(--burgundy)}} .score small{{font:13px system-ui;color:var(--muted)}}
 .gap-row{{display:grid;grid-template-columns:90px 1fr 25px;gap:10px;align-items:center;margin:9px 0;font-size:12px}}
-.bar{{height:8px;border-radius:9px;background:#e2ded3;overflow:hidden}} .bar i{{display:block;height:100%;background:var(--amber)}}
-.table-wrap{{overflow:auto;border:1px solid var(--line);background:var(--panel);border-radius:14px}}
-table{{width:100%;border-collapse:collapse;min-width:1040px}} th,td{{padding:12px 11px;border-bottom:1px solid #e6e1d5;text-align:left;
-vertical-align:top}} th{{font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:#ece8dd;position:sticky;top:58px}}
-.paper-title{{font-weight:700;min-width:230px}} .rating,.state,.confidence{{display:inline-block;padding:3px 7px;
-border-radius:99px;font-size:10px;font-weight:800;text-transform:uppercase}} .rating.yes,.state.done{{background:#d4eee6;color:#18584f}}
-.rating.partial,.state.in_progress{{background:#f8e7c7;color:#7e5315}} .rating.no,.state.blocked{{background:#f4d9d5;color:#843f38}}
-.rating.unknown,.rating.missing,.state.ready{{background:#e5e6e3;color:#5e6668}} .controls{{display:flex;gap:10px;margin:0 0 15px}}
-input,select{{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:10px 12px;color:var(--ink)}}
-input{{min-width:280px}} .claims{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}} .claim-card{{position:relative;
-background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;min-height:195px}}
-.claim-card h3{{font:700 18px/1.3 Georgia,serif}} .claim-card p{{color:var(--muted);font-size:12px}}
-.locator{{font:12px ui-monospace,monospace;border-left:3px solid var(--teal2);padding-left:9px;margin:16px 0}}
-.confidence{{background:#e5eee9}} .footer-note{{margin-top:60px;padding:22px;border:1px dashed #a49e8e;
-border-radius:14px;color:var(--muted)}} .warning{{color:#7d5520}} .empty{{color:var(--muted);font-style:italic}}
-.legend{{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px}}
+.bar{{height:6px;background:#e2ded4;overflow:hidden}} .bar i{{display:block;height:100%;background:var(--gold)}}
+.table-wrap{{overflow:auto;border:1px solid var(--line);background:var(--panel)}}
+table{{width:100%;border-collapse:collapse;min-width:1040px}} th,td{{padding:11px;border-bottom:1px solid #dfdbd0;text-align:left;
+vertical-align:top}} th{{font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:#eae6dc;position:sticky;top:49px}}
+.paper-title{{font-weight:700;min-width:230px}} .rating,.state,.confidence,.decision{{display:inline-block;padding:2px 6px;
+border:1px solid currentColor;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}}
+.rating.yes,.state.done,.decision.complete,.decision.run_now{{color:#4c6f57;background:#edf3ec}}
+.rating.partial,.state.in_progress,.decision.prepare{{color:#846627;background:#f7f1df}}
+.rating.no,.state.blocked,.decision.evidence_first{{color:#873e4a;background:#f6e9e9}}
+.rating.unknown,.rating.missing,.state.ready,.decision.needs_planning{{color:#596b76;background:#edf0f1}}
+.controls{{display:flex;gap:10px;margin:0 0 15px}} input,select{{border:1px solid var(--line);
+background:var(--panel);padding:9px 11px;color:var(--ink);border-radius:0}} input{{min-width:280px}}
+.claims{{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}} .claim-card{{position:relative;
+background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--blue);padding:19px;min-height:190px}}
+.claim-card h3{{font:700 17px/1.35 Georgia,serif}} .claim-card p{{color:var(--muted);font-size:12px}}
+.locator{{font:12px ui-monospace,monospace;border-left:2px solid var(--burgundy);padding-left:9px;margin:16px 0}}
+.confidence{{color:#566c79;background:#edf0f1}} .footer-note{{margin-top:54px;padding:18px 20px;border-left:4px solid var(--gold);
+background:#ebe7dd;color:var(--muted)}} .warning{{color:#765a28}} .empty{{color:var(--muted);font-style:italic}}
+.legend{{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin-top:10px}}
 @media(max-width:850px){{.hero,.grid2{{grid-template-columns:1fr}}.stats{{grid-template-columns:repeat(2,1fr)}}
-.claims{{grid-template-columns:1fr}}nav{{display:none}}.section-head{{display:block}}.section-head p{{text-align:left;margin-top:8px}}}}
+.stat{{border-bottom:1px solid var(--line)}}.claims{{grid-template-columns:1fr}}nav{{display:none}}
+.section-head{{display:block}}.section-head p{{text-align:left;margin-top:8px}}}}
 @media print{{.top,.controls{{display:none}}body{{background:white}}main{{max-width:none;padding:20px}}section{{break-inside:avoid}}}}
 </style>
 </head>
 <body>
 <header class="top"><div class="brand">REPRO<b>WEAVE</b></div><nav>
-<a href="#matrix">Evidence matrix</a><a href="#claims">Claims</a><a href="#plan">Plan</a><a href="#audit">Audit</a>
+<a href="#triage">Triage</a><a href="#matrix">Evidence matrix</a><a href="#claims">Claims</a><a href="#plan">Plan</a><a href="#audit">Audit</a>
 </nav></header>
 <main>
 <div class="hero"><div><div class="kicker">Local-first research evidence map</div>
@@ -180,6 +209,12 @@ The source set is content-addressed below.</p><code>{html_escape(seal["root"])}<
 <div class="stat"><strong>{plan["summary"]["task_count"]}</strong><span>Replication tasks</span></div>
 <div class="stat"><strong>{plan["summary"]["blocked_count"]}</strong><span>Current blockers</span></div>
 </div>
+<section id="triage"><div class="section-head"><h2>Replication candidate triage</h2>
+<p>A rule-based queue combines evidence gaps, required resources, task dependencies, and remaining effort. No hidden composite score.</p></div>
+<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Candidate</th><th>Decision</th>
+<th>Coverage</th><th>Effort</th><th>Unresolved resources</th><th>Next action</th></tr></thead>
+<tbody>{_triage_rows(triage)}</tbody></table></div>
+<p class="footer-note">{html_escape(triage["interpretation"])}</p></section>
 <section><div class="section-head"><h2>What can actually be rebuilt?</h2>
 <p>A weighted summary of documented reconstructability. The score is a navigation aid, never a verdict on research quality.</p></div>
 <div class="grid2"><div class="panel"><h3>Assessment coverage</h3><div class="score">{summary["mean_score"]:.1f}
@@ -216,7 +251,7 @@ It measures documented reconstructability, not scientific quality. It does not e
 verify experimental claims, rank scientific merit, or infer missing facts.
 The embedded dataset lets you inspect the exact generated state offline.</div>
 </main>
-<script id="reproweave-data" type="application/json">{_json_script({"manifest": manifest, "assessment": assessment, "matrix": matrix, "plan": plan, "audit": audit, "graph": graph, "backlog": backlog, "seal": seal})}</script>
+<script id="reproweave-data" type="application/json">{_json_script({"manifest": manifest, "assessment": assessment, "matrix": matrix, "triage": triage, "plan": plan, "audit": audit, "graph": graph, "backlog": backlog, "seal": seal})}</script>
 <script>
 const search=document.querySelector("#search"), threshold=document.querySelector("#threshold");
 function filterRows(){{const query=search.value.trim().toLowerCase(), min=Number(threshold.value);

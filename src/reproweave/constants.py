@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 FORMAT_VERSION = "1"
-APP_VERSION = "0.1.0"
+APP_VERSION = "0.2.0"
 
 ARTIFACT_KINDS = (
     "paper",

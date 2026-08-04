@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Assemble static site
         run: |
           mkdir -p _site/demo _site/assets _site/schemas
@@ -27,10 +27,11 @@ jobs:
           cp examples/demo/reports/evidence-report.html _site/demo/
           cp examples/demo/reports/evidence-matrix.csv _site/demo/
           cp examples/demo/reports/replication-plan.md _site/demo/
+          cp examples/demo/reports/replication-triage.md _site/demo/
           cp schemas/*.json _site/schemas/
           touch _site/.nojekyll
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
   deploy:
@@ -42,5 +43,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
-
+        uses: actions/deploy-pages@v5

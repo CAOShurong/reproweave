@@ -12,13 +12,14 @@ from .audit import audit_workspace
 from .bibliography import load_bibtex, load_csl_json
 from .demo import create_demo
 from .errors import ReproWeaveError
-from .exports import matrix_csv, plan_markdown
+from .exports import matrix_csv, plan_markdown, triage_csv, triage_markdown
 from .graph import build_evidence_graph
 from .planning import build_replication_plan, readiness_backlog
 from .report import build_report
 from .scoring import assess_workspace, evidence_matrix
 from .seal import verify_seal, write_seal
 from .store import read_json
+from .triage import build_replication_triage, parse_resource_overrides
 from .util import pretty_json
 from .workspace import Workspace
 
@@ -65,13 +66,22 @@ def _parser() -> argparse.ArgumentParser:
         ("matrix", "export the paper-by-evidence matrix"),
         ("plan", "build dependency-aware replication waves"),
         ("backlog", "list unresolved evidence-gathering work"),
+        ("triage", "rank replication candidates using explicit execution rules"),
         ("graph", "export the typed evidence graph"),
         ("audit", "validate artifacts and cross references"),
     ):
         command = subparsers.add_parser(name, help=help_text)
         command.add_argument("--workspace", "-w", default=".")
-        if name in {"matrix", "plan"}:
+        if name in {"matrix", "plan", "triage"}:
             command.add_argument("--format", choices=("json", "csv", "markdown"), default="json")
+        if name == "triage":
+            command.add_argument(
+                "--resource",
+                action="append",
+                default=[],
+                metavar="ID=AVAILABILITY",
+                help="override one resource for a what-if scenario; repeat as needed",
+            )
         command.add_argument("--output", "-o")
 
     report = subparsers.add_parser("report", help="generate a self-contained HTML report")
@@ -146,6 +156,16 @@ def run(args: argparse.Namespace) -> int:
         return 0
     if args.command == "backlog":
         _emit(pretty_json(readiness_backlog(workspace)), args.output)
+        return 0
+    if args.command == "triage":
+        overrides = parse_resource_overrides(args.resource)
+        if args.format == "csv":
+            value = triage_csv(workspace, overrides)
+        elif args.format == "markdown":
+            value = triage_markdown(workspace, overrides)
+        else:
+            value = pretty_json(build_replication_triage(workspace, overrides))
+        _emit(value, args.output)
         return 0
     if args.command == "graph":
         _emit(pretty_json(build_evidence_graph(workspace)), args.output)

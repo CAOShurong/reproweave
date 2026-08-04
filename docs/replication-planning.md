@@ -1,5 +1,32 @@
 # Replication planning
 
+## Candidate triage
+
+`reproweave triage` answers a different question from the task scheduler: which selected paper
+should the lab act on next? It joins four recorded inputs for each paper:
+
+1. the reconstructability assessment and its `no`, `unknown`, `missing`, or `partial` gaps;
+2. resources referenced by the paper's experiments and their availability;
+3. paper-linked tasks, their states, and unfinished dependencies;
+4. remaining human-entered effort.
+
+The command does not collapse these inputs into a new weighted score. It applies named decision
+rules and returns `complete`, `run_now`, `prepare`, `evidence_first`, or `needs_planning`, together
+with the exact next action. This makes the queue reviewable and prevents a small effort estimate
+from hiding an unavailable dataset or missing assessment.
+
+Use repeatable resource overrides to test a scenario without changing the workspace:
+
+```bash
+reproweave triage --workspace review \
+  --resource private-traces=available \
+  --resource custom-board=partial \
+  --format markdown --output reports/access-scenario.md
+```
+
+An override changes resource availability only in that output. It does not mark blocked tasks
+complete, edit evidence ratings, or modify the saved resource record.
+
 Evidence gaps become useful only when they can drive work. ReproWeave models replication work as a
 directed acyclic graph, usually called a DAG.
 
@@ -54,4 +81,3 @@ The first can be reviewed. The second hides multiple outcomes behind one label.
 ReproWeave never executes a task or third-party research code. Treat external repositories,
 containers, checkpoints, and datasets as untrusted. Inspect licenses and run risky workloads in an
 appropriate sandbox.
-

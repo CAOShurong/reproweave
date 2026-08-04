@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    branches: [main]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -18,25 +20,27 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python: ["3.11", "3.13"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
           cache: pip
       - name: Install quality tools and package
         run: python -m pip install --upgrade pip ruff build -e .
       - name: Lint
-        run: ruff check src tests
+        run: ruff check src tests scripts
       - name: Format
-        run: ruff format --check src tests
+        run: ruff format --check src tests scripts
       - name: Compile
-        run: python -m compileall -q src tests
+        run: python -m compileall -q src tests scripts
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Generate deterministic demonstration
         run: python -m reproweave demo "${{ runner.temp }}/reproweave-demo"
       - name: Audit demonstration
         run: python -m reproweave audit --workspace "${{ runner.temp }}/reproweave-demo"
+      - name: Triage demonstration
+        run: python -m reproweave triage --workspace "${{ runner.temp }}/reproweave-demo" --format markdown --output "${{ runner.temp }}/triage.md"
       - name: Verify evidence seal
         run: python -m reproweave verify --workspace "${{ runner.temp }}/reproweave-demo"
       - name: Check deterministic seal root
@@ -45,13 +49,15 @@ jobs:
           p=pathlib.Path(r'${{ runner.temp }}/reproweave-demo/reproweave-seal.json');
           assert json.loads(p.read_text(encoding='utf-8'))['root']
           == 'sha256:f81c893af76059a40fd6b942fbe289c87f5a39b2df7099343d94594334bbbfe6'"
+      - name: Repository audit
+        run: python scripts/check_repository.py
 
   package:
     name: Build and clean-wheel smoke test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Build distributions
@@ -65,10 +71,10 @@ jobs:
           "${{ runner.temp }}/clean/bin/reproweave" --version
           "${{ runner.temp }}/clean/bin/reproweave" demo "${{ runner.temp }}/wheel-demo"
           "${{ runner.temp }}/clean/bin/reproweave" audit --workspace "${{ runner.temp }}/wheel-demo"
+          "${{ runner.temp }}/clean/bin/reproweave" triage --workspace "${{ runner.temp }}/wheel-demo" --format markdown --output "${{ runner.temp }}/wheel-triage.md"
           "${{ runner.temp }}/clean/bin/reproweave" verify --workspace "${{ runner.temp }}/wheel-demo"
           "${{ runner.temp }}/clean/bin/reproweave" report --workspace "${{ runner.temp }}/wheel-demo" --output reports/second.html
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: distributions
           path: dist/*
-
