@@ -29,7 +29,7 @@ jobs:
           cp examples/demo/reports/replication-plan.md _site/demo/
           cp schemas/*.json _site/schemas/
           touch _site/.nojekyll
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
