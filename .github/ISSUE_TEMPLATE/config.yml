@@ -3,4 +3,6 @@ contact_links:
   - name: Security vulnerability
     url: https://github.com/CAOShurong/reproweave/security/advisories/new
     about: Report vulnerabilities privately.
-
+  - name: Questions and replication workflow discussion
+    url: https://github.com/CAOShurong/reproweave/discussions
+    about: Discuss a real evidence-to-execution workflow before proposing implementation.

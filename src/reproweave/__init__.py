@@ -1,6 +1,6 @@
 """ReproWeave: auditable literature evidence maps and replication plans."""
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 from .audit import audit_workspace
 from .report import build_report

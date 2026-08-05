@@ -137,7 +137,7 @@ def build_report(workspace: Workspace, output: str | Path) -> Path:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="generator" content="ReproWeave 0.2.0">
+<meta name="generator" content="ReproWeave 0.2.1">
 <title>{html_escape(manifest["title"])} · ReproWeave evidence report</title>
 <style>
 :root{{--ink:#202a32;--muted:#68747b;--paper:#f4f1e9;--panel:#fffef9;--burgundy:#873e4a;
