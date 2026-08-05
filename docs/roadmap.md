@@ -2,6 +2,12 @@
 
 The roadmap prioritizes trustworthy interchange over automation volume.
 
+## Shipped in 0.2.1
+
+- PyPI distribution through OIDC Trusted Publishing.
+- PyPI-safe documentation links and a large-image social preview.
+- Structured routes for reproducible bugs, methodology proposals, and workflow discussion.
+
 ## Near term
 
 - Formal migration commands for future format versions.

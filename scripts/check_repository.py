@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import struct
 import sys
 import tomllib
 import xml.etree.ElementTree as ET
@@ -18,7 +19,7 @@ from reproweave.seal import verify_seal  # noqa: E402
 from reproweave.triage import build_replication_triage  # noqa: E402
 from reproweave.workspace import Workspace  # noqa: E402
 
-EXPECTED_VERSION = "0.2.0"
+EXPECTED_VERSION = "0.2.1"
 
 
 def require(condition: bool, message: str) -> None:
@@ -38,24 +39,27 @@ def check_versions() -> None:
     )
     require(f"version: {EXPECTED_VERSION}" in citation, "citation version mismatch")
     require(f"## [{EXPECTED_VERSION}]" in changelog, "changelog release missing")
+    require(
+        pyproject["project"]["authors"] == [{"name": "Shurong Cao"}],
+        "package authorship must name Shurong Cao only",
+    )
 
 
 def check_install_claims() -> None:
-    release_url = (
-        "https://github.com/CAOShurong/reproweave/releases/download/"
-        f"v{EXPECTED_VERSION}/reproweave-{EXPECTED_VERSION}-py3-none-any.whl"
-    )
     for relative in ("README.md", "site/index.html"):
         text = (ROOT / relative).read_text(encoding="utf-8")
-        require(release_url in text, f"{relative} lacks the versioned release wheel")
         require(
-            "python -m pip install reproweave" not in text,
-            f"{relative} makes an unsupported PyPI install claim",
+            "python -m pip install reproweave" in text,
+            f"{relative} lacks the verified PyPI install path",
         )
 
 
 def check_figures() -> None:
-    for relative in ("docs/assets/hero.svg", "docs/assets/workflow.svg"):
+    for relative in (
+        "docs/assets/hero.svg",
+        "docs/assets/workflow.svg",
+        "docs/assets/candidate-comparison.svg",
+    ):
         path = ROOT / relative
         root = ET.fromstring(path.read_text(encoding="utf-8"))
         require(root.tag.endswith("svg"), f"{relative} is not SVG")
@@ -63,6 +67,14 @@ def check_figures() -> None:
         text = path.read_text(encoding="utf-8")
         require("linearGradient" not in text, f"{relative} uses a gradient")
         require("<filter" not in text, f"{relative} uses a decorative filter")
+    preview = ROOT / "site" / "social-preview.png"
+    require(preview.is_file(), "social preview is missing")
+    payload = preview.read_bytes()
+    require(payload[:8] == b"\x89PNG\r\n\x1a\n", "social preview is not PNG")
+    require(
+        struct.unpack(">II", payload[16:24]) == (1280, 640),
+        "social preview must be 1280x640",
+    )
 
 
 def check_relative_readme_links() -> None:

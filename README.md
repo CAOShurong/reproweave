@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/hero.svg" alt="ReproWeave worked example: locate a paper claim, check the available resources, and decide what the lab should do next" width="100%">
+  <img src="https://raw.githubusercontent.com/CAOShurong/reproweave/main/docs/assets/hero.svg" alt="ReproWeave worked example: locate a paper claim, check the available resources, and decide what the lab should do next" width="100%">
 
   # ReproWeave
 
@@ -21,10 +21,11 @@ reviewable.
 ## See it before installing
 
 - [Project website](https://caoshurong.github.io/reproweave/)
+- [PyPI package](https://pypi.org/project/reproweave/)
 - [Interactive synthetic evidence report](https://caoshurong.github.io/reproweave/demo/evidence-report.html)
-- [Synthetic evidence matrix](examples/demo/reports/evidence-matrix.csv)
-- [Synthetic replication triage](examples/demo/reports/replication-triage.md)
-- [Synthetic replication plan](examples/demo/reports/replication-plan.md)
+- [Synthetic evidence matrix](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/evidence-matrix.csv)
+- [Synthetic replication triage](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/replication-triage.md)
+- [Synthetic replication plan](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/replication-plan.md)
 
 Every record in the demonstration is fictional. It exists to show the workflow without
 misrepresenting a real paper, author, repository, score, or experimental result.
@@ -36,7 +37,7 @@ authors disclose?” A project tracker asks “what should I do next?” ReproWe
 without pretending they are the same:
 
 <p align="center">
-  <img src="docs/assets/workflow.svg" alt="Six plain-language stages: choose papers, locate claims, check resources, find blockers, assign work, and share the reasoning" width="100%">
+  <img src="https://raw.githubusercontent.com/CAOShurong/reproweave/main/docs/assets/workflow.svg" alt="Six plain-language stages: choose papers, locate claims, check resources, find blockers, assign work, and share the reasoning" width="100%">
 </p>
 
 <p align="center"><sub>The workflow keeps source evidence, missing information, and human decisions separate.</sub></p>
@@ -46,21 +47,25 @@ benchmark, handing work to a collaborator, or explaining why an experiment is bl
 
 ## Quick start
 
-ReproWeave needs Python 3.11 or newer and has no runtime dependencies. Install the versioned
-`v0.2.0` wheel directly from the public GitHub Release:
+ReproWeave needs Python 3.11 or newer and has no runtime dependencies. Install from PyPI:
 
 ```bash
-python -m pip install https://github.com/CAOShurong/reproweave/releases/download/v0.2.0/reproweave-0.2.0-py3-none-any.whl
+python -m pip install reproweave
 reproweave demo my-review
 reproweave audit --workspace my-review
 reproweave triage --workspace my-review --format markdown --output my-review/reports/triage.md
 reproweave report --workspace my-review
 ```
 
-ReproWeave is not currently published on PyPI, so this README does not claim an unversioned PyPI
-install path. You can also install the immutable source tag with
-`python -m pip install "git+https://github.com/CAOShurong/reproweave.git@v0.2.0"`.
-Release assets include a wheel, source archive, and SHA-256 checksums.
+For an isolated one-off demonstration with [pipx](https://pipx.pypa.io/):
+
+```bash
+pipx run reproweave demo my-review
+```
+
+PyPI distributions are published from the tagged GitHub workflow with a short-lived OIDC
+credential and a public provenance attestation. GitHub Release assets include the same wheel,
+source archive, and SHA-256 checksums.
 
 For development directly from the repository:
 
@@ -140,7 +145,7 @@ The next figure shows why that distinction matters. Two papers can look equally 
 one can start now while the other first needs missing data or hardware details.
 
 <p align="center">
-  <img src="docs/assets/candidate-comparison.svg" alt="Two fictional replication candidates compared by claim location, code and data access, hardware, blockers, remaining effort, and next action" width="100%">
+  <img src="https://raw.githubusercontent.com/CAOShurong/reproweave/main/docs/assets/candidate-comparison.svg" alt="Two fictional replication candidates compared by claim location, code and data access, hardware, blockers, remaining effort, and next action" width="100%">
 </p>
 
 <p align="center"><sub>The labels “run now” and “collect evidence first” are explained by visible facts, not a secret score.</sub></p>
@@ -172,7 +177,8 @@ workspace snapshot has not changed; it does **not** prove that a scientific clai
 
 Ratings are `yes`, `partial`, `no`, `unknown`, or `na`. Scores summarize documented
 reconstructability only. They do not measure correctness, novelty, importance, statistical
-validity, fairness, or research integrity. Read [the scoring methodology](docs/methodology.md)
+validity, fairness, or research integrity. Read
+[the scoring methodology](https://github.com/CAOShurong/reproweave/blob/main/docs/methodology.md)
 before comparing projects.
 
 ## Workspace anatomy
@@ -191,7 +197,7 @@ review/
 └── reproweave-seal.json     # content-addressed source snapshot
 ```
 
-Seven published [JSON Schemas](schemas/) document the durable artifacts. Runtime validation uses
+Seven published [JSON Schemas](https://github.com/CAOShurong/reproweave/tree/main/schemas) document the durable artifacts. Runtime validation uses
 the same conservative vocabulary without adding a JSON Schema dependency.
 
 ## Commands
@@ -223,7 +229,8 @@ that can stay on your device, live in a private repository, or enter your lab's 
 system. No data is uploaded by the application.
 
 “Local-first” is not a security guarantee. Repository permissions, disk encryption, backups, and
-the sensitivity of quoted material remain your responsibility. See [SECURITY.md](SECURITY.md).
+the sensitivity of quoted material remain your responsibility. See
+[SECURITY.md](https://github.com/CAOShurong/reproweave/blob/main/SECURITY.md).
 
 ## What ReproWeave is not
 
@@ -248,18 +255,18 @@ That positioning is intentionally narrower than “a complete systematic-review 
 project does not claim that evidence maps, reproducibility checklists, or replication planners are
 new ideas. Its contribution is a dependency-free, file-native bridge between them, including
 what-if resource triage and content-addressed verification. See the
-[competitive landscape](docs/competitive-landscape.md) for tested boundaries and alternatives.
+[competitive landscape](https://github.com/CAOShurong/reproweave/blob/main/docs/competitive-landscape.md) for tested boundaries and alternatives.
 
 ## Documentation
 
-- [Methodology and score interpretation](docs/methodology.md)
-- [Data model](docs/data-model.md)
-- [Replication planning](docs/replication-planning.md)
-- [Audit and evidence seals](docs/audit-and-seals.md)
-- [Import behavior](docs/imports.md)
-- [Competitive landscape](docs/competitive-landscape.md)
-- [Validation evidence](docs/validation.md)
-- [Roadmap](docs/roadmap.md)
+- [Methodology and score interpretation](https://github.com/CAOShurong/reproweave/blob/main/docs/methodology.md)
+- [Data model](https://github.com/CAOShurong/reproweave/blob/main/docs/data-model.md)
+- [Replication planning](https://github.com/CAOShurong/reproweave/blob/main/docs/replication-planning.md)
+- [Audit and evidence seals](https://github.com/CAOShurong/reproweave/blob/main/docs/audit-and-seals.md)
+- [Import behavior](https://github.com/CAOShurong/reproweave/blob/main/docs/imports.md)
+- [Competitive landscape](https://github.com/CAOShurong/reproweave/blob/main/docs/competitive-landscape.md)
+- [Validation evidence](https://github.com/CAOShurong/reproweave/blob/main/docs/validation.md)
+- [Roadmap](https://github.com/CAOShurong/reproweave/blob/main/docs/roadmap.md)
 
 ## Development
 
@@ -278,12 +285,19 @@ The test suite uses only the Python standard library. CI runs on Windows and Ubu
 ## Contributing
 
 Bug reports, schema discussions, and focused pull requests are welcome. Please read
-[CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Scientific
+[CONTRIBUTING.md](https://github.com/CAOShurong/reproweave/blob/main/CONTRIBUTING.md) and the
+[Code of Conduct](https://github.com/CAOShurong/reproweave/blob/main/CODE_OF_CONDUCT.md). Scientific
 disagreement is welcome; personal evaluation of authors is not.
 
 ## License and citation
 
-ReproWeave is released under the [MIT License](LICENSE). Cite the versioned software release using
-[CITATION.cff](CITATION.cff).
+ReproWeave is released under the
+[MIT License](https://github.com/CAOShurong/reproweave/blob/main/LICENSE). Cite the versioned
+software release using
+[CITATION.cff](https://github.com/CAOShurong/reproweave/blob/main/CITATION.cff).
+
+Questions and real replication-planning workflows belong in
+[Discussions](https://github.com/CAOShurong/reproweave/discussions). Reproducible defects and
+methodology proposals belong in [Issues](https://github.com/CAOShurong/reproweave/issues).
 
 Created and maintained by **Shurong Cao**.

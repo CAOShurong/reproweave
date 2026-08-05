@@ -8,6 +8,8 @@
   <meta property="og:description" content="Decide what can be rebuilt before committing the lab.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://caoshurong.github.io/reproweave/">
+  <meta property="og:image" content="https://caoshurong.github.io/reproweave/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
   <title>ReproWeave · Evidence-to-execution for replication work</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -26,7 +28,7 @@
   <main>
     <section class="hero">
       <div class="hero-copy">
-        <p class="label">Research software · local-first · v0.2.0</p>
+        <p class="label">Research software · local-first · v0.2.1</p>
         <h1>Decide what can be rebuilt before committing the lab.</h1>
         <p class="lede">ReproWeave connects a paper's claims to exact evidence, experiments,
         required resources, and dependency-aware work. It turns that record into an explicit
@@ -75,7 +77,7 @@
 
     <section id="triage" class="triage">
       <div class="section-intro">
-        <p class="label">What v0.2.0 adds</p>
+        <p class="label">What v0.2 adds</p>
         <h2>Candidate triage without false precision.</h2>
       </div>
       <div class="triage-grid">
@@ -148,12 +150,11 @@
     <section class="install">
       <div>
         <p class="label">Python 3.11+</p>
-        <h2>Install the versioned public wheel.</h2>
-        <p>The project is not currently on PyPI. The release also contains a source archive and
-        SHA-256 checksums.</p>
+        <h2>Install from PyPI.</h2>
+        <p>The tagged release workflow publishes attested distributions to PyPI and the same files
+        to GitHub with SHA-256 checksums.</p>
       </div>
-      <pre><code>python -m pip install \
-https://github.com/CAOShurong/reproweave/releases/download/v0.2.0/reproweave-0.2.0-py3-none-any.whl
+      <pre><code>python -m pip install reproweave
 
 reproweave demo my-review
 reproweave audit --workspace my-review

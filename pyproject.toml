@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "reproweave"
-version = "0.2.0"
+version = "0.2.1"
 description = "Local-first evidence maps and replication plans for engineering and AI papers"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Shurong Cao" }]
 keywords = ["reproducibility", "literature-review", "research", "evidence-map", "electrical-engineering"]
 classifiers = [
@@ -23,8 +24,11 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://caoshurong.github.io/reproweave/"
+Documentation = "https://github.com/CAOShurong/reproweave#readme"
 Repository = "https://github.com/CAOShurong/reproweave"
 Issues = "https://github.com/CAOShurong/reproweave/issues"
+Changelog = "https://github.com/CAOShurong/reproweave/blob/main/CHANGELOG.md"
+Discussions = "https://github.com/CAOShurong/reproweave/discussions"
 
 [project.scripts]
 reproweave = "reproweave.cli:main"

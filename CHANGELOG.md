@@ -5,6 +5,20 @@ This project uses semantic versioning.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-05
+
+### Added
+
+- PyPI Trusted Publishing with short-lived GitHub OIDC credentials and publish attestations.
+- PyPI-safe README graphics and links, a large social preview, and direct pip/pipx entry points.
+- A community discussion route for real replication-planning workflows.
+
+### Changed
+
+- Split package construction, PyPI publication, and GitHub Release publication into separate
+  least-privilege jobs that share one verified distribution artifact.
+- Extended repository checks to cover all three figures and the social preview.
+
 ## [0.2.0] - 2026-08-05
 
 ### Added
@@ -38,6 +52,7 @@ This project uses semantic versioning.
 - A deterministic, fully synthetic EE/AI demonstration with 55 artifacts.
 - Seventy-five standard-library tests, cross-platform CI, package smoke tests, and Pages.
 
-[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/CAOShurong/reproweave/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/CAOShurong/reproweave/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/CAOShurong/reproweave/releases/tag/v0.1.0
