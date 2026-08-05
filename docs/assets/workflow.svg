@@ -1,63 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
-  <title id="title">ReproWeave evidence-to-decision workflow</title>
-  <desc id="desc">Four phases transform a bounded review into an auditable replication candidate queue.</desc>
-  <rect width="1200" height="430" fill="#f7f4ec"/>
-  <rect x="1" y="1" width="1198" height="428" fill="none" stroke="#c9c3b6" stroke-width="2"/>
-  <g font-family="Arial, Helvetica, sans-serif">
-    <text x="52" y="54" fill="#202a32" font-family="Georgia, serif" font-size="30" font-weight="700">Evidence-to-execution protocol</text>
-    <text x="52" y="82" fill="#677279" font-size="13">Each phase leaves inspectable source files; uncertainty remains explicit.</text>
-    <line x1="52" y1="105" x2="1148" y2="105" stroke="#243744" stroke-width="2"/>
-    <g transform="translate(52 134)">
-      <text x="0" y="0" fill="#873e4a" font-size="11" font-weight="700" letter-spacing="2">01 · BOUND</text>
-      <text x="0" y="33" fill="#202a32" font-family="Georgia, serif" font-size="21" font-weight="700">Frame the review</text>
-      <text x="0" y="61" fill="#5f6b72" font-size="12">Research question</text>
-      <text x="0" y="82" fill="#5f6b72" font-size="12">Inclusion criteria</text>
-      <text x="0" y="103" fill="#5f6b72" font-size="12">Screening reasons</text>
-      <line x1="0" y1="124" x2="232" y2="124" stroke="#bdb6a8"/>
-      <text x="0" y="150" fill="#243744" font-family="monospace" font-size="11">reproweave.json</text>
-      <text x="0" y="169" fill="#243744" font-family="monospace" font-size="11">papers/ · screening/</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="500" viewBox="0 0 1440 500" role="img" aria-labelledby="title desc">
+  <title id="title">How ReproWeave turns papers into a lab plan</title>
+  <desc id="desc">Six plain-language stages show how researchers choose papers, locate claims, check required resources, identify blockers, assign tasks, and publish the reasoning.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#7B8588"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="500" rx="10" fill="#F7F6F2"/>
+  <rect x="1" y="1" width="1438" height="498" rx="9" fill="none" stroke="#D4D1C8" stroke-width="2"/>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif" text-anchor="middle">
+    <text x="720" y="58" fill="#172635" font-family="Georgia, Times New Roman, serif" font-size="32" font-weight="700">From saved papers to a lab-ready action plan</text>
+    <text x="720" y="88" fill="#65727A" font-size="14">The files preserve what you found, what is missing, and why one experiment comes before another.</text>
+
+    <path d="M252 232H280M472 232H500M692 232H720M912 232H940M1132 232H1160" fill="none" stroke="#7B8588" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g transform="translate(60 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#8D4850"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">1</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Choose the papers</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Write the question and</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">screening rules first.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#8D4850" font-family="Consolas, monospace" font-size="11">papers/</text>
+      <text x="96" y="184" fill="#8D4850" font-family="Consolas, monospace" font-size="11">screening/</text>
     </g>
-    <g transform="translate(332 134)">
-      <text x="0" y="0" fill="#60798a" font-size="11" font-weight="700" letter-spacing="2">02 · ANCHOR</text>
-      <text x="0" y="33" fill="#202a32" font-family="Georgia, serif" font-size="21" font-weight="700">Map the evidence</text>
-      <text x="0" y="61" fill="#5f6b72" font-size="12">Claims + exact locators</text>
-      <text x="0" y="82" fill="#5f6b72" font-size="12">Experiments + resources</text>
-      <text x="0" y="103" fill="#5f6b72" font-size="12">Eight-dimension assessment</text>
-      <line x1="0" y1="124" x2="232" y2="124" stroke="#bdb6a8"/>
-      <text x="0" y="150" fill="#243744" font-family="monospace" font-size="11">claims/ · experiments/</text>
-      <text x="0" y="169" fill="#243744" font-family="monospace" font-size="11">resources/ · assessments/</text>
+    <g transform="translate(280 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#17324D"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">2</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Locate each claim</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Link the statement to its</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">figure, table, or appendix.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#17324D" font-family="Consolas, monospace" font-size="11">claims/</text>
     </g>
-    <g transform="translate(612 134)">
-      <text x="0" y="0" fill="#667968" font-size="11" font-weight="700" letter-spacing="2">03 · DECIDE</text>
-      <text x="0" y="33" fill="#202a32" font-family="Georgia, serif" font-size="21" font-weight="700">Triage the rebuild</text>
-      <text x="0" y="61" fill="#5f6b72" font-size="12">Resource access</text>
-      <text x="0" y="82" fill="#5f6b72" font-size="12">Task dependencies + effort</text>
-      <text x="0" y="103" fill="#5f6b72" font-size="12">What-if availability scenarios</text>
-      <line x1="0" y1="124" x2="232" y2="124" stroke="#bdb6a8"/>
-      <text x="0" y="150" fill="#243744" font-family="monospace" font-size="11">triage.json · triage.md</text>
-      <text x="0" y="169" fill="#243744" font-family="monospace" font-size="11">tasks/</text>
+    <g transform="translate(500 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#617883"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">3</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Check resources</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Record code, data, compute,</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">hardware, and access.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#617883" font-family="Consolas, monospace" font-size="11">resources/</text>
     </g>
-    <g transform="translate(892 134)">
-      <text x="0" y="0" fill="#a9813d" font-size="11" font-weight="700" letter-spacing="2">04 · VERIFY</text>
-      <text x="0" y="33" fill="#202a32" font-family="Georgia, serif" font-size="21" font-weight="700">Publish the record</text>
-      <text x="0" y="61" fill="#5f6b72" font-size="12">Cross-reference audit</text>
-      <text x="0" y="82" fill="#5f6b72" font-size="12">Content-addressed seal</text>
-      <text x="0" y="103" fill="#5f6b72" font-size="12">Portable offline report</text>
-      <line x1="0" y1="124" x2="232" y2="124" stroke="#bdb6a8"/>
-      <text x="0" y="150" fill="#243744" font-family="monospace" font-size="11">reproweave-seal.json</text>
-      <text x="0" y="169" fill="#243744" font-family="monospace" font-size="11">reports/evidence-report.html</text>
+    <g transform="translate(720 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#B07A2A"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">4</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Find the blockers</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Separate missing evidence</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">from remaining work.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#9A6722" font-family="Consolas, monospace" font-size="11">assess + triage</text>
     </g>
-    <g fill="none" stroke="#8e887e" stroke-width="1.5">
-      <path d="M292 226h24"/>
-      <path d="M572 226h24"/>
-      <path d="M852 226h24"/>
+    <g transform="translate(940 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#617A68"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">5</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Assign the work</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Order tasks by dependency</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">and estimate effort.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#617A68" font-family="Consolas, monospace" font-size="11">tasks/ · plan.md</text>
     </g>
-    <g fill="#873e4a">
-      <path d="M310 221l8 5-8 5z"/>
-      <path d="M590 221l8 5-8 5z"/>
-      <path d="M870 221l8 5-8 5z"/>
+    <g transform="translate(1160 132)">
+      <rect width="220" height="210" rx="7" fill="#17324D" stroke="#17324D"/>
+      <circle cx="110" cy="0" r="21" fill="#8D4850"/><text x="110" y="6" fill="#FFFFFF" font-size="13" font-weight="800">6</text>
+      <text x="110" y="52" fill="#FFFFFF" font-size="16" font-weight="800">Share the reasoning</text>
+      <text x="110" y="86" fill="#D9E1E5" font-size="12">Publish the evidence map,</text>
+      <text x="110" y="105" fill="#D9E1E5" font-size="12">plan, report, and checksums.</text>
+      <line x1="24" y1="135" x2="196" y2="135" stroke="#617883"/>
+      <text x="110" y="166" fill="#E6C7CB" font-family="Consolas, monospace" font-size="11">report.html</text>
     </g>
-    <rect x="52" y="354" width="1096" height="39" fill="#ece7dc"/>
-    <text x="600" y="379" text-anchor="middle" fill="#4f5d64" font-size="12">Structural verification protects the record; scientific interpretation remains a human responsibility.</text>
+
+    <rect x="60" y="390" width="1320" height="56" rx="6" fill="#F0E9E8"/>
+    <text x="720" y="414" fill="#172635" font-size="13" font-weight="700">Human judgment remains visible</text>
+    <text x="720" y="435" fill="#59676F" font-size="12">ReproWeave checks the structure of the record; it does not decide whether a paper is scientifically true.</text>
   </g>
 </svg>

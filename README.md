@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/assets/hero.svg" alt="ReproWeave turns papers into evidence maps and replication plans" width="100%">
+  <img src="docs/assets/hero.svg" alt="ReproWeave worked example: locate a paper claim, check the available resources, and decide what the lab should do next" width="100%">
 
   # ReproWeave
 
@@ -35,17 +35,11 @@ A citation library answers “what did I save?” A reproducibility checklist as
 authors disclose?” A project tracker asks “what should I do next?” ReproWeave joins these views
 without pretending they are the same:
 
-```text
-paper → claim → evidence locator → experiment → code/data/hardware
-                                               ↓
-                                  transparent assessment
-                                               ↓
-                                  rule-based candidate triage
-                                               ↓
-                                  dependency-aware task plan
-                                               ↓
-                                  audit + evidence seal + report
-```
+<p align="center">
+  <img src="docs/assets/workflow.svg" alt="Six plain-language stages: choose papers, locate claims, check resources, find blockers, assign work, and share the reasoning" width="100%">
+</p>
+
+<p align="center"><sub>The workflow keeps source evidence, missing information, and human decisions separate.</sub></p>
 
 The result is useful when deciding which paper to reproduce, preparing a lab meeting, scoping a
 benchmark, handing work to a collaborator, or explaining why an experiment is blocked.
@@ -141,6 +135,15 @@ reproweave triage --workspace reviews/edge-ai \
 The override changes only the generated scenario. Task dependencies then become execution waves.
 Tasks in one wave can run in parallel; later waves wait for declared prerequisites. Availability
 and effort remain reviewer-supplied inputs.
+
+The next figure shows why that distinction matters. Two papers can look equally interesting, yet
+one can start now while the other first needs missing data or hardware details.
+
+<p align="center">
+  <img src="docs/assets/candidate-comparison.svg" alt="Two fictional replication candidates compared by claim location, code and data access, hardware, blockers, remaining effort, and next action" width="100%">
+</p>
+
+<p align="center"><sub>The labels “run now” and “collect evidence first” are explained by visible facts, not a secret score.</sub></p>
 
 ### 5. Audit and seal the review
 
