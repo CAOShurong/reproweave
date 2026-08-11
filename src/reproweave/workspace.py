@@ -9,7 +9,7 @@ from typing import Any
 from .constants import ARTIFACT_KINDS, FORMAT_VERSION
 from .errors import ValidationError
 from .models import validate
-from .store import load_directory, read_json, write_json
+from .store import read_json, write_json
 from .util import ensure_id, ensure_text, utc_now
 
 DIRECTORIES = {
@@ -75,9 +75,28 @@ class Workspace:
         return manifest
 
     def require(self) -> Workspace:
-        """Fail early when a path is not a ReproWeave workspace."""
+        """Fail early when a path is not a structurally valid ReproWeave workspace."""
         self.manifest()
+        self.validate_integrity()
         return self
+
+    def artifact_paths(self, kind: str) -> list[Path]:
+        """List source files for one artifact kind in stable filename order."""
+        if kind not in DIRECTORIES:
+            raise ValidationError(f"unknown artifact kind: {kind}")
+        directory = self.root / DIRECTORIES[kind]
+        try:
+            if not directory.exists():
+                return []
+            if not directory.is_dir():
+                raise ValidationError(f"artifact path for {kind} must be a directory: {directory}")
+            return sorted(
+                item for item in directory.iterdir() if item.name.casefold().endswith(".json")
+            )
+        except OSError as exc:
+            raise ValidationError(
+                f"cannot enumerate artifact directory {directory}: {exc}"
+            ) from exc
 
     def path_for(self, kind: str, artifact_id: str) -> Path:
         """Resolve a validated artifact path."""
@@ -95,6 +114,11 @@ class Workspace:
         """Validate and write one artifact."""
         self.require()
         validated = validate(kind, artifact)
+        for other_kind in DIRECTORIES:
+            if other_kind != kind and self.path_for(other_kind, validated["id"]).exists():
+                raise ValidationError(
+                    f"artifact id {validated['id']!r} is already used by {other_kind}"
+                )
         path = self.path_for(kind, validated["id"])
         if path.exists() and not replace:
             raise ValidationError(f"{kind} already exists: {validated['id']}")
@@ -110,9 +134,38 @@ class Workspace:
         """Read and validate a kind in stable ID order."""
         if kind not in DIRECTORIES:
             raise ValidationError(f"unknown artifact kind: {kind}")
-        values = load_directory(self.root / DIRECTORIES[kind])
-        validated = [validate(kind, value) for value in values]
+        validated = []
+        seen: dict[str, Path] = {}
+        for path in self.artifact_paths(kind):
+            if path.suffix != ".json":
+                raise ValidationError(
+                    f"{kind} filename {path.name!r} must end with lowercase .json"
+                )
+            item = validate(kind, read_json(path))
+            artifact_id = item["id"]
+            if path.stem != artifact_id:
+                raise ValidationError(
+                    f"{kind} filename {path.name!r} does not match artifact id {artifact_id!r}"
+                )
+            if artifact_id in seen:
+                raise ValidationError(
+                    f"duplicate {kind} id {artifact_id!r} in {seen[artifact_id].name} and {path.name}"
+                )
+            seen[artifact_id] = path
+            validated.append(item)
         return sorted(validated, key=lambda item: item["id"])
+
+    def validate_integrity(self) -> None:
+        """Enforce filename and workspace-wide identity invariants."""
+        seen: dict[str, str] = {}
+        for kind in DIRECTORIES:
+            for item in self.all(kind):
+                artifact_id = item["id"]
+                if artifact_id in seen:
+                    raise ValidationError(
+                        f"artifact id {artifact_id!r} is reused by {seen[artifact_id]} and {kind}"
+                    )
+                seen[artifact_id] = kind
 
     def index(self, kind: str) -> dict[str, dict[str, Any]]:
         """Return artifacts keyed by ID."""

@@ -3,16 +3,23 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 from typing import Any
 
 from . import __version__
+from .assessments import build_assessment_resolution
 from .audit import audit_workspace
 from .bibliography import load_bibtex, load_csl_json
 from .demo import create_demo
 from .errors import ReproWeaveError
-from .exports import matrix_csv, plan_markdown, triage_csv, triage_markdown
+from .exports import (
+    agreement_csv,
+    agreement_markdown,
+    matrix_csv,
+    plan_markdown,
+    triage_csv,
+    triage_markdown,
+)
 from .graph import build_evidence_graph
 from .planning import build_replication_plan, readiness_backlog
 from .report import build_report
@@ -25,11 +32,12 @@ from .workspace import Workspace
 
 
 def _workspace(args: argparse.Namespace) -> Workspace:
-    return Workspace(args.workspace).require()
+    workspace = Workspace(args.workspace)
+    return workspace if args.command == "audit" else workspace.require()
 
 
 def _print_json(value: Any) -> None:
-    print(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2))
+    print(pretty_json(value), end="")
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -67,12 +75,13 @@ def _parser() -> argparse.ArgumentParser:
         ("plan", "build dependency-aware replication waves"),
         ("backlog", "list unresolved evidence-gathering work"),
         ("triage", "rank replication candidates using explicit execution rules"),
+        ("agreement", "show individual-review conflicts and explicit consensus status"),
         ("graph", "export the typed evidence graph"),
         ("audit", "validate artifacts and cross references"),
     ):
         command = subparsers.add_parser(name, help=help_text)
         command.add_argument("--workspace", "-w", default=".")
-        if name in {"matrix", "plan", "triage"}:
+        if name in {"matrix", "plan", "triage", "agreement"}:
             command.add_argument("--format", choices=("json", "csv", "markdown"), default="json")
         if name == "triage":
             command.add_argument(
@@ -167,6 +176,16 @@ def run(args: argparse.Namespace) -> int:
             value = pretty_json(build_replication_triage(workspace, overrides))
         _emit(value, args.output)
         return 0
+    if args.command == "agreement":
+        result = build_assessment_resolution(workspace)
+        if args.format == "csv":
+            value = agreement_csv(workspace)
+        elif args.format == "markdown":
+            value = agreement_markdown(workspace)
+        else:
+            value = pretty_json(result)
+        _emit(value, args.output)
+        return 4 if result["issues"] else 0
     if args.command == "graph":
         _emit(pretty_json(build_evidence_graph(workspace)), args.output)
         return 0

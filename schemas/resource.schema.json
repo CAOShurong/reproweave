@@ -6,7 +6,7 @@
   "required": ["id", "name", "kind"],
   "properties": {
     "id": {"$ref": "#/$defs/id"},
-    "name": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "kind": {"enum": ["code", "dataset", "environment", "model", "hardware", "protocol", "result", "other"]},
     "availability": {"enum": ["available", "partial", "unavailable", "unknown"]},
     "url": {"type": "string"},
@@ -17,6 +17,6 @@
   },
   "additionalProperties": true,
   "$defs": {
-    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+    "id": {"type": "string", "maxLength": 200, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
   }
 }

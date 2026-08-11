@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 FORMAT_VERSION = "1"
-APP_VERSION = "0.2.1"
+APP_VERSION = "0.3.0"
+MAX_ID_LENGTH = 200
+MAX_ESTIMATE_HOURS = 1_000_000_000
 
 ARTIFACT_KINDS = (
     "paper",

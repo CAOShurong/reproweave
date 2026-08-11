@@ -7,8 +7,28 @@
   "properties": {
     "id": {"$ref": "#/$defs/id"},
     "paper_id": {"$ref": "#/$defs/id"},
-    "reviewer": {"type": "string"},
-    "assessed_at": {"type": "string"},
+    "kind": {
+      "type": "string",
+      "enum": ["individual", "consensus"],
+      "default": "individual"
+    },
+    "reviewer": {"type": "string", "pattern": "\\S"},
+    "assessed_at": {"type": "string", "pattern": "\\S"},
+    "source_assessment_ids": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/id"},
+      "minItems": 2,
+      "uniqueItems": true
+    },
+    "source_assessment_hashes": {
+      "type": "object",
+      "minProperties": 2,
+      "propertyNames": {"$ref": "#/$defs/id"},
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      }
+    },
     "ratings": {
       "type": "object",
       "propertyNames": {"enum": ["method", "data", "code", "environment", "metrics", "baselines", "compute", "results"]},
@@ -16,15 +36,30 @@
     },
     "notes": {"type": "string"}
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"kind": {"const": "consensus"}},
+        "required": ["kind"]
+      },
+      "then": {"required": ["source_assessment_ids", "source_assessment_hashes"]},
+      "else": {
+        "properties": {
+          "source_assessment_ids": false,
+          "source_assessment_hashes": false
+        }
+      }
+    }
+  ],
   "additionalProperties": true,
   "$defs": {
-    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+    "id": {"type": "string", "maxLength": 200, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
     "rating": {
       "type": "object",
       "required": ["rating", "evidence"],
       "properties": {
         "rating": {"enum": ["yes", "partial", "no", "unknown", "na"]},
-        "evidence": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1, "pattern": "\\S"},
         "next_action": {"type": "string"}
       },
       "additionalProperties": true

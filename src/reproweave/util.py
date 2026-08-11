@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from .constants import MAX_ID_LENGTH
 from .errors import ValidationError
 
 ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
@@ -21,10 +22,10 @@ def utc_now() -> str:
 
 def ensure_id(value: str, field: str = "id") -> str:
     """Validate a portable, URL-safe identifier."""
-    if not isinstance(value, str) or not ID_RE.fullmatch(value):
+    if not isinstance(value, str) or len(value) > MAX_ID_LENGTH or not ID_RE.fullmatch(value):
         raise ValidationError(
-            f"{field} must start with a lowercase letter and contain only "
-            "lowercase letters, digits, and hyphens"
+            f"{field} must be at most {MAX_ID_LENGTH} characters, start with a lowercase letter, "
+            "and contain only lowercase letters, digits, and hyphens"
         )
     return value
 
@@ -38,12 +39,18 @@ def ensure_text(value: Any, field: str) -> str:
 
 def canonical_json(value: Any) -> str:
     """Serialize JSON deterministically for reviewable diffs and hashes."""
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
 
 
 def pretty_json(value: Any) -> str:
     """Serialize stable human-readable JSON."""
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n"
 
 
 def sha256_text(value: str) -> str:

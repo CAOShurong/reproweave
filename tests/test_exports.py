@@ -7,6 +7,7 @@ from pathlib import Path
 from common import full_ratings, make_workspace
 
 from reproweave.exports import (
+    agreement_csv,
     assessment_markdown,
     matrix_csv,
     plan_markdown,
@@ -25,6 +26,17 @@ class ExportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             workspace = make_workspace(Path(directory) / "w")
             self.assertIn("paper-one,Paper One,2025", matrix_csv(workspace))
+
+    def test_agreement_csv_includes_source_hashes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = make_workspace(Path(directory) / "w")
+            workspace.add(
+                "assessment",
+                {"id": "review-one", "paper_id": "paper-one", "ratings": full_ratings()},
+            )
+            exported = agreement_csv(workspace)
+            self.assertIn("individual_assessment_hashes", exported.splitlines()[0])
+            self.assertIn("review-one=sha256:", exported)
 
     def test_plan_heading(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

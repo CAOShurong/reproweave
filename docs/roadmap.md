@@ -2,16 +2,17 @@
 
 The roadmap prioritizes trustworthy interchange over automation volume.
 
-## Shipped in 0.2.1
+## Shipped in 0.3.0
 
-- PyPI distribution through OIDC Trusted Publishing.
-- PyPI-safe documentation links and a large-image social preview.
-- Structured routes for reproducible bugs, methodology proposals, and workflow discussion.
+- Explicit individual-review and consensus records without automatic averaging or voting.
+- Reviewer agreement exports and a report view.
+- Strict filename/ID, finite-number, and malformed-workspace diagnostics.
+- CodeQL, immutable Action pins, release ancestry/full-CI gates, and artifact attestations.
 
 ## Near term
 
 - Formal migration commands for future format versions.
-- Assessment rounds and reviewer agreement summaries.
+- Optional consensus rounds and supersession only if real workflows require them.
 - Better duplicate review for DOI, arXiv ID, and normalized title candidates.
 - Optional Graphviz and Mermaid exports without changing the core data model.
 - Additional import fixtures from common citation managers.
@@ -19,9 +20,9 @@ The roadmap prioritizes trustworthy interchange over automation volume.
 ## Later, if evidence supports the need
 
 - Opt-in adapters for Zotero exports and executed experiment systems.
-- Signed seal manifests and software-supply-chain attestations.
+- Signed evidence seals if a concrete custody workflow requires identity-bound verification.
 - Domain profiles for RF, embedded AI, power electronics, and computer vision.
-- Multi-reviewer conflict views that preserve the underlying evidence notes.
+- Export adapters for consensus discussions that preserve the underlying evidence notes.
 - Scenario comparison tables for several named lab-resource profiles.
 
 ## Explicit non-goals

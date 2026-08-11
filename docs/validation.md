@@ -1,10 +1,10 @@
 # Validation evidence
 
-Version 0.2.1 is validated at five layers.
+Version 0.3.0 is validated at six layers.
 
 ## Behavioral tests
 
-More than eighty standard-library unit tests cover:
+More than one hundred standard-library unit tests cover:
 
 - portable identifiers, escaping, deterministic JSON, and hashing;
 - all seven artifact validators;
@@ -14,6 +14,8 @@ More than eighty standard-library unit tests cover:
 - graph edges, task ordering, cycles, waves, blockers, and backlogs;
 - rule-based candidate triage, resource overrides, hard blockers, and portable exports;
 - cross-reference audit failures and warnings;
+- filename/ID integrity, strict finite JSON, and multi-file audit recovery;
+- individual-review conflicts, complete consensus sources, and fail-closed derived commands;
 - seal stability, verification, and change detection;
 - report escaping, interpretation boundaries, exports, and the full demo.
 
@@ -46,10 +48,20 @@ reproweave verify --workspace scratch/one
 
 ## Package smoke test
 
-CI builds a wheel and source distribution, installs the wheel into a clean virtual environment,
-checks the installed version, creates a demo, audits it, verifies its seal, and generates a second
-report. The release job also exercises triage, runs `twine check`, writes SHA-256 checksums, and
-publishes versioned assets only from a pushed tag.
+CI builds a wheel and source distribution on Windows and Ubuntu, installs the wheel into a clean
+virtual environment, then exercises resolved, conflicted, and malformed-workspace CLI paths. It
+verifies that conflicted derived commands write no output and that explicit consensus is the only
+selected score. The release job repeats that installed-wheel acceptance, runs `twine check`, writes
+SHA-256 checksums, and publishes versioned assets only after the complete CI workflow passes and
+the tagged commit is verified as an ancestor of `main`.
+
+## Code and artifact provenance
+
+CodeQL analyzes Python changes on pull requests, `main`, release tags, and a weekly schedule.
+Workflow actions are pinned to full commit SHAs and repository checks reject mutable Action refs.
+Direct build tools are version-pinned in `requirements/ci.txt`; their transitive dependencies are
+not hash-locked. The release workflow creates GitHub artifact attestations for the wheel and source
+distribution before preserving them for publication.
 
 ## Public artifact checks
 
@@ -61,6 +73,7 @@ endpoints:
 - a fresh environment installs the release wheel URL and exercises demo, triage, audit, seal
   verification, and report generation;
 - the release contains exactly one wheel, one source archive, and `SHA256SUMS`;
+- `gh attestation verify` accepts both public package archives for this repository;
 - the GitHub contributor view names only the repository owner.
 
 ## Supported matrix
@@ -69,4 +82,4 @@ endpoints:
 - Python 3.11 and 3.13
 
 Support means the automated matrix passes. Other operating systems and Python versions may work
-but are not claimed by version 0.2.1.
+but are not claimed by version 0.3.0.

@@ -21,3 +21,10 @@ make arbitrary third-party content safe to share. Review reports before publishi
 Evidence seals detect changes; they are not signatures and do not establish who created a file.
 Use signed commits or an institutional archival system when authorship and custody matter.
 
+Assessment `reviewer` values and consensus records are self-reported strings, not authenticated
+identities, signatures, independent adjudication, or proof that two people actually reviewed a
+paper. Reports can expose reviewer names and evidence notes in terminal logs or shared HTML.
+Inspect both before publication.
+
+Consensus source hashes detect when an individual assessment changes after the decision. They are
+content checks, not identity-bound signatures or timestamps.

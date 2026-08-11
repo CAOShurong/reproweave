@@ -7,6 +7,7 @@ from pathlib import Path
 from common import make_workspace
 
 from reproweave.errors import ValidationError
+from reproweave.store import write_json
 from reproweave.workspace import Workspace
 
 
@@ -36,12 +37,27 @@ class WorkspaceTests(unittest.TestCase):
         workspace = make_workspace(self.root / "w")
         self.assertEqual(workspace.get("paper", "paper-one")["title"], "Paper One")
 
+    def test_add_maximum_length_id_uses_a_short_atomic_temp_name(self) -> None:
+        workspace = make_workspace(self.root / "w")
+        artifact_id = "a" + "1" * 199
+        path = workspace.add("task", {"id": artifact_id, "title": "Long identifier"})
+        self.assertEqual(path.name, f"{artifact_id}.json")
+        self.assertEqual(workspace.get("task", artifact_id)["id"], artifact_id)
+
     def test_duplicate_add_fails(self) -> None:
         workspace = make_workspace(self.root / "w")
         with self.assertRaises(ValidationError):
             workspace.add(
                 "paper",
                 {"id": "paper-one", "title": "Again", "authors": ["A"], "year": 2025},
+            )
+
+    def test_add_rejects_id_already_used_by_another_artifact_kind(self) -> None:
+        workspace = make_workspace(self.root / "w")
+        with self.assertRaisesRegex(ValidationError, "already used"):
+            workspace.add(
+                "task",
+                {"id": "paper-one", "title": "Must not shadow the paper"},
             )
 
     def test_replace(self) -> None:
@@ -60,6 +76,24 @@ class WorkspaceTests(unittest.TestCase):
             {"id": "another", "title": "Another", "authors": ["A"], "year": 2024},
         )
         self.assertEqual([item["id"] for item in workspace.all("paper")], ["another", "paper-one"])
+
+    def test_all_rejects_filename_id_mismatch(self) -> None:
+        workspace = make_workspace(self.root / "w")
+        write_json(
+            workspace.root / "papers" / "wrong-name.json",
+            {"id": "paper-two", "title": "Paper Two", "authors": ["B"], "year": 2024},
+        )
+        with self.assertRaisesRegex(ValidationError, "filename"):
+            workspace.all("paper")
+
+    def test_uppercase_json_extension_is_rejected_on_every_platform(self) -> None:
+        workspace = make_workspace(self.root / "w")
+        write_json(
+            workspace.root / "papers" / "paper-two.JSON",
+            {"id": "paper-two", "title": "Paper Two", "authors": ["B"], "year": 2024},
+        )
+        with self.assertRaisesRegex(ValidationError, "lowercase .json"):
+            workspace.all("paper")
 
     def test_counts(self) -> None:
         workspace = make_workspace(self.root / "w")
