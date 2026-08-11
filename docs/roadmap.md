@@ -2,6 +2,15 @@
 
 The roadmap prioritizes trustworthy interchange over automation volume.
 
+## Shipped in 0.4.0
+
+- Whole-batch bibliography preflight before any artifact is written.
+- Deterministic `import --dry-run` output and explicit per-candidate acceptance.
+- Read-only DOI and conservative title/year/author duplicate candidates in JSON, CSV, and
+  Markdown without automatic merging or deletion.
+- Installed-wheel acceptance for late collision, blocked duplicate, explicit acceptance, and
+  no-side-effect paths.
+
 ## Shipped in 0.3.0
 
 - Explicit individual-review and consensus records without automatic averaging or voting.
@@ -13,7 +22,7 @@ The roadmap prioritizes trustworthy interchange over automation volume.
 
 - Formal migration commands for future format versions.
 - Optional consensus rounds and supersession only if real workflows require them.
-- Better duplicate review for DOI, arXiv ID, and normalized title candidates.
+- Optional arXiv identifier candidates if real exports demonstrate a safe normalization boundary.
 - Optional Graphviz and Mermaid exports without changing the core data model.
 - Additional import fixtures from common citation managers.
 

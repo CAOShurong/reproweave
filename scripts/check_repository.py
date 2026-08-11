@@ -21,7 +21,7 @@ from reproweave.seal import verify_seal  # noqa: E402
 from reproweave.triage import build_replication_triage  # noqa: E402
 from reproweave.workspace import Workspace  # noqa: E402
 
-EXPECTED_VERSION = "0.3.0"
+EXPECTED_VERSION = "0.4.0"
 
 
 def require(condition: bool, message: str) -> None:
@@ -151,6 +151,22 @@ def check_workflow_release_gates() -> None:
     )
     require(
         'expected = f"v{version}"' in release, "release workflow lacks an exact version tag gate"
+    )
+    require(
+        "verify-github-release:" in release,
+        "release workflow lacks a public-asset verification job",
+    )
+    require(
+        "releases/download/${GITHUB_REF_NAME}" in release,
+        "release verification does not use public asset URLs",
+    )
+    require(
+        "unset GH_TOKEN GITHUB_TOKEN" in release,
+        "release verification does not explicitly remove credentials",
+    )
+    require(
+        "sha256sum --check SHA256SUMS" in release and "scripts/acceptance_cli.py" in release,
+        "release verification lacks checksum or installed-wheel acceptance",
     )
     require(
         "workflow_dispatch" not in pages, "Pages publication must not bypass successful main CI"

@@ -11,7 +11,8 @@ from .assessments import build_assessment_resolution
 from .audit import audit_workspace
 from .bibliography import load_bibtex, load_csl_json
 from .demo import create_demo
-from .errors import ReproWeaveError
+from .duplicates import build_duplicate_report, duplicate_report_csv, duplicate_report_markdown
+from .errors import ReproWeaveError, ValidationError
 from .exports import (
     agreement_csv,
     agreement_markdown,
@@ -62,12 +63,34 @@ def _parser() -> argparse.ArgumentParser:
     add.add_argument("json_file")
     add.add_argument("--workspace", "-w", default=".")
     add.add_argument("--replace", action="store_true")
+    add.add_argument(
+        "--accept-candidate",
+        action="append",
+        default=[],
+        metavar="SHA256",
+        help="accept one paper duplicate candidate ID; repeat as needed",
+    )
 
     import_parser = subparsers.add_parser("import", help="import bibliography records")
     import_parser.add_argument("format", choices=("bibtex", "csl-json"))
     import_parser.add_argument("source")
     import_parser.add_argument("--workspace", "-w", default=".")
     import_parser.add_argument("--replace", action="store_true")
+    import_parser.add_argument("--dry-run", action="store_true")
+    import_parser.add_argument(
+        "--accept-candidate",
+        action="append",
+        default=[],
+        metavar="SHA256",
+        help="accept one candidate ID from a matching dry-run; repeat as needed",
+    )
+
+    duplicates = subparsers.add_parser(
+        "duplicates", help="report possible duplicate papers without changing the workspace"
+    )
+    duplicates.add_argument("--workspace", "-w", default=".")
+    duplicates.add_argument("--format", choices=("json", "csv", "markdown"), default="json")
+    duplicates.add_argument("--output", "-o")
 
     for name, help_text in (
         ("assess", "compute transparent reconstructability scores"),
@@ -121,6 +144,25 @@ def _emit(value: str, output: str | None) -> None:
         print(value, end="" if value.endswith("\n") else "\n")
 
 
+def _blocked_import_report(
+    papers: list[dict[str, Any]], exc: Exception, accepted_candidate_ids: list[str]
+) -> dict[str, Any]:
+    return {
+        "report_version": 1,
+        "status": "blocked",
+        "dry_run": True,
+        "would_import": len(papers),
+        "paper_ids": sorted(
+            str(paper["id"])
+            for paper in papers
+            if isinstance(paper, dict) and isinstance(paper.get("id"), str)
+        ),
+        "accepted_candidate_ids": sorted(set(accepted_candidate_ids)),
+        "issues": [{"code": "preflight_error", "message": str(exc)}],
+        "candidates": [],
+    }
+
+
 def run(args: argparse.Namespace) -> int:
     """Execute a parsed command and return an exit code."""
     if args.command == "init":
@@ -133,15 +175,60 @@ def run(args: argparse.Namespace) -> int:
         workspace = create_demo(args.workspace, force=args.force)
         _print_json({"workspace": str(workspace.root), "counts": workspace.counts()})
         return 0
+    if args.command == "import":
+        papers: list[dict[str, Any]] = []
+        try:
+            workspace = _workspace(args)
+            papers = (
+                load_bibtex(args.source) if args.format == "bibtex" else load_csl_json(args.source)
+            )
+            plan = workspace.preflight_many(
+                "paper",
+                papers,
+                replace=args.replace,
+                accepted_candidate_ids=args.accept_candidate,
+            )
+        except (ReproWeaveError, FileNotFoundError, PermissionError) as exc:
+            if not args.dry_run:
+                raise
+            _print_json(_blocked_import_report(papers, exc, args.accept_candidate))
+            return 5
+        if args.dry_run or not plan.ready:
+            _print_json(plan.report(dry_run=args.dry_run))
+            return 0 if plan.ready else 5
+        paths = workspace.add_many(
+            "paper",
+            papers,
+            replace=args.replace,
+            accepted_candidate_ids=args.accept_candidate,
+        )
+        _print_json({"imported": len(paths), "paper_ids": [path.stem for path in paths]})
+        return 0
     workspace = _workspace(args)
     if args.command == "add":
-        path = workspace.add(args.kind, read_json(Path(args.json_file)), replace=args.replace)
+        artifact = read_json(Path(args.json_file))
+        if args.kind == "paper":
+            path = workspace.add(
+                args.kind,
+                artifact,
+                replace=args.replace,
+                accepted_candidate_ids=args.accept_candidate,
+            )
+        else:
+            if args.accept_candidate:
+                raise ValidationError("--accept-candidate is only valid when adding a paper")
+            path = workspace.add(args.kind, artifact, replace=args.replace)
         print(path)
         return 0
-    if args.command == "import":
-        papers = load_bibtex(args.source) if args.format == "bibtex" else load_csl_json(args.source)
-        paths = workspace.add_many("paper", papers, replace=args.replace)
-        _print_json({"imported": len(paths), "paper_ids": [path.stem for path in paths]})
+    if args.command == "duplicates":
+        report = build_duplicate_report(workspace.all("paper"))
+        if args.format == "csv":
+            value = duplicate_report_csv(report)
+        elif args.format == "markdown":
+            value = duplicate_report_markdown(report)
+        else:
+            value = pretty_json(report)
+        _emit(value, args.output)
         return 0
     if args.command == "assess":
         value = assess_workspace(workspace)

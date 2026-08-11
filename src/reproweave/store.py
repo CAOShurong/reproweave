@@ -49,33 +49,40 @@ def _validate_unicode(value: Any) -> None:
             _validate_unicode(item)
 
 
-def read_json(path: Path) -> dict[str, Any]:
-    """Read a JSON object with a useful path-aware error."""
+def parse_json_value(text: str, *, label: str = "JSON") -> Any:
+    """Parse strict standard JSON while preserving arrays for import formats."""
     try:
         value = json.loads(
-            path.read_text(encoding="utf-8"),
+            text,
             parse_constant=_reject_non_finite,
             parse_float=_parse_finite_float,
             object_pairs_hook=_unique_object,
         )
+        _validate_unicode(value)
+        return value
+    except json.JSONDecodeError as exc:
+        raise ValidationError(f"invalid {label}: {exc}") from exc
+    except (RecursionError, ValueError) as exc:
+        raise ValidationError(f"invalid {label}: {exc}") from exc
+    except UnicodeError as exc:
+        raise ValidationError(f"invalid {label}: {exc}") from exc
+    except ValidationError as exc:
+        raise ValidationError(f"invalid {label}: {exc}") from exc
+
+
+def read_json(path: Path) -> dict[str, Any]:
+    """Read a JSON object with a useful path-aware error."""
+    try:
+        text = path.read_text(encoding="utf-8")
     except FileNotFoundError as exc:
         raise ValidationError(f"missing file: {path}") from exc
     except OSError as exc:
         raise ValidationError(f"cannot read JSON file {path}: {exc}") from exc
-    except json.JSONDecodeError as exc:
-        raise ValidationError(f"invalid JSON in {path}: {exc}") from exc
-    except (RecursionError, ValueError) as exc:
-        raise ValidationError(f"invalid JSON in {path}: {exc}") from exc
     except UnicodeError as exc:
         raise ValidationError(f"invalid UTF-8 in {path}: {exc}") from exc
-    except ValidationError as exc:
-        raise ValidationError(f"invalid JSON in {path}: {exc}") from exc
+    value = parse_json_value(text, label=f"JSON in {path}")
     if not isinstance(value, dict):
         raise ValidationError(f"expected a JSON object in {path}")
-    try:
-        _validate_unicode(value)
-    except (RecursionError, ValidationError) as exc:
-        raise ValidationError(f"invalid JSON in {path}: {exc}") from exc
     return value
 
 

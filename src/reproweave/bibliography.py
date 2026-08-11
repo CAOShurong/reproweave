@@ -2,13 +2,33 @@
 
 from __future__ import annotations
 
-import json
 import re
 from pathlib import Path
 from typing import Any
 
 from .errors import ValidationError
+from .store import parse_json_value
 from .util import slugify
+
+
+def _read_utf8(path: str | Path, *, label: str) -> str:
+    source = Path(path)
+    try:
+        return source.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise ValidationError(f"cannot read {label} {source}: {exc}") from exc
+
+
+def _csl_text(item: dict[str, Any], field: str, *, index: int, required: bool = False) -> str:
+    value = item.get(field)
+    if value is None and not required:
+        return ""
+    if not isinstance(value, str):
+        raise ValidationError(f"CSL item {index} {field} must be text")
+    text = value.strip() if required else value
+    if required and not text:
+        raise ValidationError(f"CSL item {index} is missing {field}")
+    return text
 
 
 def _split_balanced_entries(text: str) -> list[tuple[str, str, str]]:
@@ -155,15 +175,12 @@ def parse_bibtex(text: str) -> list[dict[str, Any]]:
 
 def load_bibtex(path: str | Path) -> list[dict[str, Any]]:
     """Read and parse a UTF-8 BibTeX file."""
-    return parse_bibtex(Path(path).read_text(encoding="utf-8"))
+    return parse_bibtex(_read_utf8(path, label="BibTeX source"))
 
 
 def parse_csl_json(text: str) -> list[dict[str, Any]]:
     """Parse CSL JSON records using the portable subset needed for review work."""
-    try:
-        source = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise ValidationError(f"invalid CSL JSON: {exc}") from exc
+    source = parse_json_value(text, label="CSL JSON")
     if isinstance(source, dict):
         source = [source]
     if not isinstance(source, list):
@@ -172,19 +189,39 @@ def parse_csl_json(text: str) -> list[dict[str, Any]]:
     for index, item in enumerate(source):
         if not isinstance(item, dict):
             raise ValidationError(f"CSL item {index} must be an object")
-        title = str(item.get("title", "")).strip()
-        if not title:
-            raise ValidationError(f"CSL item {index} is missing title")
-        issued = item.get("issued", {}).get("date-parts", [[]])
+        title = _csl_text(item, "title", index=index, required=True)
+        issued_value = item.get("issued")
+        if not isinstance(issued_value, dict):
+            raise ValidationError(f"CSL item {index} issued must be an object")
+        issued = issued_value.get("date-parts")
+        if not isinstance(issued, list):
+            raise ValidationError(f"CSL item {index} date-parts must be a list")
+        if not issued or not isinstance(issued[0], list) or not issued[0]:
+            raise ValidationError(f"CSL item {index} is missing an issued year")
         try:
             year = int(issued[0][0])
-        except (IndexError, TypeError, ValueError) as exc:
+        except (KeyError, TypeError, ValueError) as exc:
             raise ValidationError(f"CSL item {index} is missing an issued year") from exc
-        authors = []
-        for author in item.get("author", []):
+        author_values = item.get("author", [])
+        if not isinstance(author_values, list):
+            raise ValidationError(f"CSL item {index} author must be a list")
+        authors: list[str] = []
+        for author_index, author in enumerate(author_values):
+            if not isinstance(author, dict):
+                raise ValidationError(f"CSL item {index} author {author_index} must be an object")
             if "literal" in author:
-                authors.append(str(author["literal"]))
+                literal = author["literal"]
+                if not isinstance(literal, str):
+                    raise ValidationError(
+                        f"CSL item {index} author {author_index} literal must be text"
+                    )
+                authors.append(literal)
             else:
+                for field in ("given", "family"):
+                    if field in author and not isinstance(author[field], str):
+                        raise ValidationError(
+                            f"CSL item {index} author {author_index} {field} must be text"
+                        )
                 authors.append(
                     " ".join(
                         part
@@ -198,10 +235,10 @@ def parse_csl_json(text: str) -> list[dict[str, Any]]:
                 "title": title,
                 "authors": authors or ["Unknown"],
                 "year": year,
-                "venue": str(item.get("container-title", "")),
-                "doi": str(item.get("DOI", "")),
-                "url": str(item.get("URL", "")),
-                "abstract": str(item.get("abstract", "")),
+                "venue": _csl_text(item, "container-title", index=index),
+                "doi": _csl_text(item, "DOI", index=index),
+                "url": _csl_text(item, "URL", index=index),
+                "abstract": _csl_text(item, "abstract", index=index),
                 "notes": "Imported from CSL JSON.",
                 "tags": [],
             }
@@ -211,4 +248,4 @@ def parse_csl_json(text: str) -> list[dict[str, Any]]:
 
 def load_csl_json(path: str | Path) -> list[dict[str, Any]]:
     """Read and parse UTF-8 CSL JSON."""
-    return parse_csl_json(Path(path).read_text(encoding="utf-8"))
+    return parse_csl_json(_read_utf8(path, label="CSL JSON source"))

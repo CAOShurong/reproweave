@@ -5,6 +5,38 @@ This project uses semantic versioning.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-12
+
+### Added
+
+- Whole-batch bibliography preflight with deterministic `import --dry-run` reports and no writes
+  before every discoverable record, ID, path, and duplicate check succeeds.
+- Exact normalized DOI candidates and conservative normalized title/year/first-author candidates,
+  blocked by default and accepted only through repeatable content-addressed candidate IDs.
+- A read-only `duplicates` command with stable JSON, CSV, and Markdown output.
+- Installed-wheel acceptance for late import collisions, blocked dry-runs, explicit candidate
+  acceptance, and post-import duplicate discovery.
+- Public-release verification that anonymously downloads assets, checks SHA-256 values, and reruns
+  installed-wheel acceptance after GitHub publication.
+
+### Changed
+
+- `Workspace.add_many()` now consumes and validates the complete batch before the first write,
+  preserving input-order results while preventing partial writes from later preflightable errors.
+- Single-paper `add` follows the same duplicate acceptance policy; candidate IDs bind normalized
+  evidence, and duplicate CSV/Markdown exports neutralize formulas and raw HTML.
+- CSL JSON rejects duplicate keys, non-standard finite-number violations, and invalid Unicode using
+  the same strict JSON decoder as stored artifacts.
+
+### Compatibility
+
+- Existing successful imports remain source-compatible unless they contain a duplicate candidate;
+  those imports now stop with exit 5 until the reported candidate ID is accepted explicitly.
+- `--replace` excludes the record being replaced from self-comparison, but still blocks candidates
+  between the replacement and every other paper.
+- Preflight prevents only errors knowable before writing. It does not claim crash, power-loss, or
+  concurrent-process transactionality, and it never merges or deletes records.
+
 ## [0.3.0] - 2026-08-11
 
 ### Added
@@ -86,7 +118,8 @@ This project uses semantic versioning.
 - A deterministic, fully synthetic EE/AI demonstration with 55 artifacts.
 - Seventy-five standard-library tests, cross-platform CI, package smoke tests, and Pages.
 
-[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/CAOShurong/reproweave/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/CAOShurong/reproweave/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/CAOShurong/reproweave/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/CAOShurong/reproweave/compare/v0.1.0...v0.2.0
