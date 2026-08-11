@@ -8,12 +8,12 @@
     "id": {"$ref": "#/$defs/id"},
     "paper_id": {"$ref": "#/$defs/id"},
     "state": {"enum": ["discovered", "deduplicated", "screened", "included", "excluded"]},
-    "reason": {"type": "string", "minLength": 1},
-    "recorded_at": {"type": "string", "minLength": 1},
+    "reason": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "recorded_at": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "reviewer": {"type": "string"}
   },
   "additionalProperties": true,
   "$defs": {
-    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+    "id": {"type": "string", "maxLength": 200, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
   }
 }

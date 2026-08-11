@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from . import __version__
+from .assessments import build_assessment_resolution
 from .audit import audit_workspace
 from .constants import ASSESSMENT_DIMENSIONS
 from .graph import build_evidence_graph
@@ -18,7 +20,9 @@ from .workspace import Workspace
 
 
 def _json_script(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True).replace("</", "<\\/")
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, allow_nan=False).replace(
+        "</", "<\\/"
+    )
 
 
 def _rating_cells(row: dict[str, Any]) -> str:
@@ -116,12 +120,34 @@ def _triage_rows(triage: dict[str, Any]) -> str:
     return "\n".join(rows)
 
 
+def _agreement_rows(workspace: Workspace, agreement: dict[str, Any]) -> str:
+    papers = workspace.index("paper")
+    rows = []
+    for item in agreement["papers"]:
+        paper = papers.get(item["paper_id"], {})
+        conflicts = ", ".join(item["conflicting_dimensions"]) or "—"
+        consensus = item["consensus_assessment_id"] or "—"
+        rows.append(
+            "<tr>"
+            f"<td><strong>{html_escape(paper.get('title', item['paper_id']))}</strong>"
+            f"<br><code>{html_escape(item['paper_id'])}</code></td>"
+            f'<td><span class="state {html_escape(item["status"])}">'
+            f"{html_escape(item['status'])}</span></td>"
+            f"<td>{len(item['individual_assessment_ids'])}</td>"
+            f"<td><code>{html_escape(consensus)}</code></td>"
+            f"<td>{html_escape(conflicts)}</td>"
+            "</tr>"
+        )
+    return "\n".join(rows)
+
+
 def build_report(workspace: Workspace, output: str | Path) -> Path:
     """Generate one portable HTML file with embedded data, styles, and interactions."""
     workspace.require()
     destination = Path(output)
     destination.parent.mkdir(parents=True, exist_ok=True)
     manifest = workspace.manifest()
+    agreement = build_assessment_resolution(workspace)
     assessment = assess_workspace(workspace)
     matrix = evidence_matrix(workspace)
     plan = build_replication_plan(workspace)
@@ -137,7 +163,7 @@ def build_report(workspace: Workspace, output: str | Path) -> Path:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="generator" content="ReproWeave 0.2.1">
+<meta name="generator" content="ReproWeave {html_escape(__version__)}">
 <title>{html_escape(manifest["title"])} · ReproWeave evidence report</title>
 <style>
 :root{{--ink:#202a32;--muted:#68747b;--paper:#f4f1e9;--panel:#fffef9;--burgundy:#873e4a;
@@ -188,13 +214,14 @@ background:#ebe7dd;color:var(--muted)}} .warning{{color:#765a28}} .empty{{color:
 .legend{{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin-top:10px}}
 @media(max-width:850px){{.hero,.grid2{{grid-template-columns:1fr}}.stats{{grid-template-columns:repeat(2,1fr)}}
 .stat{{border-bottom:1px solid var(--line)}}.claims{{grid-template-columns:1fr}}nav{{display:none}}
-.section-head{{display:block}}.section-head p{{text-align:left;margin-top:8px}}}}
+.section-head{{display:block}}.section-head p{{text-align:left;margin-top:8px}}
+.controls{{display:grid;grid-template-columns:1fr}}.controls input,.controls select{{min-width:0;width:100%}}}}
 @media print{{.top,.controls{{display:none}}body{{background:white}}main{{max-width:none;padding:20px}}section{{break-inside:avoid}}}}
 </style>
 </head>
 <body>
 <header class="top"><div class="brand">REPRO<b>WEAVE</b></div><nav>
-<a href="#triage">Triage</a><a href="#matrix">Evidence matrix</a><a href="#claims">Claims</a><a href="#plan">Plan</a><a href="#audit">Audit</a>
+<a href="#triage">Triage</a><a href="#agreement">Agreement</a><a href="#matrix">Evidence matrix</a><a href="#claims">Claims</a><a href="#plan">Plan</a><a href="#audit">Audit</a>
 </nav></header>
 <main>
 <div class="hero"><div><div class="kicker">Local-first research evidence map</div>
@@ -221,6 +248,12 @@ The source set is content-addressed below.</p><code>{html_escape(seal["root"])}<
 <small>/ 100 mean</small></div><p>{summary["assessed_count"]} of {summary["paper_count"]} papers have explicit cards.</p>
 <p class="warning">{html_escape(assessment["warning"])}</p></div>
 <div class="panel"><h3>Recurring evidence gaps</h3>{_gap_bars(summary)}</div></div></section>
+<section id="agreement"><div class="section-head"><h2>Reviewer agreement</h2>
+<p>Individual cards remain separate. Multiple cards require one explicit consensus before scores or triage can use them.</p></div>
+<div class="table-wrap"><table><thead><tr><th>Paper</th><th>Status</th><th>Individual cards</th>
+<th>Consensus card</th><th>Recorded disagreements</th></tr></thead>
+<tbody>{_agreement_rows(workspace, agreement)}</tbody></table></div>
+<p class="footer-note">{html_escape(agreement["interpretation"])}</p></section>
 <section id="matrix"><div class="section-head"><h2>Evidence matrix</h2>
 <p>Every cell comes from an evidence locator, not a model-generated guess.</p></div>
 <div class="controls"><input id="search" type="search" placeholder="Filter by title or ID">
@@ -251,7 +284,7 @@ It measures documented reconstructability, not scientific quality. It does not e
 verify experimental claims, rank scientific merit, or infer missing facts.
 The embedded dataset lets you inspect the exact generated state offline.</div>
 </main>
-<script id="reproweave-data" type="application/json">{_json_script({"manifest": manifest, "assessment": assessment, "matrix": matrix, "triage": triage, "plan": plan, "audit": audit, "graph": graph, "backlog": backlog, "seal": seal})}</script>
+<script id="reproweave-data" type="application/json">{_json_script({"manifest": manifest, "agreement": agreement, "assessment": assessment, "matrix": matrix, "triage": triage, "plan": plan, "audit": audit, "graph": graph, "backlog": backlog, "seal": seal})}</script>
 <script>
 const search=document.querySelector("#search"), threshold=document.querySelector("#threshold");
 function filterRows(){{const query=search.value.trim().toLowerCase(), min=Number(threshold.value);

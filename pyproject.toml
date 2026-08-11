@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools==84.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "reproweave"
-version = "0.2.1"
+version = "0.3.0"
 description = "Local-first evidence maps and replication plans for engineering and AI papers"
 readme = "README.md"
 requires-python = ">=3.11"

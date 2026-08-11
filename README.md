@@ -24,6 +24,7 @@ reviewable.
 - [PyPI package](https://pypi.org/project/reproweave/)
 - [Interactive synthetic evidence report](https://caoshurong.github.io/reproweave/demo/evidence-report.html)
 - [Synthetic evidence matrix](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/evidence-matrix.csv)
+- [Synthetic reviewer agreement status](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/reviewer-agreement.md)
 - [Synthetic replication triage](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/replication-triage.md)
 - [Synthetic replication plan](https://github.com/CAOShurong/reproweave/blob/main/examples/demo/reports/replication-plan.md)
 
@@ -53,6 +54,7 @@ ReproWeave needs Python 3.11 or newer and has no runtime dependencies. Install f
 python -m pip install reproweave
 reproweave demo my-review
 reproweave audit --workspace my-review
+reproweave agreement --workspace my-review
 reproweave triage --workspace my-review --format markdown --output my-review/reports/triage.md
 reproweave report --workspace my-review
 ```
@@ -117,6 +119,19 @@ Each claim requires an `evidence_locator` such as `Figure 4`, `Appendix B.2`, or
 `repository/results.csv`. A rating requires a written evidence note. Missing facts remain
 `unknown`; they are never filled by inference.
 
+If two or more people assess the same paper, keep every review as `kind: "individual"` and add
+one `kind: "consensus"` assessment whose `source_assessment_ids` cover all current individual
+reviews and whose `source_assessment_hashes` bind their current canonical content. ReproWeave does
+not average ratings, infer a majority, or choose the last file. Inspect the state and copy the
+reported hashes before generating derived rankings:
+
+```bash
+reproweave agreement --workspace reviews/edge-ai --format markdown
+```
+
+See [reviewer consensus and migration](docs/reviewer-consensus.md) for the JSON shape, evidence
+behind this choice, and the limits of self-reported reviewer names.
+
 ### 4. Triage candidates before committing resources
 
 ```bash
@@ -158,8 +173,9 @@ reproweave seal --workspace reviews/edge-ai
 reproweave verify --workspace reviews/edge-ai
 ```
 
-The audit checks artifact schemas, cross references, task cycles, and assessment coverage. The
-seal hashes the manifest and every source artifact with SHA-256. It proves that a specific
+The audit checks artifact schemas, filename/ID integrity, workspace-wide ID uniqueness, cross
+references, reviewer consensus, task cycles, and assessment coverage. The seal hashes the
+manifest and every source artifact with SHA-256. It proves that a specific
 workspace snapshot has not changed; it does **not** prove that a scientific claim is true.
 
 ## The eight-dimension rubric
@@ -208,6 +224,7 @@ the same conservative vocabulary without adding a JSON Schema dependency.
 | `import` | Import BibTeX or CSL JSON |
 | `add` | Validate and add one JSON artifact |
 | `assess` | Calculate rubric coverage and common gaps |
+| `agreement` | Show individual reviews, conflicts, and explicit consensus status |
 | `matrix` | Export a paper-by-dimension matrix |
 | `backlog` | Rank unresolved evidence work |
 | `triage` | Build a rule-based candidate queue and test resource-access scenarios |
@@ -261,6 +278,7 @@ what-if resource triage and content-addressed verification. See the
 
 - [Methodology and score interpretation](https://github.com/CAOShurong/reproweave/blob/main/docs/methodology.md)
 - [Data model](https://github.com/CAOShurong/reproweave/blob/main/docs/data-model.md)
+- [Reviewer consensus and migration](https://github.com/CAOShurong/reproweave/blob/main/docs/reviewer-consensus.md)
 - [Replication planning](https://github.com/CAOShurong/reproweave/blob/main/docs/replication-planning.md)
 - [Audit and evidence seals](https://github.com/CAOShurong/reproweave/blob/main/docs/audit-and-seals.md)
 - [Import behavior](https://github.com/CAOShurong/reproweave/blob/main/docs/imports.md)

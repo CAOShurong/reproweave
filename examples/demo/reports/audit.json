@@ -1,7 +1,9 @@
 {
   "checks": [
     "artifact schemas",
+    "artifact filenames and workspace-wide IDs",
     "cross references",
+    "assessment consensus",
     "task dependency cycles",
     "included-paper assessment coverage"
   ],
@@ -18,6 +20,6 @@
     "warnings": 0
   },
   "issues": [],
-  "root": "C:\\Users\\35021\\Documents\\Codex\\2026-08-04\\github-edge-chatgpt-github-claude-star\\work\\reproweave\\examples\\demo",
+  "root": "E:\\Codex\\Projects\\caoshurong\\reproweave\\examples\\demo",
   "status": "pass"
 }

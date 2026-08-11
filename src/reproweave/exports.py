@@ -6,6 +6,7 @@ import csv
 import io
 from typing import Any
 
+from .assessments import build_assessment_resolution
 from .constants import ASSESSMENT_DIMENSIONS
 from .planning import build_replication_plan
 from .scoring import evidence_matrix
@@ -22,6 +23,62 @@ def matrix_csv(workspace: Workspace) -> str:
     writer.writeheader()
     writer.writerows(matrix["rows"])
     return output.getvalue()
+
+
+def agreement_csv(workspace: Workspace) -> str:
+    """Export explicit individual-review and consensus status."""
+    result = build_assessment_resolution(workspace)
+    fieldnames = [
+        "paper_id",
+        "status",
+        "resolution",
+        "individual_assessment_ids",
+        "individual_assessment_hashes",
+        "consensus_assessment_id",
+        "selected_assessment_id",
+        "conflicting_dimensions",
+    ]
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
+    writer.writeheader()
+    for row in result["papers"]:
+        writer.writerow(
+            {
+                "paper_id": row["paper_id"],
+                "status": row["status"],
+                "resolution": row["resolution"],
+                "individual_assessment_ids": ";".join(row["individual_assessment_ids"]),
+                "individual_assessment_hashes": ";".join(
+                    f"{source_id}={digest}"
+                    for source_id, digest in row["individual_assessment_hashes"].items()
+                ),
+                "consensus_assessment_id": row["consensus_assessment_id"],
+                "selected_assessment_id": row["selected_assessment_id"],
+                "conflicting_dimensions": ";".join(row["conflicting_dimensions"]),
+            }
+        )
+    return output.getvalue()
+
+
+def agreement_markdown(workspace: Workspace) -> str:
+    """Render a reviewer-resolution table without deriving a majority decision."""
+    result = build_assessment_resolution(workspace)
+    manifest = workspace.manifest()
+    lines = [
+        f"# Assessment agreement: {manifest['title']}",
+        "",
+        "| Paper | Status | Individual cards | Consensus | Conflicting dimensions |",
+        "| --- | --- | ---: | --- | --- |",
+    ]
+    for row in result["papers"]:
+        lines.append(
+            f"| `{row['paper_id']}` | {row['status']} | "
+            f"{len(row['individual_assessment_ids'])} | "
+            f"{row['consensus_assessment_id'] or '—'} | "
+            f"{', '.join(row['conflicting_dimensions']) or '—'} |"
+        )
+    lines.extend(["", "## Interpretation boundary", "", result["interpretation"], ""])
+    return "\n".join(lines)
 
 
 def plan_markdown(workspace: Workspace) -> str:

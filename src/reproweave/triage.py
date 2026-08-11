@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from typing import Any
 
+from .assessments import resolved_assessment_index
 from .constants import ASSESSMENT_DIMENSIONS
 from .errors import ValidationError
 from .scoring import score_assessment
@@ -113,7 +114,7 @@ def build_replication_triage(
             f"resource override has invalid availability values: {', '.join(invalid_values)}"
         )
 
-    assessments = {item["paper_id"]: item for item in workspace.all("assessment")}
+    assessments = resolved_assessment_index(workspace)
     experiments_by_paper: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for experiment in workspace.all("experiment"):
         experiments_by_paper[experiment["paper_id"]].append(experiment)

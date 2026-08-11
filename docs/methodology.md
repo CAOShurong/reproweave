@@ -78,9 +78,21 @@ Scores are most useful within one review where:
 Cross-domain league tables are usually misleading. A hardware experiment and a public-data
 benchmark face different availability constraints.
 
+## Multiple reviewers and consensus
+
+Independent assessments are evidence records, not samples for a mathematical average. Even two
+identical rating vectors can rest on different evidence or interpretations, so ReproWeave requires
+an explicit consensus whenever more than one individual assessment exists for a paper. The
+consensus record lists every source assessment and supplies its own eight ratings and evidence
+notes. Original reviews remain unchanged and visible.
+
+Until that record exists, `agreement` reports a conflict and exits with status 4; `audit` fails;
+and score, matrix, backlog, triage, and report commands refuse to produce a derived decision. This
+fail-closed behavior prevents an unresolved human disagreement from becoming a numerical ranking
+through file order, averaging, or an implicit majority rule.
+
 ## Human review remains necessary
 
 The application validates the shape and connections of the record. It cannot determine whether a
 quoted section supports the rating, whether a repository is correct, whether an implementation is
 safe to run, or whether an experiment reproduces the paper.
-

@@ -1,9 +1,10 @@
 name: Pages
 
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
     branches: [main]
-  workflow_dispatch:
+    types: [completed]
 
 permissions:
   contents: read
@@ -16,9 +17,20 @@ concurrency:
 
 jobs:
   build:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.13"
+      - name: Verify repository state before publication
+        run: python scripts/check_repository.py
       - name: Assemble static site
         run: |
           mkdir -p _site/demo _site/assets _site/schemas
@@ -26,12 +38,13 @@ jobs:
           cp docs/assets/*.svg _site/assets/
           cp examples/demo/reports/evidence-report.html _site/demo/
           cp examples/demo/reports/evidence-matrix.csv _site/demo/
+          cp examples/demo/reports/reviewer-agreement.csv _site/demo/
           cp examples/demo/reports/replication-plan.md _site/demo/
           cp examples/demo/reports/replication-triage.md _site/demo/
           cp schemas/*.json _site/schemas/
           touch _site/.nojekyll
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: _site
   deploy:
@@ -43,4 +56,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5

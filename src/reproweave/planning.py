@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from typing import Any
 
+from .assessments import resolved_assessment_index
 from .graph import topological_tasks
 from .workspace import Workspace
 
@@ -79,7 +80,7 @@ def build_replication_plan(workspace: Workspace) -> dict[str, Any]:
 def readiness_backlog(workspace: Workspace) -> list[dict[str, Any]]:
     """Rank unresolved assessment gaps into an evidence-gathering backlog."""
     tasks = []
-    for assessment in workspace.all("assessment"):
+    for assessment in resolved_assessment_index(workspace).values():
         for dimension, detail in assessment.get("ratings", {}).items():
             if detail["rating"] in {"no", "unknown", "partial"}:
                 severity = {"no": "high", "unknown": "high", "partial": "medium"}[detail["rating"]]

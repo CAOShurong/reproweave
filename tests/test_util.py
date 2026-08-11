@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+import math
 import tempfile
 import unittest
 from pathlib import Path
 
 from reproweave.errors import ValidationError
+from reproweave.store import read_json
 from reproweave.util import (
     canonical_json,
     ensure_id,
     ensure_text,
     html_escape,
+    pretty_json,
     sha256_file,
     sha256_text,
     slugify,
@@ -17,6 +20,21 @@ from reproweave.util import (
 
 
 class UtilTests(unittest.TestCase):
+    def test_non_standard_json_numbers_are_rejected_on_read(self) -> None:
+        for value in ("NaN", "Infinity", "-Infinity", "1e9999", "-1e9999"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "value.json"
+                path.write_text('{"value":' + value + "}", encoding="utf-8")
+                with self.assertRaisesRegex(ValidationError, "finite|standard JSON"):
+                    read_json(path)
+
+    def test_json_writers_refuse_non_finite_values(self) -> None:
+        for value in (math.nan, math.inf, -math.inf):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                pretty_json({"value": value})
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                canonical_json({"value": value})
+
     def test_valid_id(self) -> None:
         self.assertEqual(ensure_id("paper-42"), "paper-42")
 
@@ -27,6 +45,11 @@ class UtilTests(unittest.TestCase):
     def test_invalid_leading_number(self) -> None:
         with self.assertRaises(ValidationError):
             ensure_id("42-paper")
+
+    def test_id_length_budget_matches_filename_portability_boundary(self) -> None:
+        self.assertEqual(ensure_id("a" + "1" * 199), "a" + "1" * 199)
+        with self.assertRaises(ValidationError):
+            ensure_id("a" + "1" * 200)
 
     def test_ensure_text_strips(self) -> None:
         self.assertEqual(ensure_text("  value ", "field"), "value")

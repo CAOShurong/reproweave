@@ -6,10 +6,13 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from .assessments import analyze_assessments
 from .constants import ARTIFACT_KINDS
 from .errors import CycleError, ReproWeaveError
 from .graph import topological_tasks
-from .workspace import Workspace
+from .models import validate
+from .store import read_json
+from .workspace import DIRECTORIES, Workspace
 
 
 def _issue(level: str, code: str, message: str, artifact: str = "") -> dict[str, str]:
@@ -20,21 +23,79 @@ def audit_workspace(workspace: Workspace) -> dict[str, Any]:
     """Validate every artifact plus the relationships between them."""
     issues: list[dict[str, str]] = []
     records: dict[str, dict[str, dict[str, Any]]] = {}
+    record_lists: dict[str, list[dict[str, Any]]] = {}
+    global_ids: dict[str, tuple[str, Path]] = {}
     try:
         workspace.manifest()
     except ReproWeaveError as exc:
         issues.append(_issue("error", "manifest.invalid", str(exc), "reproweave.json"))
     for kind in ARTIFACT_KINDS:
+        records[kind] = {}
+        record_lists[kind] = []
         try:
-            records[kind] = workspace.index(kind)
+            paths = workspace.artifact_paths(kind)
         except ReproWeaveError as exc:
-            records[kind] = {}
-            issues.append(_issue("error", f"{kind}.invalid", str(exc), kind))
+            issues.append(
+                _issue(
+                    "error",
+                    "workspace.directory_invalid",
+                    str(exc),
+                    DIRECTORIES[kind],
+                )
+            )
+            continue
+        for path in paths:
+            relative = path.relative_to(workspace.root).as_posix()
+            if path.suffix != ".json":
+                issues.append(
+                    _issue(
+                        "error",
+                        "artifact.filename_extension",
+                        f"filename {path.name!r} must end with lowercase .json",
+                        relative,
+                    )
+                )
+                continue
+            try:
+                item = validate(kind, read_json(path))
+            except ReproWeaveError as exc:
+                issues.append(_issue("error", f"{kind}.invalid", str(exc), relative))
+                continue
+            record_lists[kind].append(item)
+            artifact_id = item["id"]
+            if path.stem != artifact_id:
+                issues.append(
+                    _issue(
+                        "error",
+                        "artifact.filename_mismatch",
+                        f"filename {path.name!r} does not match {kind} id {artifact_id!r}",
+                        relative,
+                    )
+                )
+            previous = global_ids.get(artifact_id)
+            if previous is not None:
+                previous_kind, previous_path = previous
+                issues.append(
+                    _issue(
+                        "error",
+                        "artifact.id_duplicate",
+                        f"artifact id {artifact_id!r} is reused by {previous_kind} "
+                        f"{previous_path.relative_to(workspace.root).as_posix()} and {kind} {relative}",
+                        relative,
+                    )
+                )
+            else:
+                global_ids[artifact_id] = (kind, path)
+            if artifact_id not in records[kind]:
+                records[kind][artifact_id] = item
 
     papers = records["paper"]
     experiments = records["experiment"]
     resources = records["resource"]
     tasks = records["task"]
+
+    assessment_resolution = analyze_assessments(record_lists["assessment"], papers)
+    issues.extend(assessment_resolution["issues"])
 
     for claim in records["claim"].values():
         if claim["paper_id"] not in papers:
@@ -131,7 +192,9 @@ def audit_workspace(workspace: Workspace) -> dict[str, Any]:
     except CycleError as exc:
         issues.append(_issue("error", "task.cycle", str(exc), "tasks"))
 
-    assessed = {item["paper_id"] for item in records["assessment"].values()}
+    assessed = {
+        item["paper_id"] for item in assessment_resolution["papers"] if item["status"] == "resolved"
+    }
     included = {
         item["paper_id"]
         for item in records["screening"].values()
@@ -148,20 +211,29 @@ def audit_workspace(workspace: Workspace) -> dict[str, Any]:
         )
 
     counts = Counter(item["level"] for item in issues)
-    issues.sort(key=lambda item: ({"error": 0, "warning": 1}.get(item["level"], 2), item["code"]))
+    issues.sort(
+        key=lambda item: (
+            {"error": 0, "warning": 1}.get(item["level"], 2),
+            item["code"],
+            item["artifact"],
+            item["message"],
+        )
+    )
     return {
         "status": "pass" if not counts["error"] else "fail",
         "root": str(Path(workspace.root)),
         "counts": {
             "errors": counts["error"],
             "warnings": counts["warning"],
-            "artifacts": sum(len(items) for items in records.values()),
-            **workspace.counts(),
+            "artifacts": sum(len(items) for items in record_lists.values()),
+            **{kind: len(record_lists[kind]) for kind in ARTIFACT_KINDS},
         },
         "issues": issues,
         "checks": [
             "artifact schemas",
+            "artifact filenames and workspace-wide IDs",
             "cross references",
+            "assessment consensus",
             "task dependency cycles",
             "included-paper assessment coverage",
         ],

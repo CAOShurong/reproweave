@@ -1,0 +1,84 @@
+{
+  "interpretation": "Individual reviews remain separate. Multiple reviews require an explicit consensus; ReproWeave never averages ratings or chooses a majority automatically.",
+  "issues": [],
+  "papers": [
+    {
+      "conflicting_dimensions": [],
+      "consensus_assessment_id": null,
+      "individual_assessment_hashes": {
+        "assess-channelcraft": "sha256:604b4cb3ee3492e840eeb28259916793ebf51725cabe543da8f96623ef046b2c"
+      },
+      "individual_assessment_ids": [
+        "assess-channelcraft"
+      ],
+      "paper_id": "channelcraft-2023",
+      "resolution": "single",
+      "selected_assessment_id": "assess-channelcraft",
+      "status": "resolved"
+    },
+    {
+      "conflicting_dimensions": [],
+      "consensus_assessment_id": null,
+      "individual_assessment_hashes": {
+        "assess-edgeformer": "sha256:95f62ab8ceaaa1f2080efd503c0823b4a5eaa97e93695e46251124506fee9414"
+      },
+      "individual_assessment_ids": [
+        "assess-edgeformer"
+      ],
+      "paper_id": "edgeformer-2025",
+      "resolution": "single",
+      "selected_assessment_id": "assess-edgeformer",
+      "status": "resolved"
+    },
+    {
+      "conflicting_dimensions": [],
+      "consensus_assessment_id": null,
+      "individual_assessment_hashes": {
+        "assess-sparsebeam": "sha256:4dd1aa35b549a11014cccfb95946b9a79443a02cb09f3c53d783ccc9817a99ed"
+      },
+      "individual_assessment_ids": [
+        "assess-sparsebeam"
+      ],
+      "paper_id": "sparsebeam-2024",
+      "resolution": "single",
+      "selected_assessment_id": "assess-sparsebeam",
+      "status": "resolved"
+    },
+    {
+      "conflicting_dimensions": [],
+      "consensus_assessment_id": null,
+      "individual_assessment_hashes": {
+        "assess-thermaltiny": "sha256:68dd91f938982788ac240c7e7ae1b70b5a7a2dab2ba012fb81e6080dbcbd4fb8"
+      },
+      "individual_assessment_ids": [
+        "assess-thermaltiny"
+      ],
+      "paper_id": "thermaltiny-2025",
+      "resolution": "single",
+      "selected_assessment_id": "assess-thermaltiny",
+      "status": "resolved"
+    },
+    {
+      "conflicting_dimensions": [],
+      "consensus_assessment_id": null,
+      "individual_assessment_hashes": {
+        "assess-voltguard": "sha256:895daea337dbdb106b8edb0012269ad689f795dcc17f6ce89c0ebe7e78c0f7dd"
+      },
+      "individual_assessment_ids": [
+        "assess-voltguard"
+      ],
+      "paper_id": "voltguard-2024",
+      "resolution": "single",
+      "selected_assessment_id": "assess-voltguard",
+      "status": "resolved"
+    }
+  ],
+  "summary": {
+    "assessment_count": 5,
+    "conflicted_paper_count": 0,
+    "invalid_paper_count": 0,
+    "missing_paper_count": 0,
+    "paper_count": 5,
+    "resolved_paper_count": 5
+  }
+}

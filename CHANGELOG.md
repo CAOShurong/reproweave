@@ -5,6 +5,40 @@ This project uses semantic versioning.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-11
+
+### Added
+
+- Explicit `individual` and `consensus` assessment records, plus an `agreement` command and
+  report section that expose unresolved multi-reviewer decisions.
+- Structured audit findings for filename/ID mismatches, workspace-wide duplicate IDs, malformed
+  artifact files, and unresolved assessment conflicts.
+- CodeQL analysis, immutable GitHub Action references, pinned direct build tools, and GitHub artifact
+  attestations for wheel and source distributions.
+
+### Changed
+
+- Multiple individual assessments now require one explicit consensus covering every current
+  individual assessment and binding each source card's canonical SHA-256. Scores, matrices,
+  triage, and backlogs no longer average or silently select competing reviews; changed source
+  cards make an earlier consensus stale.
+- JSON reading and writing reject `NaN` and infinities; task effort rejects booleans and non-finite
+  numbers.
+- Release tags must point to a commit on `main` and pass the full Windows/Linux CI matrix before
+  packaging. GitHub Release publication is independent of PyPI availability.
+- Audit continues through malformed artifacts and returns all discovered file-scoped findings in
+  one structured result.
+
+### Compatibility
+
+- Existing workspaces with zero or one assessment per paper remain valid when filenames match IDs,
+  IDs are workspace-wide unique, and stored JSON meets the stricter finite/portable field contract.
+- Existing workspaces with multiple assessments for one paper must label those records as
+  `individual` and add one `consensus` record before derived ranking commands can run.
+- Before upgrading, run `reproweave audit`. Rename cross-kind duplicate IDs and update their
+  references; rename mismatched files; replace explicit `null` list fields with `[]` or remove
+  them; and bound task estimates. Audit reports these repairs without mutating source files.
+
 ## [0.2.1] - 2026-08-05
 
 ### Added
@@ -52,7 +86,8 @@ This project uses semantic versioning.
 - A deterministic, fully synthetic EE/AI demonstration with 55 artifacts.
 - Seventy-five standard-library tests, cross-platform CI, package smoke tests, and Pages.
 
-[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/CAOShurong/reproweave/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/CAOShurong/reproweave/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/CAOShurong/reproweave/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/CAOShurong/reproweave/releases/tag/v0.1.0

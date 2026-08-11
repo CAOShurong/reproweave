@@ -6,8 +6,9 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from .assessments import build_assessment_resolution
 from .audit import audit_workspace
-from .exports import matrix_csv, plan_markdown, triage_markdown
+from .exports import agreement_csv, agreement_markdown, matrix_csv, plan_markdown, triage_markdown
 from .graph import build_evidence_graph
 from .report import build_report
 from .scoring import assess_workspace
@@ -668,7 +669,14 @@ def create_demo(root: str | Path, *, force: bool = False) -> Workspace:
     (reports / "replication-triage.md").write_text(
         triage_markdown(workspace), encoding="utf-8", newline="\n"
     )
+    (reports / "reviewer-agreement.csv").write_text(
+        agreement_csv(workspace), encoding="utf-8", newline="\n"
+    )
+    (reports / "reviewer-agreement.md").write_text(
+        agreement_markdown(workspace), encoding="utf-8", newline="\n"
+    )
     for name, value in (
+        ("agreement.json", build_assessment_resolution(workspace)),
         ("assessment.json", assess_workspace(workspace)),
         ("audit.json", audit_workspace(workspace)),
         ("evidence-graph.json", build_evidence_graph(workspace)),

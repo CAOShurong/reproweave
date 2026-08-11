@@ -22,12 +22,12 @@ python -m pip install -e .
 python -m unittest discover -s tests -v
 ```
 
-Install Ruff and Build for the same checks used in CI:
+Install the pinned quality and build tools used in CI:
 
 ```bash
-python -m pip install ruff build
-ruff check src tests
-ruff format --check src tests
+python -m pip install -r requirements/ci.txt
+ruff check src tests scripts
+ruff format --check src tests scripts
 python -m build
 ```
 
@@ -40,4 +40,3 @@ python -m build
 5. State whether a change affects score interpretation or stored artifacts.
 
 By participating, you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
-

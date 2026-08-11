@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+from .assessments import resolved_assessment_index
 from .constants import ASSESSMENT_DIMENSIONS, RATING_VALUES
 from .workspace import Workspace
 
@@ -50,7 +51,8 @@ def assess_workspace(workspace: Workspace) -> dict[str, Any]:
     rows = []
     gap_counts: Counter[str] = Counter()
     assessed: set[str] = set()
-    for assessment in workspace.all("assessment"):
+    resolved = resolved_assessment_index(workspace)
+    for assessment in resolved.values():
         result = score_assessment(assessment)
         result["title"] = papers.get(result["paper_id"], {}).get("title", result["paper_id"])
         rows.append(result)
@@ -63,6 +65,7 @@ def assess_workspace(workspace: Workspace) -> dict[str, Any]:
         "summary": {
             "paper_count": len(papers),
             "assessed_count": len(rows),
+            "assessment_count": len(workspace.all("assessment")),
             "unassessed_paper_ids": sorted(set(papers) - assessed),
             "mean_score": round(sum(scores) / len(scores), 1) if scores else 0.0,
             "minimum_score": min(scores, default=0.0),
@@ -81,7 +84,7 @@ def assess_workspace(workspace: Workspace) -> dict[str, Any]:
 
 def evidence_matrix(workspace: Workspace) -> dict[str, Any]:
     """Return a rectangular paper-by-dimension matrix."""
-    assessments = {item["paper_id"]: item for item in workspace.all("assessment")}
+    assessments = resolved_assessment_index(workspace)
     rows = []
     for paper in workspace.all("paper"):
         assessment = assessments.get(paper["id"], {})

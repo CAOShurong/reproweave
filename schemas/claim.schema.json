@@ -7,8 +7,8 @@
   "properties": {
     "id": {"$ref": "#/$defs/id"},
     "paper_id": {"$ref": "#/$defs/id"},
-    "statement": {"type": "string", "minLength": 1},
-    "evidence_locator": {"type": "string", "minLength": 1},
+    "statement": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "evidence_locator": {"type": "string", "minLength": 1, "pattern": "\\S"},
     "experiment_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
     "type": {"enum": ["empirical", "method", "theory", "survey", "limitation"]},
     "confidence": {"enum": ["reported", "corroborated", "contested", "uncertain"]},
@@ -16,6 +16,6 @@
   },
   "additionalProperties": true,
   "$defs": {
-    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+    "id": {"type": "string", "maxLength": 200, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
   }
 }

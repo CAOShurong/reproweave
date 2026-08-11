@@ -19,6 +19,17 @@ ratings, resource constraints, and an executable replication backlog.
 | Experiment tracking | MLflow | Captures runs, parameters, models, and metrics | ReproWeave begins with external literature and plans work before a local run exists |
 | Data versioning | DVC | Versions data pipelines and artifacts | ReproWeave records availability and relationships; it does not transfer large data |
 
+## Multi-reviewer decision records
+
+The 0.3 consensus rule reuses an established human-resolution pattern rather than copying a full
+systematic-review platform. Covidence and Rayyan provide mature hosted conflict workflows but are
+proprietary services; ASReview is Apache-2.0 open source, but its collaborative deployment adds a
+web application, database/task services, and operating overhead. ReproWeave instead adds a small
+file-format extension for its existing local assessment records. It should not be chosen when
+teams actually need collaborative screening, blind review, identity controls, or adjudication
+history. The evidence, cost, and migration comparison is documented in
+[`reviewer-consensus.md`](reviewer-consensus.md).
+
 ## Design inference
 
 The useful open-source contribution is the composition:

@@ -9,4 +9,5 @@ recursive-include site *.html *.css
 recursive-include examples *.json *.html *.csv *.md
 recursive-include tests *.py
 recursive-include scripts *.py
+recursive-include requirements *.txt
 recursive-include .github *.yml
