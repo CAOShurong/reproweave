@@ -375,7 +375,7 @@ class AuditSealReportTests(unittest.TestCase):
             self.assertIn("not scientific quality", text)
             self.assertIn("Replication candidate triage", text)
             self.assertIn("Reviewer agreement", text)
-            self.assertIn('name="generator" content="ReproWeave 0.3.0"', text)
+            self.assertIn('name="generator" content="ReproWeave 0.4.0"', text)
 
     def test_report_escapes_title(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

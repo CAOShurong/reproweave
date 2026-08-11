@@ -97,12 +97,17 @@ Edit `reviews/edge-ai/reproweave.json` to record inclusion criteria before scree
 ### 2. Import references offline
 
 ```bash
+reproweave import bibtex library.bib --workspace reviews/edge-ai --dry-run
 reproweave import bibtex library.bib --workspace reviews/edge-ai
 reproweave import csl-json selected.json --workspace reviews/edge-ai
+reproweave duplicates --workspace reviews/edge-ai --format markdown
 ```
 
 The importers cover the portable subset needed for review records. Keep the original export in
-version control because ReproWeave is not a full BibTeX macro engine or citation manager.
+version control because ReproWeave is not a full BibTeX macro engine or citation manager. Every
+batch is parsed and validated before the first file is written. Exact DOI matches and conservative
+title/year/first-author candidates stop the import until their candidate IDs are reviewed and
+accepted explicitly; ReproWeave never merges or deletes papers automatically.
 
 ### 3. Add evidence artifacts
 
@@ -221,7 +226,8 @@ the same conservative vocabulary without adding a JSON Schema dependency.
 | Command | Purpose |
 |---|---|
 | `init` | Create a review workspace |
-| `import` | Import BibTeX or CSL JSON |
+| `import` | Preflight and import BibTeX or CSL JSON |
+| `duplicates` | Report duplicate candidates as stable JSON, CSV, or Markdown |
 | `add` | Validate and add one JSON artifact |
 | `assess` | Calculate rubric coverage and common gaps |
 | `agreement` | Show individual reviews, conflicts, and explicit consensus status |

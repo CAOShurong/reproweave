@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
+from pathlib import Path
 
-from reproweave.bibliography import parse_bibtex, parse_csl_json
+from reproweave.bibliography import load_csl_json, parse_bibtex, parse_csl_json
 from reproweave.errors import ValidationError
 
 
@@ -55,9 +57,53 @@ class BibliographyTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             parse_csl_json("{")
 
+    def test_csl_rejects_duplicate_keys_and_non_standard_numbers(self) -> None:
+        for text in (
+            '{"id":"one","id":"two","title":"A","issued":{"date-parts":[[2025]]}}',
+            '{"title":"A","score":NaN,"issued":{"date-parts":[[2025]]}}',
+        ):
+            with self.subTest(text=text), self.assertRaises(ValidationError):
+                parse_csl_json(text)
+
     def test_csl_requires_year(self) -> None:
-        with self.assertRaises(ValidationError):
-            parse_csl_json('{"title":"A"}')
+        for text in (
+            '{"title":"A"}',
+            '{"title":"A","issued":{"date-parts":[{}]}}',
+        ):
+            with self.subTest(text=text), self.assertRaises(ValidationError):
+                parse_csl_json(text)
+
+    def test_csl_rejects_invalid_author_shapes(self) -> None:
+        for author in ("null", "{}", '[["Ada"]]'):
+            text = '{"title":"A","author":' + author + ',"issued":{"date-parts":[[2025]]}}'
+            with self.subTest(author=author), self.assertRaises(ValidationError):
+                parse_csl_json(text)
+
+    def test_load_csl_reports_invalid_utf8_as_validation_error(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "invalid.json"
+            source.write_bytes(b"\xff\xfe")
+            with self.assertRaisesRegex(ValidationError, "cannot read CSL JSON source"):
+                load_csl_json(source)
+
+    def test_csl_null_optional_fields_remain_empty(self) -> None:
+        paper = parse_csl_json(
+            '{"id":"p1","title":"A","DOI":null,"URL":null,"abstract":null,'
+            '"container-title":null,"issued":{"date-parts":[[2025]]}}'
+        )[0]
+        self.assertEqual(
+            {field: paper[field] for field in ("doi", "url", "abstract", "venue")},
+            {"doi": "", "url": "", "abstract": "", "venue": ""},
+        )
+
+    def test_csl_rejects_non_text_title_and_optional_fields(self) -> None:
+        for text in (
+            '{"title":null,"issued":{"date-parts":[[2025]]}}',
+            '{"title":"A","DOI":{},"issued":{"date-parts":[[2025]]}}',
+            '{"title":"A","URL":[],"issued":{"date-parts":[[2025]]}}',
+        ):
+            with self.subTest(text=text), self.assertRaises(ValidationError):
+                parse_csl_json(text)
 
 
 if __name__ == "__main__":

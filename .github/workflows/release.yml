@@ -112,3 +112,42 @@ jobs:
             --verify-tag \
             --generate-notes \
             --title "ReproWeave ${GITHUB_REF_NAME}"
+
+  verify-github-release:
+    name: Verify public GitHub release
+    needs: publish-github
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.13"
+      - name: Download public assets without credentials
+        env:
+          PUBLIC_DIST: ${{ runner.temp }}/public-dist
+        run: |
+          set -euo pipefail
+          unset GH_TOKEN GITHUB_TOKEN
+          version="${GITHUB_REF_NAME#v}"
+          base="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}"
+          mkdir -p "${PUBLIC_DIST}"
+          for asset in \
+            "reproweave-${version}-py3-none-any.whl" \
+            "reproweave-${version}.tar.gz" \
+            "SHA256SUMS"
+          do
+            curl --fail --location --silent --show-error \
+              --retry 8 --retry-all-errors --retry-delay 5 \
+              --output "${PUBLIC_DIST}/${asset}" "${base}/${asset}"
+          done
+      - name: Verify public checksums and installed behavior
+        env:
+          PUBLIC_DIST: ${{ runner.temp }}/public-dist
+        run: |
+          set -euo pipefail
+          (cd "${PUBLIC_DIST}" && sha256sum --check SHA256SUMS)
+          python scripts/acceptance_cli.py \
+            --wheel-dir "${PUBLIC_DIST}" \
+            --root "${{ runner.temp }}/public-release-acceptance"

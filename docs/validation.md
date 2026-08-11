@@ -1,6 +1,6 @@
 # Validation evidence
 
-Version 0.3.0 is validated at six layers.
+Version 0.4.0 is validated at six layers.
 
 ## Behavioral tests
 
@@ -10,6 +10,8 @@ More than one hundred standard-library unit tests cover:
 - all seven artifact validators;
 - workspace creation, replacement, ordering, and counts;
 - BibTeX and CSL JSON success and failure cases;
+- whole-batch import preflight, strict CSL JSON, deterministic dry-runs, and zero partial writes;
+- exact DOI and conservative title/year/author duplicate candidates with stable exports;
 - weighted score behavior, missing coverage, and matrices;
 - graph edges, task ordering, cycles, waves, blockers, and backlogs;
 - rule-based candidate triage, resource overrides, hard blockers, and portable exports;
@@ -49,11 +51,15 @@ reproweave verify --workspace scratch/one
 ## Package smoke test
 
 CI builds a wheel and source distribution on Windows and Ubuntu, installs the wheel into a clean
-virtual environment, then exercises resolved, conflicted, and malformed-workspace CLI paths. It
-verifies that conflicted derived commands write no output and that explicit consensus is the only
-selected score. The release job repeats that installed-wheel acceptance, runs `twine check`, writes
-SHA-256 checksums, and publishes versioned assets only after the complete CI workflow passes and
-the tagged commit is verified as an ancestor of `main`.
+virtual environment, then exercises resolved, conflicted, malformed-workspace, bibliography
+preflight, blocked duplicate, explicit candidate acceptance, and duplicate-report CLI paths. It
+verifies that rejected batches leave every workspace file byte-identical and that conflicted
+derived commands write no output. The release job repeats that installed-wheel acceptance, runs
+`twine check`, writes SHA-256 checksums, and publishes versioned assets only after the complete CI
+workflow passes and the tagged commit is verified as an ancestor of `main`.
+After the GitHub Release is created, a separate job downloads the wheel, source archive, and
+`SHA256SUMS` through public unauthenticated URLs, verifies the checksums, installs that downloaded
+wheel in a clean environment, and repeats the acceptance workflow.
 
 ## Code and artifact provenance
 
@@ -82,4 +88,4 @@ endpoints:
 - Python 3.11 and 3.13
 
 Support means the automated matrix passes. Other operating systems and Python versions may work
-but are not claimed by version 0.3.0.
+but are not claimed by version 0.4.0.
