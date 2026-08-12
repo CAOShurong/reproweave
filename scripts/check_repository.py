@@ -21,7 +21,7 @@ from reproweave.seal import verify_seal  # noqa: E402
 from reproweave.triage import build_replication_triage  # noqa: E402
 from reproweave.workspace import Workspace  # noqa: E402
 
-EXPECTED_VERSION = "0.4.0"
+EXPECTED_VERSION = "0.4.1"
 
 
 def require(condition: bool, message: str) -> None:

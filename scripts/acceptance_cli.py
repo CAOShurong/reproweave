@@ -100,7 +100,7 @@ def main() -> None:
     run([str(python), "-m", "pip", "install", "--no-deps", str(wheels[0])])
     cli = [str(python), "-m", "reproweave"]
     version = run([*cli, "--version"]).stdout.strip()
-    if version != "reproweave 0.4.0":
+    if version != "reproweave 0.4.1":
         raise AssertionError(f"unexpected installed version: {version}")
     if run([str(entrypoint), "--version"]).stdout.strip() != version:
         raise AssertionError("console script version differs from python -m entry point")
@@ -482,6 +482,38 @@ def main() -> None:
     if "papers/broken.json" not in {item["artifact"] for item in malformed["issues"]}:
         raise AssertionError("malformed artifact path is missing from the audit")
 
+    long_workspace = args.root / ("d" * 64) / "long-id-review"
+    run(
+        [
+            *cli,
+            "init",
+            str(long_workspace),
+            "--title",
+            "Long path acceptance",
+            "--question",
+            "Can the portable ID limit survive a deep Windows workspace?",
+        ]
+    )
+    long_id = "a" + "1" * 199
+    long_task = args.root / "long-task.json"
+    write_json(long_task, {"id": long_id, "title": "Maximum-length identifier"})
+    stored = long_workspace / "tasks" / f"{long_id}.json"
+    if len(str(stored)) <= 260:
+        raise AssertionError(f"long-path acceptance target is too short: {len(str(stored))}")
+    run([*cli, "add", "task", str(long_task), "--workspace", str(long_workspace)])
+    run([*cli, "audit", "--workspace", str(long_workspace)])
+    run(
+        [
+            *cli,
+            "add",
+            "task",
+            str(long_task),
+            "--workspace",
+            str(long_workspace),
+            "--replace",
+        ]
+    )
+
     print(
         json.dumps(
             {
@@ -493,6 +525,7 @@ def main() -> None:
                 "malformed_artifact": "papers/broken.json",
                 "duplicate_candidate_id": candidate_id,
                 "late_collision_side_effects": 0,
+                "long_path_characters": len(str(stored)),
             },
             sort_keys=True,
         )

@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If ReproWeave supports your research workflow, please cite the software release."
 title: "ReproWeave"
 type: software
-version: 0.4.0
+version: 0.4.1
 date-released: 2026-08-12
 authors:
   - family-names: Cao

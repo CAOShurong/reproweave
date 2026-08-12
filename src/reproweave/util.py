@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 from datetime import UTC, datetime
 from pathlib import Path
@@ -13,6 +14,19 @@ from .constants import MAX_ID_LENGTH
 from .errors import ValidationError
 
 ID_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
+
+
+def filesystem_path(path: str | Path) -> str:
+    """Return a Windows extended-length path for internal file operations."""
+    value = os.fspath(path)
+    if os.name != "nt":
+        return value
+    absolute = os.path.abspath(value)
+    if absolute.startswith("\\\\?\\"):
+        return absolute
+    if absolute.startswith("\\\\"):
+        return "\\\\?\\UNC\\" + absolute[2:]
+    return "\\\\?\\" + absolute
 
 
 def utc_now() -> str:
@@ -61,7 +75,7 @@ def sha256_text(value: str) -> str:
 def sha256_file(path: Path) -> str:
     """Hash a file without loading it all into memory."""
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for block in iter(lambda: handle.read(65536), b""):
             digest.update(block)
     return "sha256:" + digest.hexdigest()

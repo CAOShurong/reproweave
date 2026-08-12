@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import os
 from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,7 +14,15 @@ from .duplicates import build_duplicate_report
 from .errors import ValidationError
 from .models import validate
 from .store import read_json, write_json
-from .util import canonical_json, ensure_id, ensure_text, pretty_json, sha256_text, utc_now
+from .util import (
+    canonical_json,
+    ensure_id,
+    ensure_text,
+    filesystem_path,
+    pretty_json,
+    sha256_text,
+    utc_now,
+)
 
 DIRECTORIES = {
     "paper": "papers",
@@ -164,12 +173,14 @@ class Workspace:
         self.require()
         validated = validate(kind, artifact)
         for other_kind in DIRECTORIES:
-            if other_kind != kind and self.path_for(other_kind, validated["id"]).exists():
+            if other_kind != kind and os.path.exists(
+                filesystem_path(self.path_for(other_kind, validated["id"]))
+            ):
                 raise ValidationError(
                     f"artifact id {validated['id']!r} is already used by {other_kind}"
                 )
         path = self.path_for(kind, validated["id"])
-        if path.exists() and not replace:
+        if os.path.exists(filesystem_path(path)) and not replace:
             raise ValidationError(f"{kind} already exists: {validated['id']}")
         write_json(path, validated)
         return path
