@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import json
+import os
 from pathlib import Path
 from typing import Any
 
 from .constants import ARTIFACT_KINDS
-from .store import write_json
-from .util import canonical_json, sha256_file, sha256_text, utc_now
+from .store import read_json, write_json
+from .util import canonical_json, filesystem_path, sha256_file, sha256_text, utc_now
 from .workspace import Workspace
 
 
@@ -16,13 +16,12 @@ def build_seal(workspace: Workspace) -> dict[str, Any]:
     """Hash the manifest and every source artifact, excluding generated reports."""
     files = [workspace.manifest_path]
     for kind in ARTIFACT_KINDS:
-        directory = workspace.path_for(kind, "placeholder").parent
-        files.extend(sorted(directory.glob("*.json")))
+        files.extend(workspace.artifact_paths(kind))
     entries = [
         {
             "path": path.relative_to(workspace.root).as_posix(),
             "sha256": sha256_file(path),
-            "bytes": path.stat().st_size,
+            "bytes": os.path.getsize(filesystem_path(path)),
         }
         for path in sorted(set(files))
     ]
@@ -52,7 +51,7 @@ def write_seal(
 def verify_seal(workspace: Workspace, path: str | Path | None = None) -> dict[str, Any]:
     """Verify the current source artifacts against a saved seal."""
     destination = Path(path) if path else workspace.root / "reproweave-seal.json"
-    expected = json.loads(destination.read_text(encoding="utf-8"))
+    expected = read_json(destination)
     observed = build_seal(workspace)
     return {
         "status": "verified" if expected.get("root") == observed["root"] else "changed",

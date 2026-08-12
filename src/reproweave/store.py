@@ -108,6 +108,13 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
             os.unlink(filesystem_path(temporary_path))
 
 
+def write_text(path: Path, value: str) -> None:
+    """Write UTF-8 text through the portable internal filesystem boundary."""
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(value)
+
+
 def load_directory(path: Path) -> list[dict[str, Any]]:
     """Load every JSON object in filename order."""
     if not os.path.exists(filesystem_path(path)):
@@ -119,9 +126,7 @@ def load_directory(path: Path) -> list[dict[str, Any]]:
 
 def write_jsonl(path: Path, values: Iterable[dict[str, Any]]) -> None:
     """Write deterministic JSON Lines content atomically."""
-    path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         json.dumps(value, ensure_ascii=False, sort_keys=True, allow_nan=False) for value in values
     ]
-    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
-        handle.write("\n".join(lines) + ("\n" if lines else ""))
+    write_text(path, "\n".join(lines) + ("\n" if lines else ""))

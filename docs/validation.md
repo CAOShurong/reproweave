@@ -1,6 +1,6 @@
 # Validation evidence
 
-Version 0.4.1 is validated at six layers.
+Version 0.4.2 is validated at six layers.
 
 ## Behavioral tests
 
@@ -9,6 +9,7 @@ More than one hundred standard-library unit tests cover:
 - portable identifiers, escaping, deterministic JSON, and hashing;
 - all seven artifact validators;
 - workspace creation, replacement, ordering, and counts;
+- deep Windows workspace initialization, enumeration, report export, and seal verification;
 - BibTeX and CSL JSON success and failure cases;
 - whole-batch import preflight, strict CSL JSON, deterministic dry-runs, and zero partial writes;
 - exact DOI and conservative title/year/author duplicate candidates with stable exports;
@@ -88,4 +89,4 @@ endpoints:
 - Python 3.11 and 3.13
 
 Support means the automated matrix passes. Other operating systems and Python versions may work
-but are not claimed by version 0.4.1.
+but are not claimed by version 0.4.2.

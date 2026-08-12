@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,6 +13,7 @@ from reproweave.demo import create_demo
 from reproweave.report import build_report
 from reproweave.seal import build_seal, verify_seal, write_seal
 from reproweave.store import write_json
+from reproweave.util import filesystem_path
 from reproweave.workspace import Workspace
 
 
@@ -299,14 +301,14 @@ class AuditSealReportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             workspace = make_workspace(Path(directory) / "w")
             (workspace.root / "claims" / "bad.json").write_text("{", encoding="utf-8")
-            original_iterdir = Path.iterdir
+            original_scandir = os.scandir
 
-            def flaky_iterdir(path: Path):
-                if path == workspace.root / "papers":
+            def flaky_scandir(path: str):
+                if path == filesystem_path(workspace.root / "papers"):
                     raise PermissionError("synthetic enumeration failure")
-                return original_iterdir(path)
+                return original_scandir(path)
 
-            with mock.patch.object(Path, "iterdir", flaky_iterdir):
+            with mock.patch("reproweave.workspace.os.scandir", flaky_scandir):
                 result = audit_workspace(workspace)
             issues = {(item["artifact"], item["code"]) for item in result["issues"]}
             self.assertEqual(result["status"], "fail")
@@ -375,7 +377,7 @@ class AuditSealReportTests(unittest.TestCase):
             self.assertIn("not scientific quality", text)
             self.assertIn("Replication candidate triage", text)
             self.assertIn("Reviewer agreement", text)
-            self.assertIn('name="generator" content="ReproWeave 0.4.1"', text)
+            self.assertIn('name="generator" content="ReproWeave 0.4.2"', text)
 
     def test_report_escapes_title(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

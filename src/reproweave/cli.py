@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 from typing import Any
 
@@ -26,7 +27,7 @@ from .planning import build_replication_plan, readiness_backlog
 from .report import build_report
 from .scoring import assess_workspace, evidence_matrix
 from .seal import verify_seal, write_seal
-from .store import read_json
+from .store import read_json, write_text
 from .triage import build_replication_triage, parse_resource_overrides
 from .util import pretty_json
 from .workspace import Workspace
@@ -137,9 +138,8 @@ def _parser() -> argparse.ArgumentParser:
 def _emit(value: str, output: str | None) -> None:
     if output:
         destination = Path(output)
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(value, encoding="utf-8", newline="\n")
-        print(destination.resolve())
+        write_text(destination, value)
+        print(Path(os.path.abspath(destination)))
     else:
         print(value, end="" if value.endswith("\n") else "\n")
 
