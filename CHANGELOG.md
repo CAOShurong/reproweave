@@ -5,6 +5,13 @@ This project uses semantic versioning.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-08-12
+
+### Fixed
+
+- Maximum-length artifact IDs now remain readable, replaceable, and atomically writable in deep
+  Windows workspaces without requiring the system-wide long-path policy.
+
 ## [0.4.0] - 2026-08-12
 
 ### Added
@@ -118,7 +125,8 @@ This project uses semantic versioning.
 - A deterministic, fully synthetic EE/AI demonstration with 55 artifacts.
 - Seventy-five standard-library tests, cross-platform CI, package smoke tests, and Pages.
 
-[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/CAOShurong/reproweave/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/CAOShurong/reproweave/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/CAOShurong/reproweave/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/CAOShurong/reproweave/compare/v0.2.0...v0.2.1

@@ -2,6 +2,11 @@
 
 The roadmap prioritizes trustworthy interchange over automation volume.
 
+## Shipped in 0.4.1
+
+- Extended-length internal file operations on Windows keep maximum-length portable artifact IDs
+  usable in deep workspaces without changing the user-visible paths.
+
 ## Shipped in 0.4.0
 
 - Whole-batch bibliography preflight before any artifact is written.

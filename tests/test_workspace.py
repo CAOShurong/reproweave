@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,6 +9,7 @@ from common import make_workspace
 
 from reproweave.errors import ValidationError
 from reproweave.store import write_json
+from reproweave.util import filesystem_path
 from reproweave.workspace import Workspace
 
 
@@ -38,11 +40,22 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(workspace.get("paper", "paper-one")["title"], "Paper One")
 
     def test_add_maximum_length_id_uses_a_short_atomic_temp_name(self) -> None:
-        workspace = make_workspace(self.root / "w")
+        workspace = make_workspace(self.root / ("d" * 64) / "w")
         artifact_id = "a" + "1" * 199
         path = workspace.add("task", {"id": artifact_id, "title": "Long identifier"})
+        self.assertGreater(len(str(path)), 260)
         self.assertEqual(path.name, f"{artifact_id}.json")
         self.assertEqual(workspace.get("task", artifact_id)["id"], artifact_id)
+        with self.assertRaisesRegex(ValidationError, "already exists"):
+            workspace.add("task", {"id": artifact_id, "title": "Duplicate"})
+        workspace.add(
+            "task",
+            {"id": artifact_id, "title": "Replacement"},
+            replace=True,
+        )
+        self.assertEqual(workspace.get("task", artifact_id)["title"], "Replacement")
+        self.assertEqual(workspace.all("task")[0]["id"], artifact_id)
+        os.unlink(filesystem_path(path))
 
     def test_duplicate_add_fails(self) -> None:
         workspace = make_workspace(self.root / "w")

@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .errors import ValidationError
-from .util import pretty_json
+from .util import filesystem_path, pretty_json
 
 
 def _reject_non_finite(value: str) -> None:
@@ -73,7 +73,8 @@ def parse_json_value(text: str, *, label: str = "JSON") -> Any:
 def read_json(path: Path) -> dict[str, Any]:
     """Read a JSON object with a useful path-aware error."""
     try:
-        text = path.read_text(encoding="utf-8")
+        with open(filesystem_path(path), encoding="utf-8") as handle:
+            text = handle.read()
     except FileNotFoundError as exc:
         raise ValidationError(f"missing file: {path}") from exc
     except OSError as exc:
@@ -88,9 +89,12 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def write_json(path: Path, value: dict[str, Any]) -> None:
     """Atomically replace a JSON artifact."""
-    path.parent.mkdir(parents=True, exist_ok=True)
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
     descriptor, temporary = tempfile.mkstemp(
-        prefix=".reproweave-", suffix=".tmp", dir=path.parent, text=True
+        prefix=".reproweave-",
+        suffix=".tmp",
+        dir=filesystem_path(path.parent),
+        text=True,
     )
     temporary_path = Path(temporary)
     try:
@@ -98,17 +102,19 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
             handle.write(pretty_json(value))
             handle.flush()
             os.fsync(handle.fileno())
-        os.replace(temporary_path, path)
+        os.replace(filesystem_path(temporary_path), filesystem_path(path))
     finally:
-        if temporary_path.exists():
-            temporary_path.unlink()
+        if os.path.exists(filesystem_path(temporary_path)):
+            os.unlink(filesystem_path(temporary_path))
 
 
 def load_directory(path: Path) -> list[dict[str, Any]]:
     """Load every JSON object in filename order."""
-    if not path.exists():
+    if not os.path.exists(filesystem_path(path)):
         return []
-    return [read_json(item) for item in sorted(path.glob("*.json"))]
+    with os.scandir(filesystem_path(path)) as entries:
+        files = sorted(path / entry.name for entry in entries if entry.name.endswith(".json"))
+    return [read_json(item) for item in files]
 
 
 def write_jsonl(path: Path, values: Iterable[dict[str, Any]]) -> None:
@@ -117,4 +123,5 @@ def write_jsonl(path: Path, values: Iterable[dict[str, Any]]) -> None:
     lines = [
         json.dumps(value, ensure_ascii=False, sort_keys=True, allow_nan=False) for value in values
     ]
-    path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8", newline="\n")
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("\n".join(lines) + ("\n" if lines else ""))

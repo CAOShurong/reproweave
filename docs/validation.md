@@ -1,6 +1,6 @@
 # Validation evidence
 
-Version 0.4.0 is validated at six layers.
+Version 0.4.1 is validated at six layers.
 
 ## Behavioral tests
 
@@ -88,4 +88,4 @@ endpoints:
 - Python 3.11 and 3.13
 
 Support means the automated matrix passes. Other operating systems and Python versions may work
-but are not claimed by version 0.4.0.
+but are not claimed by version 0.4.1.
