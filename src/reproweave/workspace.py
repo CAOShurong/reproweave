@@ -95,12 +95,12 @@ class Workspace:
     ) -> Workspace:
         """Create a deterministic directory layout."""
         workspace = cls(root)
-        if workspace.manifest_path.exists() and not overwrite:
+        if os.path.exists(filesystem_path(workspace.manifest_path)) and not overwrite:
             raise ValidationError(f"workspace already exists: {workspace.root}")
-        workspace.root.mkdir(parents=True, exist_ok=True)
+        os.makedirs(filesystem_path(workspace.root), exist_ok=True)
         for directory in DIRECTORIES.values():
-            (workspace.root / directory).mkdir(exist_ok=True)
-        (workspace.root / "reports").mkdir(exist_ok=True)
+            os.makedirs(filesystem_path(workspace.root / directory), exist_ok=True)
+        os.makedirs(filesystem_path(workspace.root / "reports"), exist_ok=True)
         manifest = {
             "format_version": FORMAT_VERSION,
             "title": ensure_text(title, "title"),
@@ -136,13 +136,16 @@ class Workspace:
             raise ValidationError(f"unknown artifact kind: {kind}")
         directory = self.root / DIRECTORIES[kind]
         try:
-            if not directory.exists():
+            if not os.path.exists(filesystem_path(directory)):
                 return []
-            if not directory.is_dir():
+            if not os.path.isdir(filesystem_path(directory)):
                 raise ValidationError(f"artifact path for {kind} must be a directory: {directory}")
-            return sorted(
-                item for item in directory.iterdir() if item.name.casefold().endswith(".json")
-            )
+            with os.scandir(filesystem_path(directory)) as entries:
+                return sorted(
+                    directory / entry.name
+                    for entry in entries
+                    if entry.name.casefold().endswith(".json")
+                )
         except OSError as exc:
             raise ValidationError(
                 f"cannot enumerate artifact directory {directory}: {exc}"

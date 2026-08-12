@@ -14,6 +14,7 @@ from .graph import build_evidence_graph
 from .planning import build_replication_plan, readiness_backlog
 from .scoring import assess_workspace, evidence_matrix
 from .seal import build_seal
+from .store import write_text
 from .triage import build_replication_triage
 from .util import html_escape
 from .workspace import Workspace
@@ -145,7 +146,6 @@ def build_report(workspace: Workspace, output: str | Path) -> Path:
     """Generate one portable HTML file with embedded data, styles, and interactions."""
     workspace.require()
     destination = Path(output)
-    destination.parent.mkdir(parents=True, exist_ok=True)
     manifest = workspace.manifest()
     agreement = build_assessment_resolution(workspace)
     assessment = assess_workspace(workspace)
@@ -293,5 +293,5 @@ search.addEventListener("input",filterRows);threshold.addEventListener("change",
 </script>
 </body></html>
 """
-    destination.write_text(html, encoding="utf-8", newline="\n")
+    write_text(destination, html)
     return destination

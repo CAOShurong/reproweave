@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,6 +9,8 @@ from pathlib import Path
 from common import make_workspace
 
 from reproweave.errors import ValidationError
+from reproweave.report import build_report
+from reproweave.seal import verify_seal, write_seal
 from reproweave.store import write_json
 from reproweave.util import filesystem_path
 from reproweave.workspace import Workspace
@@ -25,6 +28,28 @@ class WorkspaceTests(unittest.TestCase):
         workspace = Workspace.create(self.root / "w", title="T", research_question="Q?")
         self.assertTrue(workspace.manifest_path.exists())
         self.assertTrue((workspace.root / "papers").is_dir())
+
+    def test_create_and_enumerate_deep_workspace(self) -> None:
+        deep_parent = self.root / "deep-root"
+        deep_root = deep_parent.joinpath(*(("segment-" + "x" * 36,) * 6), "review")
+        try:
+            workspace = Workspace.create(deep_root, title="Unicode 研究", research_question="Q?")
+            self.assertGreater(len(str(workspace.root)), 260)
+            self.assertEqual(workspace.manifest()["title"], "Unicode 研究")
+            path = workspace.add(
+                "paper",
+                {"id": "deep-paper", "title": "Deep", "authors": ["A"], "year": 2026},
+            )
+            self.assertTrue(os.path.exists(filesystem_path(path)))
+            self.assertEqual([item["id"] for item in workspace.all("paper")], ["deep-paper"])
+            report = build_report(workspace, workspace.root / "reports" / "evidence-report.html")
+            self.assertTrue(os.path.exists(filesystem_path(report)))
+            seal = write_seal(workspace)
+            self.assertTrue(os.path.exists(filesystem_path(seal)))
+            self.assertEqual(verify_seal(workspace)["status"], "verified")
+        finally:
+            if os.path.exists(filesystem_path(deep_parent)):
+                shutil.rmtree(filesystem_path(deep_parent))
 
     def test_create_twice_fails(self) -> None:
         Workspace.create(self.root / "w", title="T", research_question="Q?")

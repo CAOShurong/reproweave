@@ -5,6 +5,14 @@ This project uses semantic versioning.
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-08-13
+
+### Fixed
+
+- Windows can now initialize, enumerate, import into, export from, report on, and seal a workspace
+  whose directory path itself exceeds 260 characters, without requiring the system-wide long-path
+  policy.
+
 ## [0.4.1] - 2026-08-12
 
 ### Fixed
@@ -125,7 +133,8 @@ This project uses semantic versioning.
 - A deterministic, fully synthetic EE/AI demonstration with 55 artifacts.
 - Seventy-five standard-library tests, cross-platform CI, package smoke tests, and Pages.
 
-[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/CAOShurong/reproweave/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/CAOShurong/reproweave/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/CAOShurong/reproweave/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/CAOShurong/reproweave/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/CAOShurong/reproweave/compare/v0.2.1...v0.3.0

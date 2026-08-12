@@ -100,7 +100,7 @@ def main() -> None:
     run([str(python), "-m", "pip", "install", "--no-deps", str(wheels[0])])
     cli = [str(python), "-m", "reproweave"]
     version = run([*cli, "--version"]).stdout.strip()
-    if version != "reproweave 0.4.1":
+    if version != "reproweave 0.4.2":
         raise AssertionError(f"unexpected installed version: {version}")
     if run([str(entrypoint), "--version"]).stdout.strip() != version:
         raise AssertionError("console script version differs from python -m entry point")
@@ -120,6 +120,7 @@ def main() -> None:
             "Can imports preserve review evidence?",
         ]
     )
+
     existing_bib = args.root / "existing.bib"
     existing_bib.write_text(
         "@article{Existing, title={Existing record}, author={A}, year={2024}, "
@@ -128,6 +129,31 @@ def main() -> None:
         newline="\n",
     )
     run([*cli, "import", "bibtex", str(existing_bib), "--workspace", str(import_workspace)])
+
+    deep_workspace = args.root.joinpath(
+        *(("segment-" + "x" * 36,) * 6),
+        "deep-workspace-review",
+    )
+    if len(str(deep_workspace)) <= 260:
+        raise AssertionError(
+            f"deep workspace acceptance target is too short: {len(str(deep_workspace))}"
+        )
+    run(
+        [
+            *cli,
+            "init",
+            str(deep_workspace),
+            "--title",
+            "Unicode 研究 deep workspace",
+            "--question",
+            "Can the installed wheel complete a workflow beyond the Windows path limit?",
+        ]
+    )
+    run([*cli, "import", "bibtex", str(existing_bib), "--workspace", str(deep_workspace)])
+    run([*cli, "audit", "--workspace", str(deep_workspace)])
+    run([*cli, "report", "--workspace", str(deep_workspace)])
+    run([*cli, "seal", "--workspace", str(deep_workspace)])
+    run([*cli, "verify", "--workspace", str(deep_workspace)])
 
     null_doi_csl = args.root / "null-doi.json"
     null_doi_csl.write_text(
@@ -526,6 +552,7 @@ def main() -> None:
                 "duplicate_candidate_id": candidate_id,
                 "late_collision_side_effects": 0,
                 "long_path_characters": len(str(stored)),
+                "deep_workspace_characters": len(str(deep_workspace)),
             },
             sort_keys=True,
         )
