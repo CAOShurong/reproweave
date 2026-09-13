@@ -20,6 +20,12 @@ from reproweave.util import (
 
 
 class UtilTests(unittest.TestCase):
+    def test_json_with_utf8_bom_still_loads(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "value.json"
+            path.write_bytes(b'\xef\xbb\xbf{"id":"paper-1"}')
+            self.assertEqual(read_json(path)["id"], "paper-1")
+
     def test_non_standard_json_numbers_are_rejected_on_read(self) -> None:
         for value in ("NaN", "Infinity", "-Infinity", "1e9999", "-1e9999"):
             with self.subTest(value=value), tempfile.TemporaryDirectory() as directory:

@@ -14,7 +14,7 @@ from .util import filesystem_path, slugify
 def _read_utf8(path: str | Path, *, label: str) -> str:
     source = Path(path)
     try:
-        with open(filesystem_path(source), encoding="utf-8") as handle:
+        with open(filesystem_path(source), encoding="utf-8-sig") as handle:
             return handle.read()
     except (OSError, UnicodeError) as exc:
         raise ValidationError(f"cannot read {label} {source}: {exc}") from exc
