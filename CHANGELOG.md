@@ -5,6 +5,10 @@ This project uses semantic versioning.
 
 ## [Unreleased]
 
+### Fixed
+
+- JSON and bibliography files that start with a UTF-8 BOM now load.
+
 ## [0.4.2] - 2026-08-13
 
 ### Fixed

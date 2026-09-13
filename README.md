@@ -51,6 +51,12 @@ benchmark, handing work to a collaborator, or explaining why an experiment is bl
 ReproWeave needs Python 3.11 or newer and has no runtime dependencies. Install from PyPI:
 
 ```bash
+uvx reproweave demo my-review
+```
+
+Or install persistently:
+
+```bash
 python -m pip install reproweave
 reproweave demo my-review
 reproweave audit --workspace my-review

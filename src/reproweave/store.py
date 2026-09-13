@@ -73,7 +73,7 @@ def parse_json_value(text: str, *, label: str = "JSON") -> Any:
 def read_json(path: Path) -> dict[str, Any]:
     """Read a JSON object with a useful path-aware error."""
     try:
-        with open(filesystem_path(path), encoding="utf-8") as handle:
+        with open(filesystem_path(path), encoding="utf-8-sig") as handle:
             text = handle.read()
     except FileNotFoundError as exc:
         raise ValidationError(f"missing file: {path}") from exc
